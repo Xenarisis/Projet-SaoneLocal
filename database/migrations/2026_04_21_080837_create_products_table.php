@@ -20,7 +20,6 @@ return new class extends Migration
             $table->tinytext('description');
             $table->integer('price');
             $table->datetime('created_at');
-            $table->foreignId('opinion_id')->constrained('opinion')->onDelete('cascade');
         });
     }
 
