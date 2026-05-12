@@ -1,0 +1,44 @@
+services:
+    web:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./docker/nginx/:/etc/nginx/conf.d/
+            - app_public:/var/www/html/public:ro
+            - /etc/letsencrypt:/etc/letsencrypt:ro
+        depends_on:
+            - app
+    app:
+        image: ghcr.io/Xenarisis/projet-saonelocal:latest
+        volumes:
+            - app_public:/var/www/html/public
+        environment:
+            - APP_ENV=production
+            - APP_DEBUG=false
+            - DB_CONNECTION=mysql
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_DATABASE=${DB_DATABASE}
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
+        depends_on:
+            db:
+                condition: service_healthy
+    db:
+        image: mysql:8.0
+        environment:
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+            - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+        volumes:
+            - db_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+volumes:
+    db_data:
+    app_public:

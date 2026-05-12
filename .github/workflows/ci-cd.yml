@@ -14,7 +14,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Checkout du code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Log in to GitHub Container Registry
@@ -24,15 +24,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configuration de Docker Buildx
+      - name: Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Push de l'image Docker
+      - name: Build and Push of Docker
         uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/${{ github.repository_owner }}/ai-prompt-library:latest
+          tags: ghcr.io/${{ github.repository_owner }}/projet-saonelocal:latest
 
   deploy-to-ec2:
     name: Deploy to EC2
@@ -40,7 +40,19 @@ jobs:
     needs: docker-build-and-push
     if: github.ref == 'refs/heads/main' 
     steps:
-      - name: Déploiement via SSH
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Cp to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.prod.yml,docker/nginx/"
+          target: "/home/${{ secrets.EC2_USERNAME }}/projet-saonelocal"
+
+      - name: Deploying using SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -48,12 +60,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            sudo docker pull ghcr.io/${{ github.repository_owner }}/Projet-SaoneLocal:latest
-            sudo docker stop projet-saonelocal-app || true
-            sudo docker rm projet-saonelocal-app || true
-            sudo docker run -d \
-              --name projet-saonelocal-app \
-              -p 80:80 \
-              -p 443:443 \
-              -v /etc/letsencrypt:/etc/letsencrypt:ro \
-              ghcr.io/${{ github.repository_owner }}/Projet-SaoneLocal:latest
+            
+            cd /home/${{ secrets.EC2_USERNAME }}/projet-saonelocal
+            
+            sudo docker compose -f docker-compose.prod.yml pull
+            sudo docker compose -f docker-compose.prod.yml up -d
+            
+            sudo docker image prune -af
