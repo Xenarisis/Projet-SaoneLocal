@@ -48,12 +48,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            sudo docker pull ghcr.io/${{ github.repository_owner }}/ai-prompt-library:latest
-            sudo docker stop prompt-library-app || true
-            sudo docker rm prompt-library-app || true
+            sudo docker pull ghcr.io/${{ github.repository_owner }}/Projet-SaoneLocal:latest
+            sudo docker stop projet-saonelocal-app || true
+            sudo docker rm projet-saonelocal-app || true
             sudo docker run -d \
-              --name prompt-library-app \
+              --name projet-saonelocal-app \
               -p 80:80 \
               -p 443:443 \
               -v /etc/letsencrypt:/etc/letsencrypt:ro \
-              ghcr.io/${{ github.repository_owner }}/ai-prompt-library:latest
+              ghcr.io/${{ github.repository_owner }}/Projet-SaoneLocal:latest
