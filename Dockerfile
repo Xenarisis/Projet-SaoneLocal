@@ -24,9 +24,11 @@ RUN mkdir -p /home/$user/.composer && \
 USER $user
 RUN composer global require laravel/installer:5.26.1
 ENV PATH="/home/$user/.composer/vendor/bin:${PATH}"
-USER root
 
 WORKDIR /var/www/html
+
+USER root
+COPY --chown=$user:$user . /var/www/html
 
 USER root
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
