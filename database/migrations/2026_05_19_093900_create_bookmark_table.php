@@ -1,4 +1,3 @@
-// Nom du fichier : 2026_05_04_000004_create_orders_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -7,22 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('bookmark', function (Blueprint $table) {
             $table->id();
-            $table->string('order_number', 50);
-            $table->string('status', 50);
-            $table->decimal('total_excl_tax', 10, 2);
-            $table->decimal('total_incl_tax', 10, 2);
-            $table->string('payment_status');
+            $table->integer('fav_products');
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('bookmark');
     }
 };
