@@ -20,7 +20,9 @@ class User extends Authenticatable {
         'username',
         'role',
         'password',
-        'last_login_at',
-        'token'
-        ];
+        'last_login',
+        'created_at',
+        'updated_at',
+        'Google_token'
+    ];
 }
