@@ -16,5 +16,8 @@ fi
 echo "migrations:"
 php artisan migrate --force
 
+echo "seeder: "
+php artisan db:seed
+
 echo "starting:"
 exec "$@"
