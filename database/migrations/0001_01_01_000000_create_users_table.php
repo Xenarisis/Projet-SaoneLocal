@@ -15,13 +15,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('firstname');
             $table->string('lastname');
+            $table->string('username');
             $table->string('role');
-            $table->string('hashed_password');
+            $table->string('password');
             $table->dateTime('last_login')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->integer('Gtoken')->nullable();
             $table->timestamps(); 
+            // $table->dateTime('updated_at')->nullable();
+            // $table->dateTime('created_at')->nullable();
+            $table->integer('Google_token')->nullable();
         });
 
         // Table Password Reset Tokens
