@@ -11,13 +11,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
             $table->string('name');
+            $table->tinyText('description')->nullable();
+            $table->decimal('price', 5, 2);
+            $table->dateTime('updated_at')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->timestamps();
             $table->string('category');
             $table->string('subcategory')->nullable();
-            $table->tinyText('description')->nullable();
-            $table->decimal('price', 8, 2);
-            $table->timestamps();
+            $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
         });
     }
 

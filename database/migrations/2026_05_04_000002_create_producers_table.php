@@ -11,11 +11,14 @@ return new class extends Migration
     {
         Schema::create('producers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
             $table->string('company_name');
             $table->text('presentation')->nullable();
-            $table->foreignId('localisation_id')->nullable()->constrained('localisations')->onDelete('set null');
+            $table->string('street_line_1', 60);
+            $table->string('street_line_2', 60)->nullable();
+            $table->string('city', 50);
+            $table->string('postal_code', 20);
             $table->timestamps();
+            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
         });
     }
 

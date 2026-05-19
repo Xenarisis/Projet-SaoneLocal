@@ -15,7 +15,10 @@ return new class extends Migration
             $table->string('event_name');
             $table->string('description')->nullable();
             $table->dateTime('event_date');
-            $table->foreignId('localisation_id')->nullable()->constrained('localisations')->onDelete('set null');
+            $table->string('street_line_1', 60);
+            $table->string('street_line_2', 60)->nullable();
+            $table->string('city', 50);
+            $table->string('postal_code', 20);
             $table->timestamps();
         });
     }

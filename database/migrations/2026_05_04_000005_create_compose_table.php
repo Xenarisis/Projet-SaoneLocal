@@ -9,18 +9,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('compose', function (Blueprint $table) {
             $table->id();
+            $table->integer('quantity');
+            $table->decimal('unit_price', 5, 2);
+            $table->timestamps();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->decimal('unit_price', 8, 2);
-            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('compose');
     }
 };
