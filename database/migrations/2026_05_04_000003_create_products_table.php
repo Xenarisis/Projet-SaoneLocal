@@ -14,8 +14,6 @@ return new class extends Migration
             $table->string('name');
             $table->tinyText('description')->nullable();
             $table->decimal('price', 5, 2);
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('created_at')->nullable();
             $table->timestamps();
             $table->string('category');
             $table->string('subcategory')->nullable();

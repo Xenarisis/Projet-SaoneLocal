@@ -13,7 +13,6 @@ return new class extends Migration
             $table->id();
             $table->integer('rating');
             $table->string('comment', 250)->nullable();
-            $table->dateTime('created_at')->nullable();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
