@@ -18,11 +18,6 @@ class Producer extends Model {
         'street_line_2',
         'city',
         'postal_code',
-        'created_at',
-        'updated_at'
-    ];
-
-    protected $hidden = [
         'user_id'
     ];
 }
