@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('name');
             $table->tinyText('description')->nullable();
             $table->decimal('price', 5, 2);
+            $table->integer('quantity');
             $table->timestamps();
             $table->string('category');
             $table->string('subcategory')->nullable();
