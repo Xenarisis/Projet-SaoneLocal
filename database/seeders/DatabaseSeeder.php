@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder {
             UserSeeder::class,
             ProducerSeeder::class,
             ProductSeeder::class,
-            OrderSeeder::class
+            DiscountSeeder::class,
+            ReduceSeeder::class,
+            BookmarkSeeder::class,
+            FollowSeeder::class
         ]);
     }
 }
