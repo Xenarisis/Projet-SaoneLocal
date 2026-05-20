@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('order_number', 50);
             $table->string('status', 50);
             $table->decimal('total_excl_tax', 10, 2);
-            $table->decimal('total_incl_tax', 10, 2);
+            $table->decimal('percentage_tax');
             $table->string('payment_status');
             $table->timestamps();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
