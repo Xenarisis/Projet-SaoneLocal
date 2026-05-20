@@ -18,8 +18,8 @@ class ProducerFactory extends Factory {
         return [
             'name' => fake()->unique()->company(),
             'presentation' => fake()->paragraph(),
-            'street_line_1' => fake()->address(),
-            'street_line_2' => '',
+            'street_line_1' => fake()->latitude(),
+            'street_line_2' => fake()->longitude(),
             'city' => fake()->city(),
             'postal_code' => fake()->postcode(),
             'user_id' => \App\Models\User::factory()
