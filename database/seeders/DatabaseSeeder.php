@@ -20,7 +20,12 @@ class DatabaseSeeder extends Seeder {
             DiscountSeeder::class,
             ReduceSeeder::class,
             BookmarkSeeder::class,
-            FollowSeeder::class
+            FollowSeeder::class,
+            OrderSeeder::class,
+            ComposeSeeder::class,
+            Cart_itemSeeder::class,
+            ReviewSeeder::class,
+            EventSeeder::class
         ]);
     }
 }

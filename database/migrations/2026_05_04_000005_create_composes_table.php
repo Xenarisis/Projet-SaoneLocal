@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('compose', function (Blueprint $table) {
+        Schema::create('composes', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
             $table->decimal('unit_price', 5, 2);
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('compose');
+        Schema::dropIfExists('composes');
     }
 };

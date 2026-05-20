@@ -11,7 +11,6 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
             $table->string('event_name');
             $table->string('description')->nullable();
             $table->dateTime('event_date');
@@ -20,6 +19,7 @@ return new class extends Migration
             $table->string('city', 50);
             $table->string('postal_code', 20);
             $table->timestamps();
+            $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
         });
     }
 
