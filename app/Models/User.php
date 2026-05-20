@@ -25,4 +25,10 @@ class User extends Authenticatable {
         'updated_at',
         'Google_token'
     ];
+
+    protected $hidden = [
+        'password',
+        'Google_token',
+        'updated_at'
+    ];
 }
