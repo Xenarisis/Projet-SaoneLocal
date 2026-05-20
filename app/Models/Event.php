@@ -2,25 +2,27 @@
 
 namespace App\Models;
 
-use Database\Factories\ComposeFactory;
+use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Compose extends Model
+class Event extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'quantity',
-        'unit_price',
-        'created_at',
-        'updated_at'
+        'event_name',
+        'description',
+        'event_date',
+        'street_line_1',
+        'street_line_2',
+        'city',
+        'postal_code'
     ];
 
     protected $hidden = [
-        'order_id',
-        'product_id'
+        'producer_id'
     ];
 }
