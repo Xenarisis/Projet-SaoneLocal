@@ -19,6 +19,7 @@ class ProductFactory extends Factory {
             'name' => fake()->unique()->name(),
             'description' => fake()->paragraph(),
             'price' => fake()->randomFloat(2, 10, 500),
+            'quantity' => fake()->numberBetween(1, 100),
             'category' => fake()->word(),
             'subcategory' => '',
             'producer_id' => \App\Models\Producer::factory()

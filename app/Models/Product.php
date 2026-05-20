@@ -15,6 +15,7 @@ class Product extends Model {
         'name',
         'description',
         'price',
+        'quantity',
         'category',
         'subcategory',
         'producer_id'
