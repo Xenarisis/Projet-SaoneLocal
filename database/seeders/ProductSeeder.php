@@ -15,6 +15,7 @@ class ProductSeeder extends Seeder {
             'name' => 'Escargot',
             'description' => 'Escargot prêt à l\'emploie frais pas chères gratuit',
             'price' => 3.5,
+            'quantity' => 40,
             'category' => 'Nourriture',
             'subcategory' => 'Frais',
             'producer_id' => 1
