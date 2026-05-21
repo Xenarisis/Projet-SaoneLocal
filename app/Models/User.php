@@ -19,16 +19,13 @@ class User extends Authenticatable {
         'lastname',
         'username',
         'role',
-        'password',
         'last_login',
         'created_at',
-        'updated_at',
-        'Google_token'
+        'updated_at'
     ];
 
     protected $hidden = [
         'password',
-        'Google_token',
-        'updated_at'
+        'Google_token'
     ];
 }
