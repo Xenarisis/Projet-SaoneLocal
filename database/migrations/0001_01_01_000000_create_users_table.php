@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('firstname');
             $table->string('lastname');
             $table->string('username')->unique();
-            $table->string('role')->default('user');
+            $table->string('role')->default('user')->nullable();
             $table->string('password');
             $table->dateTime('lastLogin')->nullable();
             $table->timestamps();

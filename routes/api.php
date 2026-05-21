@@ -8,18 +8,12 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-// ############## Users
+// ############## Users ##############
 
-// ############## GET
-// Appelle la méthode getAll() -> URL : /api/users
+// ############## GET ##############
 Route::get('/users', [UserController::class, 'getAll']);
-
-// Appelle getUserWithId($id) -> URL : /api/users/1
 Route::get('/users/{id}', [UserController::class, 'getUserWithId']);
-
-// Appelle getUserWithEmail($email) -> URL : /api/users/email/jean@test.com
 Route::get('/users/email/{email}', [UserController::class, 'getUserWithEmail']);
 
-
-// ############## POST
+// ############## POST ##############
 Route::post('/users', [UserController::class, 'createUser']);
