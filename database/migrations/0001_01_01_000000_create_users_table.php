@@ -13,14 +13,12 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('username');
-            $table->string('role');
+            $table->string('username')->unique();
+            $table->string('role')->default('user')->nullable();
             $table->string('password');
-            $table->dateTime('last_login')->nullable();
-            $table->timestamps(); 
-            // $table->dateTime('updated_at')->nullable();
-            // $table->dateTime('created_at')->nullable();
-            $table->integer('Google_token')->nullable();
+            $table->dateTime('lastLogin')->nullable();
+            $table->timestamps();
+            $table->integer('GoogleToken')->unique()->nullable();
         });
 
         // Table Password Reset Tokens
@@ -44,6 +42,6 @@ return new class extends Migration {
     public function down(): void {
         Schema::dropIfExists('users');
         // Schema::dropIfExists('password_reset_tokens');
-        // Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessions');
     }
 };
