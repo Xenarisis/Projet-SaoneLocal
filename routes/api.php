@@ -19,3 +19,7 @@ Route::get('/users/{id}', [UserController::class, 'getUserWithId']);
 
 // Appelle getUserWithEmail($email) -> URL : /api/users/email/jean@test.com
 Route::get('/users/email/{email}', [UserController::class, 'getUserWithEmail']);
+
+
+// ############## POST
+Route::post('/users', [UserController::class, 'createUser']);
