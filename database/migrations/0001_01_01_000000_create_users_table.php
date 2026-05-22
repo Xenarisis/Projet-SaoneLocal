@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->dateTime('lastLogin')->nullable();
             $table->timestamps();
-            $table->integer('GoogleToken')->unique()->nullable();
+            $table->string('GoogleToken')->unique()->nullable();
         });
 
         // Table Password Reset Tokens
