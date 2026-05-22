@@ -4,16 +4,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+// =======================================================
+// PUBLIC ROUTES (No token required)
+// =======================================================
+Route::prefix('users')->group(function () {
+    Route::post('/register', [UserController::class, 'createUser']);
+    Route::post('/login', [UserController::class, 'loginUser']);
+});
 
-// ############## Users ##############
+// =======================================================
+// PRIVATE ROUTES (Token Sanctum required)
+// =======================================================
+Route::middleware('auth:sanctum')->group(function () {
 
-// ############## GET ##############
-Route::get('/users', [UserController::class, 'getAll']);
-Route::get('/users/{id}', [UserController::class, 'getUserWithId']);
-Route::get('/users/email/{email}', [UserController::class, 'getUserWithEmail']);
+    Route::prefix('users')->group(function () {
+        // --- (GET) ---
+        Route::get('/', [UserController::class, 'getAll']);
+        Route::get('/{id}', [UserController::class, 'getUserWithId']);
+        Route::get('/email/{email}', [UserController::class, 'getUserWithEmail']);
+        Route::get('/googleToken/{token}', [UserController::class, 'getUserWithGoogleToken']);
+        Route::get('/username/{username}', [UserController::class, 'getUserWithUsername']);
 
-// ############## POST ##############
-Route::post('/users', [UserController::class, 'createUser']);
+        // --- (PUT/PATCH) ---
+        Route::put('/{id}', [UserController::class, 'putUser']);
+        Route::patch('/{id}', [UserController::class, 'patchUser']);
+
+        // --- (DELETE) ---
+        Route::delete('/{id}', [UserController::class, 'deleteUser']);
+    });
+
+});
