@@ -13,12 +13,12 @@ class UserSeeder extends Seeder {
      */
     public function run(): void {
         User::create([
-            'email' => 'filouche39@gmail.com',
-            'firstname' => 'Félicien',
-            'lastname' => 'Nachon',
-            'username' => 'filouche',
+            'email' => 'admin@admin.admin',
+            'firstname' => 'admin',
+            'lastname' => 'admin',
+            'username' => 'admin',
             'role' => 'admin',
-            'password' => Hash::make('admin123')
+            'password' => Hash::make('admin')
         ]);
 
         User::factory()->count(50)->create();
