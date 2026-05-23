@@ -20,4 +20,8 @@ class Product extends Model {
         'subcategory',
         'producer_id'
     ];
+
+    public function producer() {
+        return $this->belongsTo(Producer::class);
+    }
 }

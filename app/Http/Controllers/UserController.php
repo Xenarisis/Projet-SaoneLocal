@@ -29,6 +29,9 @@ class UserController extends Controller {
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        $user->lastLogin = now();
+
+        $user->save();
 
         return response()->json([
             'message' => 'Connexion réussie.',
@@ -69,7 +72,7 @@ class UserController extends Controller {
         return User::all();
     }
 
-    public function getUserWithId($id) {
+    public function getUserById($id) {
         if(auth()->id() != $id && auth()->user()->role !== 'admin') {
             return response()->json([
                 'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
@@ -79,7 +82,7 @@ class UserController extends Controller {
         return User::findOrFail($id);
     }
 
-    public function getUserWithEmail($email) {
+    public function getUserByEmail($email) {
         if(auth()->user()->email != $email && auth()->user()->role !== 'admin') {
             return response()->json([
                 'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
@@ -89,7 +92,7 @@ class UserController extends Controller {
         return User::where('email', $email)->firstOrFail();
     }
 
-    public function getUserWithGoogleToken($GoogleToken) {
+    public function getUserByGoogleToken($GoogleToken) {
         if(auth()->user()->GoogleToken != $GoogleToken && auth()->user()->role !== 'admin') {
             return response()->json([
                 'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
@@ -99,7 +102,7 @@ class UserController extends Controller {
         return User::where('GoogleToken', $GoogleToken)->firstOrFail();
     }
 
-    public function getUserWithUsername($username) {
+    public function getUserByUsername($username) {
         if(auth()->user()->username != $username && auth()->user()->role !== 'admin') {
             return response()->json([
                 'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
