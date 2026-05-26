@@ -4,201 +4,97 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\PutUserRequest;
+use App\Http\Requests\PatchUserRequest;
+use App\Http\Requests\DeleteUserRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller {
-    public function index() {
-        return $this->getAll();
-    }
-
-    // Other
-    public function loginUser(Request $request) {
-        $request->validate([
-            'email' => 'required|email',
-            // No 'min' validation here: increasing it in the future would lock out legacy users.
-            'password' => 'required|string|max:255'
-        ]);
-
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Les identifiants sont incorrects.'
-            ], 401);
-        }
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-        $user->lastLogin = now();
-
-        $user->save();
-
-        return response()->json([
-            'message' => 'Connexion réussie.',
-            'access_token' => $token,
-            'token_type' => 'Bearer'
-        ], 200);
-    }
-
-    // Create
-    public function createUser(Request $request) {
-        $validatedData = $request->validate([
-            'email' => 'required|email|unique:users',
-            'firstname' => 'required|string|min:1|max:20',
-            'lastname' => 'required|string|min:1|max:20',
-            'username' => 'nullable|string|unique:users|min:1|max:25',
-            'GoogleToken' => 'nullable|string|unique:users',
-            'password' => 'required|string|min:6|max:50'
-        ]);
-
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        
-        $user = User::create($validatedData);
-
-        return response()->json([
-            'message' => 'Utilisateur créé avec succès',
-            'user' => $user
-        ], 201);
-    }
+    // Create : view AuthController
 
     // Read
     public function getAll() {
-        if (auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Accès refusé. Espace réserver aux administrateurs.'
-            ], 403);
-        }
+        Gate::authorize('viewAny', User::class);
 
-        return User::all();
+        $users = User::paginate(50);
+        return UserResource::collection($users);
     }
 
-    public function getUserById($id) {
-        if(auth()->id() != $id && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
-            ], 403);
-        }
+    public function getUserById($user) {
+        // Query string
+        Gate::authorize('view', $user);
 
-        return User::findOrFail($id);
+        return new UserResource($user);
     }
 
     public function getUserByEmail($email) {
-        if(auth()->user()->email != $email && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
-            ], 403);
-        }
+        $userModel = User::where('email', $email)->firstOrFail();
 
-        return User::where('email', $email)->firstOrFail();
+        Gate::authorize('view', $userModel);
+
+        return new UserResource($userModel);
     }
 
-    public function getUserByGoogleToken($GoogleToken) {
-        if(auth()->user()->GoogleToken != $GoogleToken && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
-            ], 403);
-        }
+    public function getUserByGoogleToken($token) {
+        $userModel = User::where('GoogleToken', $token)->firstOrFail();
 
-        return User::where('GoogleToken', $GoogleToken)->firstOrFail();
+        Gate::authorize('view', $userModel);
+
+        return new UserResource($userModel);
     }
 
     public function getUserByUsername($username) {
-        if(auth()->user()->username != $username && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour récupérer un autre compte que le vôtre.'
-            ], 403);
-        }
+        $userModel = User::where('username', $username)->firstOrFail();
 
-        return User::where('username', $username)->firstOrFail();
+        Gate::authorize('view', $userModel);
+
+        return new UserResource($userModel);
     }
 
     // Put
-    public function putUser(Request $request, $id) {
-        $user = User::findOrFail($id);
+    public function putUser(PutUserRequest $request, User $user) {
+        $validatedData = $request->validated();
 
-        if(auth()->id() != $id && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour mettre à jour un autre compte que le vôtre.'
-            ], 403);
-        }
-
-        $validatedData = $request->validate([
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'firstname' => 'required|string|min:1|max:20',
-            'lastname' => 'required|string|min:1|max:20',
-            'username' => 'nullable|string|unique:users|min:1|max:25|unique:users,username,' . $user->id,
-            'GoogleToken' => 'nullable|string|unique:users,GoogleToken,' . $user->id,
-            'password' => 'sometimes|string|min:6|max:50'
-        ]);
-
-        if($request->has('password')) {
+        if($request->filled('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']);
         }
 
         $user->update($validatedData);
 
-        return response()->json([
-            'message' => 'Utilisateur mis à jour avec succès',
-            'user' => $user
-        ], 200);
+        return (new UserResource($user))->additional([
+            'message' => 'Utilisateur mis à jour avec succès'
+        ]);
     }
 
     // (Patch)
-    public function patchUser(Request $request, $id) {
-        $user = User::findOrFail($id);
+    public function patchUser(PatchUserRequest $request, User $user) {
+        $validatedData = $request->validated();
 
-        if(auth()->id() != $id && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour mettre à jour un autre compte que le vôtre.'
-            ], 403);
-        }
-
-        $validatedData = $request->validate([
-            'email'       => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'firstname'   => 'sometimes|required|string|min:1|max:20',
-            'lastname'    => 'sometimes|required|string|min:1|max:20',
-            'username'    => 'sometimes|nullable|string|min:1|max:25|unique:users,username,' . $user->id,
-            'GoogleToken' => 'sometimes|nullable|string|unique:users,GoogleToken,' . $user->id,
-            'password'    => 'sometimes|required|string|min:6|max:50'
-        ]);
-
-        if ($request->has('password')) {
+        if ($request->filled('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
         }
 
         $user->update($validatedData);
 
-        return response()->json([
-            'message' => 'Utilisateur mis à jour avec succès',
-            'user' => $user
-        ], 200);
+        return (new UserResource($user))->additional([
+            'message' => 'Utilisateur mis à jour avec succès'
+        ]);
     }
 
     // Delete
-    public function deleteUser(Request $request, $id) {
-        $user = User::findOrFail($id);
-
-        if (auth()->id() != $id && auth()->user()->role !== 'admin') {
-            return response()->json([
-                'message' => 'Action non autorisée. Vous n\'avez pas les droits nécessaires pour supprimer un autre compte que le vôtre.'
-            ], 403);
-        }
-
-        if ($request->has('GoogleToken')) {
-            if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
-                return response()->json([
-                    'message' => 'Action non autorisée. Token Google invalide.'
-                ], 401);
-            }
-        } else {
-            $request->validate([
-                'password' => 'required|string|max:255'
-            ]);
-
-            if (!Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'message' => 'Mot de passe incorrect. Suppression refusée.'
-                ], 403);
+    public function deleteUser(DeleteUserRequest $request, User $user) {
+        if(auth()->id() === $user->id) {
+            if($request->filled('GoogleToken')) {
+                if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
+                    return response()->json([
+                        'message' => 'Action non autorisée. Token Google invalide.'
+                    ], 403);
+                }
             }
         }
 
@@ -206,6 +102,6 @@ class UserController extends Controller {
 
         return response()->json([
             'message' => 'Utilisateur supprimé avec succès'
-        ], 200); 
+        ], 200);
     }
 }
