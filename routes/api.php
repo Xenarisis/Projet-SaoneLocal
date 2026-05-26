@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 
 // =======================================================
@@ -10,8 +11,8 @@ use App\Http\Controllers\ProductController;
 // =======================================================
 Route::prefix('users')->group(function () {
     // --- (POST) ---
-    Route::post('/register', [UserController::class, 'createUser']);
-    Route::post('/login', [UserController::class, 'loginUser']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 Route::prefix('products')->group(function () {
@@ -28,17 +29,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('users')->group(function () {
         // --- (GET) ---
         Route::get('/', [UserController::class, 'getAll']);
-        Route::get('/{id}', [UserController::class, 'getUserById']);
+        Route::get('/{user}', [UserController::class, 'getUserById']);
         Route::get('/email/{email}', [UserController::class, 'getUserByEmail']);
-        Route::get('/googleToken/{token}', [UserController::class, 'getUserByGoogleToken']);
+        Route::get('/GoogleToken/{token}', [UserController::class, 'getUserByGoogleToken']);
         Route::get('/username/{username}', [UserController::class, 'getUserByUsername']);
 
-        // --- (PUT/PATCH) ---
-        Route::put('/{id}', [UserController::class, 'putUser']);
-        Route::patch('/{id}', [UserController::class, 'patchUser']);
+        // --- (POST) ---
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/logoutAll', [AuthController::class, 'logoutEverywhere']);
+
+        // --- (PUT) ---
+        Route::put('/{user}', [UserController::class, 'putUser']);
+
+        // --- (PATCH) ---
+        Route::patch('/{user}', [UserController::class, 'patchUser']);
 
         // --- (DELETE) ---
-        Route::delete('/{id}', [UserController::class, 'deleteUser']);
+        Route::delete('/{user}', [UserController::class, 'deleteUser']);
     });
 
     Route::prefix('products')->group(function () {
