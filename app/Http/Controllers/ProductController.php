@@ -47,7 +47,7 @@ class ProductController extends Controller {
         return ProductResource::collection($products);
     }
 
-    public function getProductById($product) {
+    public function getProductById(Product $product) {
         return new ProductResource($product->load('producer'));
     }
 
