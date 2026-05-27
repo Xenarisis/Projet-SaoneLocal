@@ -7,59 +7,46 @@ use Illuminate\Http\Request;
 
 class ReduceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->getAll();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    // CREATE
+    public function createReduce(Request $request) {
+        $Validatedata = $request->validate([
+            // 'name' => 'required|string|unique:producer|min:1|max:30',
+            // 'presentation' => 'sometime|string',
+            // 'street_line_1' => 'required|string|min:1|max:60',
+            // 'street_line_2' => 'nullable|string|min:1|max:60',
+            // 'city' => 'required|string|min:1|max:50',
+            // 'postal_code' => 'required|string|min:1|max:20'
+        ]);
+
+        $Reduce = Reduce::create($Validatedata);
+
+        return response()->json([
+            'message' => 'Code Bon et envoyer',
+            'reduce' => $Reduce
+        ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    // READ
+    public function getAll() {
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Reduce $reduce)
-    {
-        //
+    // UPDATE: put branch
+    public function putReduce() {
+
+    }
+    
+    // UPDATE: patch branch
+    public function patchReduce() {
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reduce $reduce)
-    {
-        //
-    }
+    // DELETE
+    public function deleteReduce() {
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Reduce $reduce)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Reduce $reduce)
-    {
-        //
     }
 }
