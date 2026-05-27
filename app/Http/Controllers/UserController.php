@@ -6,10 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
+use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\PutUserRequest;
 use App\Http\Requests\PatchUserRequest;
 use App\Http\Requests\DeleteUserRequest;
-use App\Http\Resources\UserResource;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller {
@@ -23,9 +24,10 @@ class UserController extends Controller {
         return UserResource::collection($users);
     }
 
-    public function getUserById($user) {
-        // Query string
-        Gate::authorize('view', $user);
+    public function getUserById(GetUserRequest $request, User $user) {
+        // Query string And Form Request
+        // Gate::authorize('view', $user);
+        $validatedData = $request->validated();
 
         return new UserResource($user);
     }
@@ -71,7 +73,7 @@ class UserController extends Controller {
         ]);
     }
 
-    // (Patch)
+    // Patch
     public function patchUser(PatchUserRequest $request, User $user) {
         $validatedData = $request->validated();
 
@@ -82,7 +84,7 @@ class UserController extends Controller {
         $user->update($validatedData);
 
         return (new UserResource($user))->additional([
-            'message' => 'Utilisateur mis à jour avec succès'
+            'message' => 'Utilisateur mis à jour avec succès.'
         ]);
     }
 
