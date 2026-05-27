@@ -11,8 +11,8 @@ class PatchUserRequest extends FormRequest {
      */
     public function authorize(): bool {
         $user = $this->route('user');
-        
-        return $this->user()->can('update', $user);
+            
+        return auth('api')->user()->can('update', $user);
     }
 
     /**

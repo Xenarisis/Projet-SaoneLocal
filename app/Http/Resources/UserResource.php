@@ -19,7 +19,7 @@ class UserResource extends JsonResource {
             'username' => $this->username,
             'role' => $this->role,
             'lastLogin' => $this->lastLogin,
-            'GoogleToken' => $this->GoogleToken,
+            'GoogleToken' => $this->when(auth('api')->user()->isAdmin(), $this->GoogleToken),
             'created_at' => $this->created_at
         ];
     }

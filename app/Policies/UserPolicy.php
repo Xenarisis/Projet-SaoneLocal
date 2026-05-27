@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\Response;
 
 class UserPolicy {
     public function before(User $user, string $ability): ?bool {
-        if ($user->role === 'admin') {
+        if ($user->isAdmin()) {
             return true;
         }
         

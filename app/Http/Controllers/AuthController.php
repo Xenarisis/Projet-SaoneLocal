@@ -12,7 +12,6 @@ use App\Http\Resources\UserResource;
 class AuthController extends Controller {
     public function register(RegisterUserRequest $request) {
         $validatedData = $request->validated();
-
         $validatedData['password'] = Hash::make($validatedData['password']);
         
         $user = User::create($validatedData);
@@ -23,41 +22,40 @@ class AuthController extends Controller {
     }
 
     public function login(LoginUserRequest $request) {
-        $validatedData = $request->validated();
+        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json([
                 'message' => 'Les identifiants sont incorrects.'
             ], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = auth('api')->user();
         $user->lastLogin = now();
-
         $user->save();
 
         return response()->json([
             'message' => 'Connexion réussie.',
             'access_token' => $token,
-            'token_type' => 'Bearer'
+            'token_type' => 'Bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ], 200);
     }
 
     public function logout(Request $request) {
-        $request->user()->currentAccessToken()->delete();
+        auth('api')->logout();
 
         return response()->json([
             'message' => 'Déconnexion réussie.'
         ], 200);
     }
 
-    public function logoutEverywhere(Request $request) {
-        $request->user()->tokens()->delete();
-
+    public function refresh() {
         return response()->json([
-            'message' => 'Déconnexion de tous les appareils réussie.'
+            'message' => 'Token rafraîchi avec succès.',
+            'access_token' => auth('api')->refresh(),
+            'token_type' => 'Bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ], 200);
     }
 }

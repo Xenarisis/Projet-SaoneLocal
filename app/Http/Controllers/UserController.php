@@ -88,7 +88,7 @@ class UserController extends Controller {
 
     // Delete
     public function deleteUser(DeleteUserRequest $request, User $user) {
-        if(auth()->id() === $user->id) {
+        if(auth('api')->id() === $user->id) {
             if($request->filled('GoogleToken')) {
                 if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
                     return response()->json([
