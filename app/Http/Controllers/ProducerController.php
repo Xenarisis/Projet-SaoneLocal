@@ -4,83 +4,103 @@ namespace App\Http\Controllers;
 
 use App\Models\Producer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\ProducerResource;
+use App\Http\Requests\PutProducerRequest;
+use App\Http\Controllers\PatchProducerRequest;
+use App\Http\Requests\DeleteProducerRequest;
+use App\Http\Requests\CreateProducerRequest;
+use Illuminate\Contracts\Support\ValidatedData;
 
-class ProducerController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+class ProducerController extends Controller {
+
     public function index() {
-        return getAll();
+        return $this->getAll();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function createProducer(Request $request) {
-        $Validatedata = $request->validate([
-            'name' => 'required|string|unique:producer|min:1|max:30',
-            'presentation' => 'sometime|string',
-            'street_line_1' => 'required|string|min:1|max:60',
-            'street_line_2' => 'nullable|string|min:1|max:60',
-            'city' => 'required|string|min:1|max:50',
-            'postal_code' => 'required|string|min:1|max:20'
-        ]);
+    // CREATE
+    public function createProducer(CreateProducerRequest $request) {
+        $validatedData = $request->validated();
+        
+        $producer = Producer::create($validatedData);
 
-        $Producer = new Producer();
-
-        $Producer->name = $Validatedata['name'];
-        $Producer->presentation = $Validatedata['presentation'];
-        $Producer->street_line_1 = $Validatedata['street_line_1'];
-        $Producer->street_line_2 = $Validatedata['street_line_2'];
-        $Producer->city = $Validatedata['city'];
-        $Producer->postal_code = $Validatedata['postal_code'];
-
-        $Producer->save();
-
-        return response()->json([
-            'message' => 'Producteur bien créer',
-            'producer' => $Producer
+        return (new ProducerResource($producer))->additional([
+            'message' => 'producteur créé avec succès'
         ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    // READ
+    public function getAll() {
+        Gate::authorize('viewAny', Producer::class);
+
+        $producers = Producer::paginate(50);
+        return ProducerResource::collection($producers);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Producer $producer)
-    {
-        //
+    public function getProducerById($Producer) {
+        Gate::Authorize('view', $Producer);
+
+        return new ProducerResource($Producer);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Producer $producer)
-    {
-        //
+    public function getProducerByName($name) {
+        $ProducerModel = Producer::where('name', $name)->firstOrFail();
+        Gate::authorize('view', $ProducerModel);
+
+        return new ProducerResource($ProducerModel);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Producer $producer)
-    {
-        //
+    public function getProducerByCity($city) {
+        $CityModel = Producer::where('city', $city)->firstOrFail();
+        Gate::authorize('view', $CityModel);
+
+        return new ProducerResource($CityModel);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Producer $producer)
-    {
-        //
+    public function getProducerByPostal_code($Postal_code) {
+        $Postal_codeModel = Producer::where('name', $Postal_code)->firstOrFail();
+        Gate::authorize('view', $Postal_codeModel);
+
+        return new ProducerResource($Postal_codeModel);
+    }
+
+
+    // UPDATE: put branch
+    public function putProducer(PutProducerRequest $request, Producer $producer) {
+        $validatedData = $request->validated();
+
+        Gate::authorize('update', $producer);
+
+        $producer->update($validatedData);
+
+        return(new ProducerResource($producer))->additional([
+            'message' => 'Producteur mis à jour avec succès'
+        ]);
+    }
+    
+    // UPDATE: patch branch
+    public function patchProducer(PatchProducerRequest $request, Producer $producer) {
+        $validatedData = $request->validated();
+
+        Gate::authorize('update', $producer);
+
+        $producer->update($validatedData);
+
+        return(new ProducerResource($producer))->additional([
+            'message' => 'Producteur mis à jour avec succès'
+        ]);
+    }
+
+    // DELETE
+    public function deleteProducer(DeleteProducerRequest $request, Producer $producer) {
+        $validatedAciton = $request->validated();
+
+        Gate::authorize('delete', $producer);
+
+        $producer->delete($validatedAciton);
+
+        return response()->json([
+            'message' => 'Producteur supprimer avec succès'
+        ], 200);
     }
 }
