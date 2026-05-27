@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\DeleteProductRequest;
+use App\Http\Requests\RegisterProductRequest;
 
 class ProductController extends Controller {
     // Read
@@ -39,60 +42,58 @@ class ProductController extends Controller {
             });
         }
 
-        $products = $query->get();
+        $products = $query->paginate(25);
 
-        if($products->isEmpty()) {
-            return response()->json([
-                'message' => 'Aucun produit trouvé avec ces critères.',
-                'data' => []
-            ], 404);
-        }
-
-        return response()->json([
-            'message' => $products->count() . ' produit(s) trouvé(s).',
-            'data' => $products
-        ], 200);
+        return ProductResource::collection($products);
     }
 
-    public function getProductById($id) {
-        return Product::with('producer')->findOrFail($id);
+    public function getProductById($product) {
+        return new ProductResource($product->load('producer'));
     }
 
     // Create
-    public function createProduct(Request $request) {
-        $user = auth()->user();
+    public function createProduct(RegisterProductRequest $request) {
+        $validatedData = $request->validated();
 
-        if ($user->role !== 'admin' && $user->role !== 'producer') {
-            return response()->json([
-                'message' => 'Action non autorisée. Seuls les administrateurs et les producteurs peuvent ajouter des produits.'
-            ], 403);
-        }
+        $user = auth('api')->user();
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
-            'price' => 'required|numeric|min:0|max:999.99',
-            'quantity' => 'required|integer|min:0',
-            'category' => 'required|string|max:255',
-            'subcategory' => 'nullable|string|max:255',
-            'producer_id' => 'required|exists:producers,id'
-        ]);
-
-        if ($user->role === 'producer') {
-            $producerProfile = Producer::where('user_id', $user->id)->first();
-
-            if (!$producerProfile || $producerProfile->id != $validatedData['producer_id']) {
-                return response()->json([
-                    'message' => 'Action refusée. Vous ne pouvez lier un produit qu\'à votre propre profil producteur.'
-                ], 403);
-            }
-        }
+        $validatedData['producer_id'] = $user->producer->id;
 
         $product = Product::create($validatedData);
 
+        return (new ProductResource($product))->additional([
+            'message' => 'Produit créé avec succès.'
+        ]);
+    }
+
+    // Put
+    public function putProduct(PutProductRequest $request, Product $product) {
+        $validatedData = $request->validated();
+
+        $product->update($validatedData);
+
+        return (new ProductResource($product))->additional([
+            'message' => 'Produit mis à jour avec succès.'
+        ]);
+    }
+
+    // Patch
+    public function patchProduct(PatchProducerRequest $request, Product $product) {
+        $validatedData = $request->validated();
+
+        $product->update($validatedData);
+
+        return (new ProductResource($product))->additional([
+            'message' => 'Produit mis à jour avec succès.'
+        ]);
+    }
+
+    // Delete
+    public function deleteProduct(DeleteProductRequest $request, Product $product) {
+        $product->delete();
+
         return response()->json([
-            'message' => 'Produit ajouté au catalogue avec succès.',
-            'product' => $product
-        ], 201);
+            'message' => 'Produit supprimé avec succès.'
+        ], 200);
     }
 }
