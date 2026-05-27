@@ -41,4 +41,8 @@ class User extends Authenticatable implements JWTSubject {
     public function isAdmin(): bool {
         return $this->role === 'admin';
     }
+
+    public function producer() {
+        return $this->hasOne(Producer::class);
+    }
 }
