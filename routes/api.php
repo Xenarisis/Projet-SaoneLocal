@@ -22,9 +22,9 @@ Route::prefix('products')->group(function () {
 });
 
 // =======================================================
-// PRIVATE ROUTES (Token Sanctum required)
+// PRIVATE ROUTES (Token JWT required)
 // =======================================================
-Route::middleware('auth:sanctum')->group(function () {
+Route::group(['middleware' => 'auth:api'], function () {
 
     Route::prefix('users')->group(function () {
         // --- (GET) ---
@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // --- (POST) ---
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/logoutAll', [AuthController::class, 'logoutEverywhere']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
 
         // --- (PUT) ---
         Route::put('/{user}', [UserController::class, 'putUser']);

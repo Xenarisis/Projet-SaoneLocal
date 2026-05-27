@@ -11,7 +11,7 @@ class DeleteUserRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return $this->user()->can('delete', $this->route('user'));
+        return auth('api')->user()->can('delete', $this->route('user'));
     }
 
     /**
