@@ -18,7 +18,7 @@ Route::prefix('users')->group(function () {
 Route::prefix('products')->group(function () {
     // --- (GET) ---
     Route::get('/', [ProductController::class, 'get']);
-    Route::get('/{id}', [ProductController::class, 'getProductById']);
+    Route::get('/{product}', [ProductController::class, 'getProductById']);
 });
 
 // =======================================================
@@ -51,6 +51,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::prefix('products')->group(function () {
         // --- (POST) ---
         Route::post('/new', [ProductController::class, 'createProduct']);
+
+        // --- (PUT) ---
+        Route::put('/{product}', [ProductController::class, 'putProduct']);
+
+        // --- (PATCH) ---
+        Route::patch('/{product}', [ProductController::class, 'patchProduct']);;
+
+        // --- (Delete) ---
+        Route::delete('/{product}', [ProductController::class, 'deleteProduct']);
     });
 
 });
