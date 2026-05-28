@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\FollowController;
 
 // =======================================================
 // PUBLIC ROUTES (No token required)
@@ -70,6 +71,13 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/number/{orderNumber}', [OrderController::class, 'getOrderByOrderNumber']);
 
         // --- (POST) ---
+    });
+
+    Route::prefix('follows')->group(function () {
+        // --- (GET) ---
+
+        // --- (POST) ---
+        Route::post('/{producer}', [FollowController::class, 'createFollow']);
     });
 
 });
