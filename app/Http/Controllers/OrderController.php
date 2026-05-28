@@ -9,6 +9,7 @@ use App\Http\Resources\OrderResource;
 use App\Http\Requests\PutOrderRequest;
 use App\Http\Requests\PatchOrderRequest;
 use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\DeleteOrderRequest;
 
 class OrderController extends Controller {
     // Read

@@ -10,7 +10,7 @@ class DeleteOrderRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return auth('api')->user()->can('delete', $this->route('order'));;
+        return auth('api')->user()->can('delete', $this->route('order'));
     }
 
     /**
