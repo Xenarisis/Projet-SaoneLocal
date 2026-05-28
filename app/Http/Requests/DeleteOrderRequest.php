@@ -5,14 +5,12 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteProducerRequest extends FormRequest
-{
+class DeleteOrderRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return auth('api')->user()->can('delete', $this->route('producer'));
+    public function authorize(): bool {
+        return auth('api')->user()->can('delete', $this->route('order'));;
     }
 
     /**

@@ -20,6 +20,8 @@ class OrderController extends Controller {
     }
 
     public function getOrderById(Order $order) {
+        Gate::authorize('view', $order);
+
         return new OrderResource($order);
     }
 
@@ -38,21 +40,31 @@ class OrderController extends Controller {
         $order->user_id = $request->user()->id;
         $order->save();
 
-        return response()->json(new OrderResource($order), 201);
+        return (new OrderResource($order))->additional(['message' => 'Commande crée avec succès'])->response()->setStatusCode(201);
     }
 
     // Put
-    public function putOrder(PutOrderRequest $request) {
+    public function putOrder(PutOrderRequest $request, Order $order) {
+        $validatedData = $request->validated();
 
+        $order->update($validatedData);
+
+        return (new OrderResource($order))->additional(['message' => 'Commande mis à jour avec succès'])->response();
     }
 
     // Patch
-    public function patchOrder(PatchOrderRequest $request) {
+    public function patchOrder(PatchOrderRequest $request, Order $order) {
+        $validatedData = $request->validated();
 
+        $order->update($validatedData);
+
+        return (new OrderResource($order))->additional(['message' => 'Commande mis à jour avec succès'])->response();
     }
 
     // Delete
-    public function deleteOrder() {
+    public function deleteOrder(DeleteOrderRequest $request, Order $order) {
+        $order->delete();
 
+        return response()->json(['message' => 'Commande supprimée avec succès']);
     }
 }
