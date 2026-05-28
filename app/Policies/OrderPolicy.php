@@ -51,6 +51,7 @@ class OrderPolicy {
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Order $order): bool {
+        // Producer need to be able to delete product related in user order (cart items ?)
         return $this->ownOrder($user, $order);
     }
 

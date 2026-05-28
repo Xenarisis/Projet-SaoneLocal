@@ -21,7 +21,8 @@ class UserController extends Controller {
         Gate::authorize('viewAny', User::class);
 
         $users = User::paginate(50);
-        return UserResource::collection($users);
+
+        return UserResource::collection($users)->response();
     }
 
     public function getUserById(GetUserRequest $request, User $user) {
@@ -29,7 +30,7 @@ class UserController extends Controller {
         // Gate::authorize('view', $user);
         $validatedData = $request->validated();
 
-        return new UserResource($user);
+        return new UserResource($user)->response();
     }
 
     public function getUserByEmail($email) {
@@ -37,7 +38,7 @@ class UserController extends Controller {
 
         Gate::authorize('view', $userModel);
 
-        return new UserResource($userModel);
+        return new UserResource($userModel)->response();
     }
 
     public function getUserByGoogleToken($token) {
@@ -45,7 +46,7 @@ class UserController extends Controller {
 
         Gate::authorize('view', $userModel);
 
-        return new UserResource($userModel);
+        return new UserResource($userModel)->response();
     }
 
     public function getUserByUsername($username) {
@@ -53,7 +54,7 @@ class UserController extends Controller {
 
         Gate::authorize('view', $userModel);
 
-        return new UserResource($userModel);
+        return new UserResource($userModel)->response();
     }
 
     // Put
@@ -68,9 +69,7 @@ class UserController extends Controller {
 
         $user->update($validatedData);
 
-        return (new UserResource($user))->additional([
-            'message' => 'Utilisateur mis à jour avec succès'
-        ]);
+        return (new UserResource($user))->additional(['message' => 'Utilisateur mis à jour avec succès'])->response();
     }
 
     // Patch
@@ -83,9 +82,7 @@ class UserController extends Controller {
 
         $user->update($validatedData);
 
-        return (new UserResource($user))->additional([
-            'message' => 'Utilisateur mis à jour avec succès.'
-        ]);
+        return (new UserResource($user))->additional(['message' => 'Utilisateur mis à jour avec succès.'])->response();
     }
 
     // Delete
@@ -93,17 +90,13 @@ class UserController extends Controller {
         if(auth('api')->id() === $user->id) {
             if($request->filled('GoogleToken')) {
                 if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
-                    return response()->json([
-                        'message' => 'Action non autorisée. Token Google invalide.'
-                    ], 403);
+                    return response()->json(['message' => 'Action non autorisée. Token Google invalide.'], 403);
                 }
             }
         }
 
         $user->delete();
 
-        return response()->json([
-            'message' => 'Utilisateur supprimé avec succès'
-        ], 200);
+        return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
     }
 }
