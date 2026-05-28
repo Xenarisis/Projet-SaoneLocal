@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 // =======================================================
@@ -60,6 +61,15 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // --- (Delete) ---
         Route::delete('/{product}', [ProductController::class, 'deleteProduct']);
+    });
+
+    Route::prefix('orders')->group(function () {
+        // --- (GET) ---
+        Route::get('/', [OrderController::class, 'getAll']);
+        Route::get('/{order}', [OrderController::class, 'getOrderById']);
+        Route::get('/number/{orderNumber}', [OrderController::class, 'getOrderByOrderNumber']);
+
+        // --- (POST) ---
     });
 
 });
