@@ -4,62 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\OrderResource;
+use App\Http\Requests\PutOrderRequest;
+use App\Http\Requests\PatchOrderRequest;
+use App\Http\Requests\CreateOrderRequest;
 
-class OrderController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class OrderController extends Controller {
+    // Read
+    public function getAll() {
+        Gate::authorize('viewAny', Order::class);
+
+        $orders = Order::paginate(50);
+        return OrderResource::collection($orders);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function getOrderById(Order $order) {
+        return new OrderResource($order);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function getOrderByOrderNumber($orderNumber) {
+        $order = Order::where('order_number', $orderNumber)->firstOrFail();
+
+        Gate::authorize('view', $order);
+        return new OrderResource($order);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
+    // Create
+    public function createOrder(CreateOrderRequest $request) {
+        $validatedData = $request->validated();
+        
+        $order = new Order($validatedData);
+        $order->user_id = $request->user()->id;
+        $order->save();
+
+        return response()->json(new OrderResource($order), 201);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
+    // Put
+    public function putOrder(PutOrderRequest $request) {
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
+    // Patch
+    public function patchOrder(PatchOrderRequest $request) {
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+    // Delete
+    public function deleteOrder() {
+
     }
 }
