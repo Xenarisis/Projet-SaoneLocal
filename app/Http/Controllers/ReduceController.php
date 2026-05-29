@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Reduce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\DeleteReduceRequest;
+use App\Http\Requests\CreateReduceRequest;
+use App\Http\Controllers\ReduceResource;
 
 class ReduceController extends Controller
 {
@@ -12,41 +16,40 @@ class ReduceController extends Controller
     }
 
     // CREATE
-    public function createReduce(Request $request) {
-        $Validatedata = $request->validate([
-            // 'name' => 'required|string|unique:producer|min:1|max:30',
-            // 'presentation' => 'sometime|string',
-            // 'street_line_1' => 'required|string|min:1|max:60',
-            // 'street_line_2' => 'nullable|string|min:1|max:60',
-            // 'city' => 'required|string|min:1|max:50',
-            // 'postal_code' => 'required|string|min:1|max:20'
-        ]);
+    public function createReduce(CreateReduceRequest $request) {
+        $validatedData = $request->validated();
+        
+        $reduce = Reduce::create($validatedData);
 
-        $Reduce = Reduce::create($Validatedata);
-
-        return response()->json([
-            'message' => 'Code Bon et envoyer',
-            'reduce' => $Reduce
+        return (new ReduceResource($reduce))->additional([
+            'message' => 'reduce créé avec succès'
         ], 201);
     }
 
     // READ
     public function getAll() {
+        Gate::authorize('viewAny', Reduce::class);
 
+        $Reduces = Reduce::paginate(50);
+        return ReduceResource::collection($Reduces);
     }
 
-    // UPDATE: put branch
-    public function putReduce() {
+    public function getReduceByID($Reduce) {
+        Gate::authorize('view', $Reduce);
 
-    }
-    
-    // UPDATE: patch branch
-    public function patchReduce() {
-
+        return new ReduceResource($Reduce);
     }
 
     // DELETE
-    public function deleteReduce() {
+    public function deleteReduce(DeleteReduceRequest $request, Reduce $Reduce) {
+        $validatedAciton = $request->validated();
 
+        Gate::authorize('delete', $Reduce);
+
+        $Reduce->delete($validatedAciton);
+
+        return response()->json([
+            'message' => 'Reduce supprimer avec succès'
+        ], 201);
     }
 }

@@ -7,6 +7,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\ProducerController;
+use App\Http\Controllers\ReduceController;
 
 // =======================================================
 // PUBLIC ROUTES (No token required)
@@ -84,6 +86,39 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // --- (DELETE) ---
         Route::delete('/producer/{producer}', [FollowController::class, 'deleteFollow']);
+    });
+
+    Route::prefix('producer')->group(function () {
+    // --- (GET) ---
+    Route::get('/', [ProducerController::class, 'getAll']);
+    Route::get('/{producer}', [ProducerController::class, 'getProducerByID']);
+    Route::get('/name/{name}', [ProducerController::class, 'getProducerByName']);
+    Route::get('/city/{city}', [ProducerController::class, 'getProducerByCity']);
+    Route::get('/postal_code/{postal_code}', [ProducerController::class, 'getProducerByPostal_code']);
+
+    // --- (POST) ---
+    Route::post('/add', [ProducerController::class, 'createProducer']);
+
+    // --- (PUT) ---
+    Route::put('/{producer}', [ProducerController::class, 'putProducer']);
+    
+    // --- (PATCH) ---
+    Route::patch('/{producer}', [ProducerController::class, 'patchProducer']);    
+
+    // --- (DELETE) ---
+    Route::delete('/delete/{producer}', [ProducerController::class, 'deleteProducer']);
+    });
+
+    Route::prefix('reduce')->group(function () {
+    // --- (GET) ---
+    Route::get('/', [ReduceController::class, 'getAll']);
+    Route::get('/{reduce}', [ReduceController::class, 'getReduceByID']);
+
+    // --- (POST) ---
+    Route::post('/reduce', [ReduceController::class, 'createReduce']);
+
+    // --- (DELETE) ---
+    Route::delete('/remove/{reduce}', [ReduceController::class, 'deleteReduce']);
     });
 
 });
