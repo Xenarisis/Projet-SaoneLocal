@@ -13,14 +13,15 @@ class OrderResource extends JsonResource {
      */
     public function toArray(Request $request): array {
         return [
-            'order_number' => $this->order_number,
-            'status' => $this->status,
-            'total_excl_tax' => $this->total_excl_tax,
-            'percentage_tax' => $this->percentage_tax,
-            'payment_status' => $this->payment_status,
-            'user_id' => $this->user_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'id'                => $this->id,
+            'order_number'      => $this->order_number,
+            'status'            => $this->status,
+            'total_excl_tax'    => $this->total_excl_tax,
+            'percentage_tax'    => $this->percentage_tax,
+            'payment_status'    => $this->payment_status,
+            'user_id'           => $this->user_id,
+            'created_at'        => $this->created_at,
+            'updated_at'        => $this->updated_at
         ];
     }
 }
