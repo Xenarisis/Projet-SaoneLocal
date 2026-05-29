@@ -19,6 +19,14 @@ class FollowPolicy {
         return $user->id === $follow->user_id;
     }
 
+    public function viewUserFollows(User $currentUser, User $targetUser): Response {
+        return $currentUser->id === $targetUser->id ? Response::allow() : Response::deny('Accès refusé. Vous ne pouvez voir que vos propres abonnements.');
+    }
+
+    public function viewProducerFollowers(User $currentUser, Producer $producer): Response {
+        return $currentUser->id === $producer->user_id ? Response::allow() : Response::deny('Accès refusé. Seul le producteur peut voir ses abonnés.');
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -29,8 +37,8 @@ class FollowPolicy {
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Follow $follow): bool {
-        return $this->myFollow($user, $follow);
+    public function view(User $user, Follow $follow): Response {
+        return $this->myFollow($user, $follow) ? Response::allow() : Response::deny('Accès refusé. Cet abonnement ne vous appartient pas.');
     }
 
     /**
@@ -50,8 +58,8 @@ class FollowPolicy {
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Follow $follow): bool {
-        return $this->myFollow($user, $follow);
+    public function delete(User $user, Follow $follow): Response {
+        return $this->myFollow($user, $follow) ? Response::allow() : Response::deny('Accès refusé. Vous ne pouvez supprimer que vos propres abonnements.');
     }
 
     /**
