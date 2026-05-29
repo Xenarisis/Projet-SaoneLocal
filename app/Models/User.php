@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Follow;
+use App\Models\CartItem;
+use App\Models\Producer;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -50,5 +52,9 @@ class User extends Authenticatable implements JWTSubject {
 
     public function follows(): HasMany {
         return $this->hasMany(Follow::class);
+    }
+
+    public function cartItems(): HasMany {
+        return $this->hasMany(CartItem::class);
     }
 }
