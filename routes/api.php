@@ -75,9 +75,15 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::prefix('follows')->group(function () {
         // --- (GET) ---
+        Route::get('/{follow}', [FollowController::class, 'getFollowById']);
+        Route::get('/user/{user}', [FollowController::class, 'getUserFollow']);
+        Route::get('/producer/{producer}', [FollowController::class, 'getProducerFollowers']);
 
         // --- (POST) ---
-        Route::post('/{producer}', [FollowController::class, 'createFollow']);
+        Route::post('/producer/{producer}', [FollowController::class, 'createFollow']);
+
+        // --- (DELETE) ---
+        Route::delete('/producer/{producer}', [FollowController::class, 'deleteFollow']);
     });
 
 });
