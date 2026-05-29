@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Database\Factories\ProducerFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ProducerFactory;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Producer extends Model {
     use HasFactory;
@@ -20,4 +22,12 @@ class Producer extends Model {
         'postal_code',
         'user_id'
     ];
+
+    public function user(): BelongsTo {
+        return $this->BelongsTo(User::class);
+    }
+
+    public function followers(): HasMany {
+        return $this->hasMany(Follow::class);
+    }
 }

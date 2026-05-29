@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Follow;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,5 +46,9 @@ class User extends Authenticatable implements JWTSubject {
 
     public function producer() {
         return $this->hasOne(Producer::class);
+    }
+
+    public function follows(): HasMany {
+        return $this->hasMany(Follow::class);
     }
 }
