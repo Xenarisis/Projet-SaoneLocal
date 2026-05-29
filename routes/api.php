@@ -89,36 +89,55 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::prefix('producer')->group(function () {
-    // --- (GET) ---
-    Route::get('/', [ProducerController::class, 'getAll']);
-    Route::get('/{producer}', [ProducerController::class, 'getProducerByID']);
-    Route::get('/name/{name}', [ProducerController::class, 'getProducerByName']);
-    Route::get('/city/{city}', [ProducerController::class, 'getProducerByCity']);
-    Route::get('/postal_code/{postal_code}', [ProducerController::class, 'getProducerByPostal_code']);
+        // --- (GET) ---
+        Route::get('/', [ProducerController::class, 'getAll']);
+        Route::get('/{producer}', [ProducerController::class, 'getProducerByID']);
+        Route::get('/name/{name}', [ProducerController::class, 'getProducerByName']);
+        Route::get('/city/{city}', [ProducerController::class, 'getProducerByCity']);
+        Route::get('/postal_code/{postal_code}', [ProducerController::class, 'getProducerByPostal_code']);
 
-    // --- (POST) ---
-    Route::post('/add', [ProducerController::class, 'createProducer']);
+        // --- (POST) ---
+        Route::post('/add', [ProducerController::class, 'createProducer']);
 
-    // --- (PUT) ---
-    Route::put('/{producer}', [ProducerController::class, 'putProducer']);
-    
-    // --- (PATCH) ---
-    Route::patch('/{producer}', [ProducerController::class, 'patchProducer']);    
+        // --- (PUT) ---
+        Route::put('/{producer}', [ProducerController::class, 'putProducer']);
+        
+        // --- (PATCH) ---
+        Route::patch('/{producer}', [ProducerController::class, 'patchProducer']);    
 
-    // --- (DELETE) ---
-    Route::delete('/delete/{producer}', [ProducerController::class, 'deleteProducer']);
+        // --- (DELETE) ---
+        Route::delete('/delete/{producer}', [ProducerController::class, 'deleteProducer']);
+        });
+
+        Route::prefix('reduce')->group(function () {
+        // --- (GET) ---
+        Route::get('/', [ReduceController::class, 'getAll']);
+        Route::get('/{reduce}', [ReduceController::class, 'getReduceByID']);
+
+        // --- (POST) ---
+        Route::post('/reduce', [ReduceController::class, 'createReduce']);
+
+        // --- (DELETE) ---
+        Route::delete('/remove/{reduce}', [ReduceController::class, 'deleteReduce']);
     });
 
-    Route::prefix('reduce')->group(function () {
-    // --- (GET) ---
-    Route::get('/', [ReduceController::class, 'getAll']);
-    Route::get('/{reduce}', [ReduceController::class, 'getReduceByID']);
+    Route::prefix('cart')->group(function () {
+        // --- (GET) ---
+        Route::get('/', [CartItemController::class, 'getCartItemByID']);
+        Route::get('/user/{user}', [CartItemController::class, 'getCartItemByUserId']);
+        Route::get('/product/{product}', [CartItemController::class, 'getCartItemByProductId']);
 
-    // --- (POST) ---
-    Route::post('/reduce', [ReduceController::class, 'createReduce']);
+        // --- (POST) ---
+        Route::post('/{product}', [CartItemController::class, 'addCartItem']);
 
-    // --- (DELETE) ---
-    Route::delete('/remove/{reduce}', [ReduceController::class, 'deleteReduce']);
+        // --- (PUT) ---
+        Route::put('/{cartItem}', [CartItemController::class, 'putCartItem']);
+
+        // --- (PATCH) ---
+        Route::patch('/{cartItem}', [CartItemController::class, 'patchCartItem']);
+
+        // --- (DELETE) ---
+        Route::delete('/{cartItem}', [CartItemController::class, 'deleteCartItem']);
     });
 
 });
