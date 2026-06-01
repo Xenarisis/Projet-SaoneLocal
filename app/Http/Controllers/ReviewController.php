@@ -3,63 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ReviewResource;
+use App\Http\Requests\AddReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
+use App\Http\Requests\DeleteReviewRequest;
 
-class ReviewController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class ReviewController extends Controller {
+    // GET
+    public function getProductReviews(Product $product) {
+        $reviews = $product->reviews()->with('user')->latest()->get(); 
+        return ReviewResource::collection($reviews);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function getReviewById(Review $review) {
+        return new ReviewResource($review->load(['user', 'product']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    // UPDATE
+    public function addReview(AddReviewRequest $request, Product $product) {
+        $user = $request->user();
+
+        $alreadyReviewed = Review::where('user_id', $user->id)->where('product_id', $product->id)->exists();
+
+        if ($alreadyReviewed) {
+            return response()->json([
+                'message' => 'Vous avez déjà laissé un avis pour ce produit.'
+            ], 409);
+        }
+
+        $review = $user->reviews()->create([
+            'product_id' => $product->id,
+            'rating'     => $request->rating,
+            'comment'    => $request->comment,
+        ]);
+
+        return (new ReviewResource($review))->additional(['message' => 'Avis ajouté avec succès.'])->response()->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Review $review)
-    {
-        //
+    public function patchReview(UpdateReviewRequest $request, Review $review) {
+        $review->update($request->validated());
+
+        return (new ReviewResource($review))->additional(['message' => 'Avis modifié avec succès.'])->response()->setStatusCode(200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Review $review)
-    {
-        //
-    }
+    // Delete
+    public function deleteReview(DeleteReviewRequest $request, Review $review) {
+        $review->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Review $review)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Review $review)
-    {
-        //
+        return response()->json([
+            'message' => 'Avis supprimé avec succès.'
+        ], 200);
     }
 }
