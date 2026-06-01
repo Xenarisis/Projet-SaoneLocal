@@ -25,6 +25,12 @@ Route::prefix('products')->group(function () {
     Route::get('/{product}', [ProductController::class, 'getProductById']);
 });
 
+Route::prefix('reviews')->group(function () {
+    // --- (GET) ---
+    Route::get('/{review}', [ReviewController::class, 'getReviewById']);
+    Route::get('/product/{product}', [ReviewController::class, 'getProductReviews']);
+});
+
 // =======================================================
 // PRIVATE ROUTES (Token JWT required)
 // =======================================================
@@ -138,6 +144,17 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // --- (DELETE) ---
         Route::delete('/{cartItem}', [CartItemController::class, 'deleteCartItem']);
+    });
+
+    Route::prefix('reviews')->group(function () {
+        // --- (POST) ---
+        Route::post('/product/{product}', [ReviewController::class, 'addReview']);
+
+        // --- (PATCH) ---
+        Route::patch('/{review}', [ReviewController::class, 'patchReview']);
+
+        // --- (DELETE) ---
+        Route::delete('/{review}', [ReviewController::class, 'deleteReview']);
     });
 
 });

@@ -6,6 +6,7 @@ use App\Models\Producer;
 use App\Models\CartItem;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,5 +30,9 @@ class Product extends Model {
 
     public function cartItems(): HasMany {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class);
     }
 }
