@@ -157,4 +157,15 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::delete('/{review}', [ReviewController::class, 'deleteReview']);
     });
 
+    Route::prefix('bookmarks')->group(function () {
+        // --- (GET) ---
+        Route::get('/user/{user}', [BookmarkController::class, 'getUserBookmarks']);
+
+        // --- (POST) ---
+        Route::post('/product/{product}', [BookmarkController::class, 'addBookmark']);
+
+        // --- (DELETE) ---
+        Route::delete('/{bookmark}', [BookmarkController::class, 'deleteBookmark']);
+    });
+
 });
