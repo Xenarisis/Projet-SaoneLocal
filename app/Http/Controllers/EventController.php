@@ -4,62 +4,106 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use App\Http\Controllers\EventResource;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\CreateEventRequest;
+use App\Http\Resources\EventResource as ResourcesEventResource;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->getAll();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    // CREATE
+    public function createEvent(CreateEventRequest $request) {
+        $validatedData = $request->validated();
+        
+        $Event = Event::create($validatedData);
+
+        return (new EventResource($Event))->additional([
+            'message' => 'producteur créé avec succès'
+        ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    // READ
+    public function getAll() {
+        Gate::authorize('viewAny', Event::class);
+
+        $Events = Event::paginate(50);
+        return EventResource::collection($Events);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
-    {
-        //
+    public function getEventByID(Event $event) {
+        Gate::authorize('view', $event);
+
+        return new EventResource($event);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
+    public function getEventByName($name) {
+        $EventModel = Event::where('event_name', $name)->firstOrFail();
+        Gate::authorize('view', $EventModel);
+
+        return new EventResource($EventModel);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Event $event)
-    {
-        //
+    public function getEventByDate($date) {
+        $EventModel = Event::where('event_date', $date);
+        Gate::authorize('view', $EventModel);
+
+        return new EventResource($EventModel);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
-    {
-        //
+    public function getProducerByCity($city) {
+        $CityModel = Event::where('city', $city);
+        Gate::authorize('view', $CityModel);
+
+        return new EventResource($CityModel);
+    }
+
+    public function getProducerByPostal_code($Postal_code) {
+        $Postal_codeModel = Event::where('postal_code', $Postal_code);
+        Gate::authorize('view', $Postal_codeModel);
+
+        return new EventResource($Postal_codeModel);
+    }
+
+    // UPDATE: put branch
+    public function putEvent(PutEventRequest $request, Event $Event) {
+        $validatedData = $request->validated();
+
+        Gate::authorize('update', $Event);
+
+        $Event->update($validatedData);
+
+        return(new EventResource($Event))->additional([
+            'message' => 'event mis à jour avec succès'
+        ]);
+    }
+    
+    // UPDATE: patch branch
+    public function patchEvent(PatchEventRequest $request, Event $Event) {
+        $validatedData = $request->validated();
+
+        Gate::authorize('update', $Event);
+
+        $Event->update($validatedData);
+
+        return(new EventResource($Event))->additional([
+            'message' => 'event mis à jour avec succès'
+        ]);
+    }
+
+    // DELETE
+    public function deleteEvent(DeleteEventRequest $request, Event $Event) {
+        $validatedAciton = $request->validated();
+
+        Gate::authorize('delete', $Event);
+
+        $Event->delete($validatedAciton);
+
+        return response()->json([
+            'message' => 'Producteur supprimer avec succès'
+        ], 200);
     }
 }
