@@ -51,14 +51,14 @@ class ProducerController extends Controller {
     }
 
     public function getProducerByCity($city) {
-        $CityModel = Producer::where('city', $city)->firstOrFail();
+        $CityModel = Producer::where('city', $city);
         Gate::authorize('view', $CityModel);
 
         return new ProducerResource($CityModel);
     }
 
     public function getProducerByPostal_code($Postal_code) {
-        $Postal_codeModel = Producer::where('postal_code', $Postal_code)->firstOrFail();
+        $Postal_codeModel = Producer::where('postal_code', $Postal_code);
         Gate::authorize('view', $Postal_codeModel);
 
         return new ProducerResource($Postal_codeModel);
