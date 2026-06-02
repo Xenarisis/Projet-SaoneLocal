@@ -7,14 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ProductPolicy {
-    public function before(User $user, string $ability): ?bool {
-        if ($user->isAdmin()) {
-            return true;
-        }
-        
-        return null;
-    }
-
     private function isProducer(User $user) {
         return $user->role === 'producer' && $user->producer()->exists();
     }

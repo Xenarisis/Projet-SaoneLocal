@@ -7,13 +7,6 @@ use App\Models\Review;
 use Illuminate\Auth\Access\Response;
 
 class ReviewPolicy {
-    public function before(User $user, string $ability): ?bool {
-        if ($user->isAdmin()) {
-            return true;
-        }
-        return null;
-    }
-
     private function isMyReview(User $user, Review $review): bool {
         return $user->id === $review->user_id;
     }

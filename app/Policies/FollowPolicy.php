@@ -7,14 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class FollowPolicy {
-    public function before(User $user, string $ability): ?bool {
-        if ($user->isAdmin()) {
-            return true;
-        }
-        
-        return null;
-    }
-
     private function myFollow(User $user, Follow $follow) {
         return $user->id === $follow->user_id;
     }
