@@ -2,64 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Product;
 use App\Models\Bookmark;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\BookmarkResource;
+use App\Http\Requests\DeleteBookmarkRequest;
+use App\Http\Requests\GetUsereBookmarksRequest;
 
-class BookmarkController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class BookmarkController extends Controller {
+
+    // Read
+    public function getUserBookmarks(GetUsereBookmarksRequest $request, User $user) {
+        $bookmarks = $user->bookmarks()->with('product')->latest()->get();
+
+        return BookmarkResource::collection($bookmarks);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    // Create
+    public function addBookmark(Request $request, Product $product) {
+        $user = $request->user();
+
+        $alreadyBookmarked = Bookmark::where('user_id', $user->id)->where('product_id', $product->id)->exists();
+
+        if ($alreadyBookmarked) {
+            return response()->json([
+                'message' => 'Ce produit est déjà dans vos favoris.'
+            ], 409);
+        }
+
+        $bookmark = $user->bookmarks()->create(['product_id' => $product->id]);
+
+        return (new BookmarkResource($bookmark))->additional(['message' => 'Produit ajouté aux favoris.'])->response()->setStatusCode(201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    // Delete
+    public function deleteBookmark(DeleteBookmarkRequest $request, Bookmark $bookmark) {
+        $bookmark->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Bookmark $bookmark)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Bookmark $bookmark)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Bookmark $bookmark)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Bookmark $bookmark)
-    {
-        //
+        return response()->json([
+            'message' => 'Produit retiré des favoris.'
+        ], 200);
     }
 }

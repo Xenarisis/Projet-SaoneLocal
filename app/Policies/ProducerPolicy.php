@@ -7,14 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class ProducerPolicy {
-    public function before(User $user, string $ability): ?bool {
-        if($user->isAdmin()) {
-            return true;
-        }
-    
-        return null;
-    }
-    
     /**
      * Determine whether the user can view any models.
      */

@@ -7,14 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 class OrderPolicy {
-    public function before(User $user, string $ability): ?bool {
-        if ($user->isAdmin()) {
-            return true;
-        }
-        
-        return null;
-    }
-
     private function ownOrder(User $user, Order $order) {
         return $user->id === $order->user_id;
     }
