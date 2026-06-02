@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Producer;
 use App\Models\CartItem;
+use App\Models\Bookmark;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -34,5 +35,9 @@ class Product extends Model {
 
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
+    }
+
+    public function bookmarks(): HasMany {
+        return $this->hasMany(Bookmark::class);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Follow;
 use App\Models\CartItem;
 use App\Models\Producer;
+use App\Models\Bookmark;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -60,5 +61,9 @@ class User extends Authenticatable implements JWTSubject {
 
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
+    }
+
+    public function bookmarks(): HasMany {
+        return $this->hasMany(Bookmark::class);
     }
 }
