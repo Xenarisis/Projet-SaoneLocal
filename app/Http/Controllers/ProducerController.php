@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Producer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Controllers\ProducerResource;
+use App\Http\Resources\ProducerResource;
 use App\Http\Requests\PutProducerRequest;
 use App\Http\Controllers\PatchProducerRequest;
 use App\Http\Requests\DeleteProducerRequest;

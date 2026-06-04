@@ -4,62 +4,81 @@ namespace App\Http\Controllers;
 
 use App\Models\Compose;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\ComposeResource;
+use App\Http\Controllers\CreateComposeRequest;
+use App\Http\Request\PutComposeRequest;
+use App\Http\Request\PatchComposeRequest;
+use App\Http\Request\DeleteComposeRequest;
 
 class ComposeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index() {
+        return $this->getAll();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    //CREATE
+    public function createCompose(CreateComposeRequest $request) {
+        $validatedData = $request->validated();
+        
+        $compose = Compose::create($validatedData);
+
+        return (new ComposeResource($compose))->additional([
+            'message' => 'Compose créé avec succès'
+        ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    //READ
+    public function getAll() {
+        Gate::authorize('viewAny', Compose::class);
+
+        $Compose = Compose::paginate(50);
+        return ComposeResource::collection($Compose);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Compose $compose)
-    {
-        //
+    public function getComposeByID(Compose $compose) {
+        Gate::authorize('view', $compose);
+
+        return new ComposeResource($compose);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Compose $compose)
-    {
-        //
+    //UPDATE: put branch 
+    public function putCompose(PutComposeRequest $request, Compose $compose) {
+        $validatedAciton = $request->validated();
+
+        Gate::authorize('update', $compose);
+
+        $compose->update($validatedAciton);
+
+        return response()->json([
+            'message' => 'Compose update avec succès'
+        ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Compose $compose)
-    {
-        //
+    //UPDATE: patch branch
+    public function patchCompose(PatchComposeRequest $request, Compose $compose) {
+        $validatedAciton = $request->validated();
+
+        Gate::authorize('update', $compose);
+
+        $compose->update($validatedAciton);
+
+        return response()->json([
+            'message' => 'Compose update avec succès'
+        ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Compose $compose)
-    {
-        //
+    //DELETE
+    public function deleteCompose(DeleteComposeRequest $request, Compose $compose) {
+        $validatedAciton = $request->validated();
+
+        Gate::authorize('delete', $compose);
+
+        $compose->delete($validatedAciton);
+
+        return response()->json([
+            'message' => 'Compose supprimer avec succès'
+        ], 200);
+
     }
 }

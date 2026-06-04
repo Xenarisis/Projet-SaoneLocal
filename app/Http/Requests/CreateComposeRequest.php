@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateComposeRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        $compose = $this->route('event');
+
+        return auth('api')->user()->can('create', $compose);
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'quantity' => 'required|integer',
+            'unit_price' => 'required|decimal:0,3'
+        ];
+    }
+}
