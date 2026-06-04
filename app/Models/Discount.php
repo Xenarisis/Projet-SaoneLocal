@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\BelongsToMany;
 
 class Discount extends Model {
     use HasFactory;
@@ -15,7 +16,7 @@ class Discount extends Model {
         'max_use'
     ];
 
-    public function orders() {
+    public function orders(): BelongsToMany {
         return $this->belongsToMany(Order::class, 'reduces');
     }
 }
