@@ -4,62 +4,85 @@ namespace App\Http\Controllers;
 
 use App\Models\Discount;
 use Illuminate\Http\Request;
+use App\Http\Resources\DiscountResource;
+use App\Http\Requests\CreateDiscountRequest;
+use App\Http\Requests\UpdateDiscountRequest;
+use App\Http\Requests\DeleteDiscountRequest;
 
-class DiscountController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+class DiscountController extends Controller {
+    // Read
+    public function getAll(Request $request) {
+        $query = Discount::query();
+
+        if ($request->has('discount_percent')) {
+            $query->where('discount_percent', $request->discount_percent);
+        }
+
+        if ($request->has('code_name')) {
+            $query->where('code_name', 'LIKE', '%' . $request->code_name . '%');
+        }
+
+        if ($request->has('availibility')) {
+            $query->where('availibility', $request->availibility);
+        }
+        
+        if ($request->has('max_use')) {
+            $query->where('max_use', $request->max_use);
+        }
+
+        $discounts = $query->paginate(25);
+
+        return DiscountResource::collection($discounts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function getDiscountById(Discount $discount) {
+        return new DiscountResource($discount);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function getDiscountByCodeName(string $code_name) {
+        $discount = Discount::where('code_name', $code_name)->firstOrFail();
+        return new DiscountResource($discount);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Discount $discount)
-    {
-        //
+    // Create
+    public function createDiscount(CreateDiscountRequest $request) {
+        $validatedData = $request->validated();
+
+        $discount = Discount::create($validatedData);
+
+        return (new DiscountResource($discount))->additional([
+            'message' => 'Réduction créée avec succès.'
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Discount $discount)
-    {
-        //
+    // Put
+    public function putDiscount(UpdateDiscountRequest $request, Discount $discount) {
+        $validatedData = $request->validated();
+
+        $discount->update($validatedData);
+
+        return (new DiscountResource($discount))->additional([
+            'message' => 'Réduction mise à jour avec succès.'
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Discount $discount)
-    {
-        //
+    // Patch
+    public function patchDiscount(UpdateDiscountRequest $request, Discount $discount) {
+        $validatedData = $request->validated();
+
+        $discount->update($validatedData);
+
+        return (new DiscountResource($discount))->additional([
+            'message' => 'Réduction mise à jour avec succès.'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Discount $discount)
-    {
-        //
+    // Delete
+    public function deleteDiscount(DeleteDiscountRequest $request, Discount $discount) {
+        $discount->delete();
+
+        return response()->json([
+            'message' => 'Réduction supprimée avec succès.'
+        ], 200);
     }
 }
