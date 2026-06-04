@@ -11,9 +11,11 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->integer('discount');
+            // Why not linking directly discounts table to order table instead of using reduce table as intermediate 
+            $table->integer('discount_percent');
             $table->string('code_name', 10);
             $table->datetime('availibility');
+            $table->integer('max_use')->nullable();
             $table->timestamps();
         });
     }

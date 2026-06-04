@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Database\Factories\DiscountFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\BelongsToMany;
 
 class Discount extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'discount',
-        'availibility'
+        'discount_percent',
+        'code_name',
+        'availibility',
+        'max_use'
     ];
 
-    protected $hidden = [
-        'code_name'
-    ];
+    public function orders(): BelongsToMany {
+        return $this->belongsToMany(Order::class, 'reduces');
+    }
 }
