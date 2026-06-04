@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
-use App\Http\Controllers\EventResource;
+use App\Http\Resources\EventResource;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\CreateEventRequest;
-use App\Http\Resources\EventResource as ResourcesEventResource;
+use App\Http\Requests\PutEventRequest;
+use App\Http\Requests\PatchEventRequest;
+use App\Http\Requests\DeleteEventRequest;
 
 class EventController extends Controller
 {
@@ -22,7 +24,7 @@ class EventController extends Controller
         $Event = Event::create($validatedData);
 
         return (new EventResource($Event))->additional([
-            'message' => 'producteur créé avec succès'
+            'message' => 'Event créé avec succès'
         ], 201);
     }
 
@@ -103,7 +105,7 @@ class EventController extends Controller
         $Event->delete($validatedAciton);
 
         return response()->json([
-            'message' => 'Producteur supprimer avec succès'
+            'message' => 'Event supprimer avec succès'
         ], 200);
     }
 }

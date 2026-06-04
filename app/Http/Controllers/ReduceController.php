@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\DeleteReduceRequest;
 use App\Http\Requests\CreateReduceRequest;
-use App\Http\Controllers\ReduceResource;
+use App\Http\Resources\ReduceResource;
 
 class ReduceController extends Controller
 {
