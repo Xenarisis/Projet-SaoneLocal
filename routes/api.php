@@ -9,6 +9,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\ReduceController;
+use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\BookmarkController;
 
 // =======================================================
 // PUBLIC ROUTES (No token required)
@@ -166,6 +170,25 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // --- (DELETE) ---
         Route::delete('/{bookmark}', [BookmarkController::class, 'deleteBookmark']);
+    });
+
+    Route::prefix('discounts')->group(function () {
+        // --- (GET) ---
+        Route::get('/', [DiscountController::class, 'getAll']);
+        Route::get('/{discount}', [DiscountController::class, 'getDiscountById']);
+        Route::get('/code/{code_name}', [DiscountController::class, 'getDiscountByCodeName']);
+
+        // --- (POST) ---
+        Route::post('/new', [DiscountController::class, 'createDiscount']);
+
+        // --- (PUT) ---
+        Route::put('/{discount}', [DiscountController::class, 'putDiscount']);
+
+        // --- (PATCH) ---
+        Route::patch('/{discount}', [DiscountController::class, 'patchDiscount']);
+
+        // --- (DELETE) ---
+        Route::delete('/{discount}', [DiscountController::class, 'deleteDiscount']);
     });
 
 });
