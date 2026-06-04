@@ -15,7 +15,7 @@ class ReviewResource extends JsonResource {
             'user_id'    => $this->user_id,
             'author'     => $this->whenLoaded('user', function () {
                 return $this->user->firstname . ' ' . $this->user->lastname;
-            }),
+            }), // May need use user resource here
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
