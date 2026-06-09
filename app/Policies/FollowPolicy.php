@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Follow;
 use App\Models\User;
+use App\Models\Follow;
+use App\Models\Producer;
 use Illuminate\Auth\Access\Response;
 
 class FollowPolicy {
