@@ -5,15 +5,22 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateEventRequest extends FormRequest
-{
+class CreateEventRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool{
+    public function authorize(): bool {
         $event = $this->route('event');
 
         return auth('api')->user()->can('create', $event);
+    }
+
+    protected function prepareForValidation() {
+        if ($this->has('producer_ids') && empty($this->producer_ids)) {
+            $this->merge([
+                'producer_ids' => [],
+            ]);
+        }
     }
 
     /**
@@ -21,16 +28,17 @@ class CreateEventRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
-            'event_name' => 'required|string|min:4',
-            'description' => 'sometimes|string',
-            'event_date' => 'required|date|after:today',
-            'street_line_1' => 'required|string|min:1|max:60',
-            'street_line_2' => 'nullable|string|min:1|max:60',
-            'city' => 'required|string|min:1|max:50',
-            'postal_code' => 'required|string|min:1|max:20'
+            'event_name'        => 'required|string|min:4',
+            'description'       => 'sometimes|string',
+            'event_date'        => 'required|date|after:today',
+            'street_line_1'     => 'required|string|min:1|max:60',
+            'street_line_2'     => 'nullable|string|min:1|max:60',
+            'city'              => 'required|string|min:1|max:50',
+            'postal_code'       => 'required|string|min:1|max:20',
+            'producer_ids'      => 'nullable|array',
+            'producer_ids.*'    => 'integer|exists:producers,id',
         ];
     }
 }

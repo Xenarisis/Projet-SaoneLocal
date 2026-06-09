@@ -22,7 +22,7 @@ class CreateDiscountRequest extends FormRequest {
     public function rules(): array {
         return [
             'discount_percent' => 'required|numeric|min:0|max:100',
-            'code_name' => 'required|string|max:10|unique:discounts,code_name',
+            'code_name' => 'required|string|max:30|unique:discounts,code_name',
             'availibility' => 'required|date',
             'max_use' => 'nullable|integer|min:1'
         ];

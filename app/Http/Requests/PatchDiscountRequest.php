@@ -2,15 +2,16 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Discount;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class PutProductRequest extends FormRequest {
+class PatchDiscountRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return auth('api')->user()->can('update', $this->route('product'));
+        return $this->user() && $this->user()->can('update', $this->discount);
     }
 
     /**
@@ -20,12 +21,10 @@ class PutProductRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'name'          => 'required|string|max:255',
-            'description'   => 'nullable|string|max:255',
-            'price'         => 'required|numeric|min:0|max:999.99',
-            'quantity'      => 'required|integer|min:0',
-            'category'      => 'required|string|max:255',
-            'subcategory'   => 'nullable|string|max:255'
+            'discount_percent'  => 'sometimes|numeric|min:0|max:100',
+            'code_name'         => 'sometimes|string|max:30|unique:discounts,code_name,' . $this->discount?->id,
+            'availibility'      => 'sometimes|date',
+            'max_use'           => 'nullable|integer|min:1'
         ];
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class PutOrderRequest extends FormRequest {
     /**
@@ -19,8 +20,14 @@ class PutOrderRequest extends FormRequest {
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $orderId = $this->route('order')->id;
+
         return [
-            'order_number'      => 'required|string|unique:orders,order_number',
+            'order_number'      => [
+                'required',
+                'string',
+                Rule::unique('orders', 'order_number')->ignore($orderId)
+            ],
             'status'            => 'required|string|max:255',
             'total_excl_tax'    => 'required|numeric|min:0',
             'percentage_tax'    => 'required|numeric|min:0',

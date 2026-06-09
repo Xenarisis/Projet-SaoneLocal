@@ -25,7 +25,8 @@ class RegisterProductRequest extends FormRequest {
             'price'         => 'required|numeric|min:0|max:999.99',
             'quantity'      => 'required|integer|min:0',
             'category'      => 'required|string|max:255',
-            'subcategory'   => 'nullable|string|max:255'
+            'subcategory'   => 'nullable|string|max:255',
+            'producer_id'   => 'sometimes|required|integer|exists:producers,id',
         ];
     }
 }
