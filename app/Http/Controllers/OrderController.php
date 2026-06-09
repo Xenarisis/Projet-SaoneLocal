@@ -35,6 +35,7 @@ class OrderController extends Controller {
 
     // Create
     public function createOrder(CreateOrderRequest $request) {
+        //! Automaticly fill order_number & status & total & everything based on cart / list of item (every cart items not neccesary pay now)
         $validatedData = $request->validated();
         
         $order = new Order($validatedData);

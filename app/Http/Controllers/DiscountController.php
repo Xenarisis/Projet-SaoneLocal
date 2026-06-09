@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Discount;
 use Illuminate\Http\Request;
 use App\Http\Resources\DiscountResource;
+use App\Http\Requests\PutDiscountRequest;
+use App\Http\Requests\PatchDiscountRequest;
 use App\Http\Requests\CreateDiscountRequest;
-use App\Http\Requests\UpdateDiscountRequest;
 use App\Http\Requests\DeleteDiscountRequest;
 
 class DiscountController extends Controller {
@@ -56,7 +57,7 @@ class DiscountController extends Controller {
     }
 
     // Put
-    public function putDiscount(UpdateDiscountRequest $request, Discount $discount) {
+    public function putDiscount(PutDiscountRequest $request, Discount $discount) {
         $validatedData = $request->validated();
 
         $discount->update($validatedData);
@@ -67,7 +68,7 @@ class DiscountController extends Controller {
     }
 
     // Patch
-    public function patchDiscount(UpdateDiscountRequest $request, Discount $discount) {
+    public function patchDiscount(PatchDiscountRequest $request, Discount $discount) {
         $validatedData = $request->validated();
 
         $discount->update($validatedData);

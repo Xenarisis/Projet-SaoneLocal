@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\ProducerResource;
 use App\Http\Requests\PutProducerRequest;
-use App\Http\Controllers\PatchProducerRequest;
+use App\Http\Requests\PatchProducerRequest;
 use App\Http\Requests\DeleteProducerRequest;
 use App\Http\Requests\CreateProducerRequest;
 use Illuminate\Contracts\Support\ValidatedData;
@@ -21,6 +21,8 @@ class ProducerController extends Controller {
     // CREATE
     public function createProducer(CreateProducerRequest $request) {
         $validatedData = $request->validated();
+
+        $validatedData['user_id'] = $validatedData['user_id'] ?? auth('api')->id();
         
         $producer = Producer::create($validatedData);
 
@@ -37,33 +39,35 @@ class ProducerController extends Controller {
         return ProducerResource::collection($producers);
     }
 
-    public function getProducerById($Producer) {
-        Gate::Authorize('view', $Producer);
+    public function getProducerById(Producer $producer) {
+        Gate::Authorize('view', $producer);
 
-        return new ProducerResource($Producer);
+        return new ProducerResource($producer);
     }
 
     public function getProducerByName($name) {
-        $ProducerModel = Producer::where('name', $name)->firstOrFail();
-        Gate::authorize('view', $ProducerModel);
+        $producerModel = Producer::where('name', $name)->firstOrFail();
 
-        return new ProducerResource($ProducerModel);
+        Gate::authorize('view', $producerModel);
+
+        return new ProducerResource($producerModel);
     }
 
     public function getProducerByCity($city) {
-        $CityModel = Producer::where('city', $city);
-        Gate::authorize('view', $CityModel);
+        $cityModel = Producer::where('city', $city)->get();
 
-        return new ProducerResource($CityModel);
+        Gate::authorize('viewAny', $cityModel);
+
+        return ProducerResource::collection($cityModel);
     }
 
-    public function getProducerByPostal_code($Postal_code) {
-        $Postal_codeModel = Producer::where('postal_code', $Postal_code);
-        Gate::authorize('view', $Postal_codeModel);
+    public function getProducerByPostal_code($postal_code) {
+        $postal_codeModel = Producer::where('postal_code', $postal_code)->get();
 
-        return new ProducerResource($Postal_codeModel);
+        Gate::authorize('viewAny', $postal_codeModel);
+
+        return ProducerResource::collection($postal_codeModel);
     }
-
 
     // UPDATE: put branch
     public function putProducer(PutProducerRequest $request, Producer $producer) {
