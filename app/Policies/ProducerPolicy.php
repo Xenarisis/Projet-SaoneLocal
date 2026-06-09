@@ -28,7 +28,7 @@ class ProducerPolicy {
      */
     public function create(User $user): bool
     {
-        return $user->role() === 'producer';
+        return $user->role === 'producer';
     }
 
     /**
@@ -36,7 +36,7 @@ class ProducerPolicy {
      */
     public function update(User $user, Producer $producer): bool
     {
-        return $user->role() === 'producer';
+        return $user->role === 'producer';
     }
 
     /**
@@ -44,7 +44,7 @@ class ProducerPolicy {
      */
     public function delete(User $user, Producer $producer): bool
     {
-        return $user->role() === 'producer';
+        return $user->role === 'producer';
     }
 
     /**
@@ -52,7 +52,7 @@ class ProducerPolicy {
      */
     public function restore(User $user, Producer $producer): bool
     {
-        return $user->role() === 'producer';
+        return $user->role === 'producer';
     }
 
     /**
