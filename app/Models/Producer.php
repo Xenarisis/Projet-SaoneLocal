@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Producer extends Model {
     use HasFactory;
@@ -29,5 +30,9 @@ class Producer extends Model {
 
     public function followers(): HasMany {
         return $this->hasMany(Follow::class);
+    }
+
+    public function events(): BelongsToMany {
+        return $this->belongsToMany(Event::class);
     }
 }

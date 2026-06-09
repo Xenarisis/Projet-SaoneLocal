@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Database\Factories\EventFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Event extends Model
-{
+class Event extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -25,4 +25,8 @@ class Event extends Model
     protected $hidden = [
         'producer_id'
     ];
+
+    public function producers(): BelongsToMany {
+        return $this->belongsToMany(Producer::class);
+    }
 }
