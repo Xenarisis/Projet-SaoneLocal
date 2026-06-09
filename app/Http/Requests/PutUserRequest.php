@@ -2,17 +2,19 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class PutUserRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        $user = $this->route('user');
+        $userOrId = $this->route('user');
+        $userModel = $userOrId instanceof \App\Models\User ? $userOrId : \App\Models\User::findOrFail($userOrId);
             
-        return auth('api')->user()->can('update', $user);
+        return auth('api')->user()->can('update', $userModel);
     }
 
     /**
@@ -21,15 +23,30 @@ class PutUserRequest extends FormRequest {
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        $user = $this->route('user');
+        $routeUser = $this->route('user');
+        $userId = $routeUser instanceof \App\Models\User ? $routeUser->id : $routeUser;
         
         return [
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'firstname' => 'required|string|min:1|max:20',
-            'lastname' => 'required|string|min:1|max:20',
-            'username' => 'nullable|string|min:1|max:25|unique:users,username,' . $user->id,
-            'GoogleToken' => 'nullable|string|unique:users,GoogleToken,' . $user->id,
-            'password' => 'sometimes|string|min:6|max:50'
+            'email'         => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id)
+            ],
+            'firstname'     => 'required|string|min:1|max:20',
+            'lastname'      => 'required|string|min:1|max:20',
+            'username'      => [
+                'nullable',
+                'string',
+                'min:1',
+                'max:25',
+                Rule::unique('users', 'username')->ignore($user->id)
+            ],
+            'GoogleToken'   => [
+                'nullable',
+                'string',
+                Rule::unique('users', 'GoogleToken')->ignore($user->id)
+            ],
+            'password'      => 'sometimes|string|min:6|max:50'
         ];
     }
 }

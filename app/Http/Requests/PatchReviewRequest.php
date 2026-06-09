@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateReviewRequest extends FormRequest {
+class PatchReviewRequest extends FormRequest {
     public function authorize(): bool {
         $review = $this->route('review');
         return $this->user()->can('update', $review);

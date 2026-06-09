@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Producer;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class CreateProducerRequest extends FormRequest
-{
+class CreateProducerRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        $producer = $this->route('producer');
-
-        return auth('api')->user()->can('create', $producer);
+        return auth('api')->user()->can('create', Producer::class);
     }
 
     /**
@@ -21,17 +19,17 @@ class CreateProducerRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         $producer = $this->route('producer');
 
         return [
-            'name' => 'required|string|unique:producer|min:1|max:30' . $producer->id,
-            'presentation' => 'sometime|string',
+            'name'          => 'required|string|unique:producers|min:1|max:30',
+            'presentation'  => 'sometimes|string',
             'street_line_1' => 'required|string|min:1|max:60',
             'street_line_2' => 'nullable|string|min:1|max:60',
-            'city' => 'required|string|min:1|max:50',
-            'postal_code' => 'required|string|min:1|max:20'
+            'city'          => 'required|string|min:1|max:50',
+            'postal_code'   => 'required|string|min:1|max:20',
+            'user_id'       => 'sometimes|integer|exists:users,id'
         ];
     }
 }

@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class PatchProducerRequest extends FormRequest
-{
+class PatchProducerRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -25,12 +24,12 @@ class PatchProducerRequest extends FormRequest
         $user = $this->route('producer');
 
         return [
-            'name' => 'required|string|unique:producer|min:1|max:30' . $user->id,
-            'presentation' => 'sometime|string',
-            'street_line_1' => 'required|string|min:1|max:60',
-            'street_line_2' => 'nullable|string|min:1|max:60',
-            'city' => 'required|string|min:1|max:50',
-            'postal_code' => 'required|string|min:1|max:20'
+            'name'          => 'sometimes|string|unique:producers|min:1|max:30' . $user->id,
+            'presentation'  => 'sometimes|string',
+            'street_line_1' => 'sometimes|string|min:1|max:60',
+            'street_line_2' => 'sometimes|string|min:1|max:60',
+            'city'          => 'sometimes|string|min:1|max:50',
+            'postal_code'   => 'sometimes|string|min:1|max:20'
         ];
     }
 }

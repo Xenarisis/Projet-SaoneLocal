@@ -20,6 +20,10 @@ class DeleteUserRequest extends FormRequest {
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        if (auth('api')->user()->isAdmin()) {
+            return [];
+        }
+
         return [
             'GoogleToken' => 'sometimes|string',
             'password' => [
