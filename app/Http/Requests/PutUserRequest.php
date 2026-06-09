@@ -30,7 +30,7 @@ class PutUserRequest extends FormRequest {
             'email'         => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($user->id)
+                Rule::unique('users', 'email')->ignore($userId)
             ],
             'firstname'     => 'required|string|min:1|max:20',
             'lastname'      => 'required|string|min:1|max:20',
@@ -39,12 +39,12 @@ class PutUserRequest extends FormRequest {
                 'string',
                 'min:1',
                 'max:25',
-                Rule::unique('users', 'username')->ignore($user->id)
+                Rule::unique('users', 'username')->ignore($userId)
             ],
             'GoogleToken'   => [
                 'nullable',
                 'string',
-                Rule::unique('users', 'GoogleToken')->ignore($user->id)
+                Rule::unique('users', 'GoogleToken')->ignore($userId)
             ],
             'password'      => 'sometimes|string|min:6|max:50'
         ];
