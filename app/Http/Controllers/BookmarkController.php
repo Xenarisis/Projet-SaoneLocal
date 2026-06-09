@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\BookmarkResource;
 use App\Http\Requests\DeleteBookmarkRequest;
-use App\Http\Requests\GetUsereBookmarksRequest;
+use App\Http\Requests\GetUserBookmarksRequest;
 
 class BookmarkController extends Controller {
 
     // Read
-    public function getUserBookmarks(GetUsereBookmarksRequest $request, User $user) {
+    public function getUserBookmarks(GetUserBookmarksRequest $request, User $user) {
         $bookmarks = $user->bookmarks()->with('product')->latest()->get();
 
         return BookmarkResource::collection($bookmarks);

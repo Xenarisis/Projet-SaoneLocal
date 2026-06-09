@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
+use App\Http\Requests\PutProductRequest;
+use App\Http\Requests\PatchProductRequest;
 use App\Http\Requests\DeleteProductRequest;
 use App\Http\Requests\RegisterProductRequest;
 
@@ -57,13 +59,27 @@ class ProductController extends Controller {
 
         $user = auth('api')->user();
 
-        $validatedData['producer_id'] = $user->producer->id;
+        if($user->isAdmin()) {
+            if(!$request->has('producer_id')) {
+                return response()->json([
+                    'message' => 'En tant qu\'admin, vous devez spécifier un producer_id.s'
+                ], 422);
+            }
+
+            $validatedData['producer_id'] = $request->producer_id;
+        } else {
+            if(!$user->producer) {
+                return response()->json([
+                    'message' => 'Vous devez posséder un compte producteur pour créer un produit.'
+                ], 403);
+            }
+
+            $validatedData['producer_id'] = $user->producer->id;
+        }
 
         $product = Product::create($validatedData);
 
-        return (new ProductResource($product))->additional([
-            'message' => 'Produit créé avec succès.'
-        ]);
+        return (new ProductResource($product))->additional(['message' => 'Produit créé avec succès.'])->response()->setStatusCode(201);
     }
 
     // Put
@@ -78,7 +94,7 @@ class ProductController extends Controller {
     }
 
     // Patch
-    public function patchProduct(PatchProducerRequest $request, Product $product) {
+    public function patchProduct(PatchProductRequest $request, Product $product) {
         $validatedData = $request->validated();
 
         $product->update($validatedData);

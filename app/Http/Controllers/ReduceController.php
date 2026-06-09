@@ -30,23 +30,23 @@ class ReduceController extends Controller
     public function getAll() {
         Gate::authorize('viewAny', Reduce::class);
 
-        $Reduces = Reduce::paginate(50);
-        return ReduceResource::collection($Reduces);
+        $reduces = Reduce::paginate(50);
+        return ReduceResource::collection($reduces);
     }
 
-    public function getReduceByID($Reduce) {
-        Gate::authorize('view', $Reduce);
+    public function getReduceByID($reduce) {
+        Gate::authorize('view', $reduce);
 
-        return new ReduceResource($Reduce);
+        return new ReduceResource($reduce);
     }
 
     // DELETE
-    public function deleteReduce(DeleteReduceRequest $request, Reduce $Reduce) {
+    public function deleteReduce(DeleteReduceRequest $request, Reduce $reduce) {
         $validatedAciton = $request->validated();
 
-        Gate::authorize('delete', $Reduce);
+        // Gate::authorize('delete', $reduce); //! optional because request make the validation
 
-        $Reduce->delete($validatedAciton);
+        $reduce->delete($validatedAciton);
 
         return response()->json([
             'message' => 'Reduce supprimer avec succès'

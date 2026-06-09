@@ -87,8 +87,17 @@ class UserController extends Controller {
 
     // Delete
     public function deleteUser(DeleteUserRequest $request, User $user) {
-        if(auth('api')->id() === $user->id) {
-            if($request->filled('GoogleToken')) {
+        $currentUser = auth('api')->user();
+
+        $isAdmin = $currentUser->isAdmin();
+        $isOwner = $currentUser->id === $user->id;
+
+        if (!$isAdmin && !$isOwner) {
+            return response()->json(['message' => 'Non autorisé'], 403);
+        }
+
+        if ($isOwner && !$isAdmin) {
+            if ($request->filled('GoogleToken')) {
                 if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
                     return response()->json(['message' => 'Action non autorisée. Token Google invalide.'], 403);
                 }

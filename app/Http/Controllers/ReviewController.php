@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReviewResource;
 use App\Http\Requests\AddReviewRequest;
-use App\Http\Requests\UpdateReviewRequest;
+use App\Http\Requests\PatchReviewRequest;
 use App\Http\Requests\DeleteReviewRequest;
 
 class ReviewController extends Controller {
@@ -42,7 +42,7 @@ class ReviewController extends Controller {
         return (new ReviewResource($review))->additional(['message' => 'Avis ajouté avec succès.'])->response()->setStatusCode(201);
     }
 
-    public function patchReview(UpdateReviewRequest $request, Review $review) {
+    public function patchReview(PatchReviewRequest $request, Review $review) {
         $review->update($request->validated());
 
         return (new ReviewResource($review))->additional(['message' => 'Avis modifié avec succès.'])->response()->setStatusCode(200);

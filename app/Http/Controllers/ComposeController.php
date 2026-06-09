@@ -32,8 +32,8 @@ class ComposeController extends Controller
     public function getAll() {
         Gate::authorize('viewAny', Compose::class);
 
-        $Compose = Compose::paginate(50);
-        return ComposeResource::collection($Compose);
+        $compose = Compose::paginate(50);
+        return ComposeResource::collection($compose);
     }
 
     public function getComposeByID(Compose $compose) {
@@ -79,6 +79,5 @@ class ComposeController extends Controller
         return response()->json([
             'message' => 'Compose supprimer avec succès'
         ], 200);
-
     }
 }

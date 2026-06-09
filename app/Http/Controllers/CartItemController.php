@@ -8,6 +8,9 @@ use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\CartItemResource;
+use App\Http\Requests\PutCartItemRequest;
+use App\Http\Requests\PatchCartItemRequest
+;
 
 class CartItemController extends Controller {
     
@@ -32,8 +35,8 @@ class CartItemController extends Controller {
     }
     
     // Create
-    // Route suggérée : POST /api/products/{product}/cart
     public function addCartItem(Request $request, Product $product) {
+        // Need to delete 'quantity' of product ++ check there is enought
         $user = $request->user();
         $quantityToAdd = $request->input('quantity', 1);
 
@@ -48,6 +51,7 @@ class CartItemController extends Controller {
                 'product_id' => $product->id,
                 'quantity' => $quantityToAdd
             ]);
+            
             $message = 'Produit ajouté au panier.';
         }
 
@@ -55,11 +59,9 @@ class CartItemController extends Controller {
     }
 
     // Put
-    // Route suggérée : PUT /api/cart-items/{cartItem}
-    public function putCartItem(Request $request, CartItem $cartItem) {
-        Gate::authorize('update', $cartItem);
-
-        $validatedData = $request->validate(['quantity' => 'required|integer|min:1']);
+    public function putCartItem(PutCartItemRequest $request, CartItem $cartItem) {
+        //! Need to check quantity
+        $validatedData = $request->validated();
 
         $cartItem->update($validatedData);
 
@@ -67,11 +69,9 @@ class CartItemController extends Controller {
     }
 
     // Patch
-    // Route suggérée : PATCH /api/cart-items/{cartItem}
-    public function patchCartItem(Request $request, CartItem $cartItem) {
-        Gate::authorize('update', $cartItem);
-
-        $request->validate(['quantity' => 'required|integer|min:1']);
+    public function patchCartItem(PatchCartItemRequest $request, CartItem $cartItem) {
+        //! Need to check quantity
+        $validatedData = $request->validated();
 
         $cartItem->update(['quantity' => $request->quantity]);
 
@@ -79,7 +79,6 @@ class CartItemController extends Controller {
     }
 
     // Delete
-    // Route suggérée : DELETE /api/cart-items/{cartItem}
     public function deleteCartItem(Request $request, CartItem $cartItem) {
         Gate::authorize('delete', $cartItem);
 
