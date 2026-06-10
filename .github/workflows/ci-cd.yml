@@ -50,6 +50,9 @@ jobs:
       
       - name: Waiting API and BDD
         run: wait-on http-get://localhost:8000/api/health -t 120000
+
+      - name: Debug - Log API response
+        run: curl -s -v http://localhost:8000/api/health
       
       - name: Run Postman Collection
         run: |
