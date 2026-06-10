@@ -12,7 +12,7 @@ class DiscountSeeder extends Seeder {
      */
     public function run(): void {
         Discount::create([
-            'discount' => 67,
+            'discount_percent' => 67,
             'code_name' => 'Mathys',
             'availibility' => '2026-05-22'
         ]);
