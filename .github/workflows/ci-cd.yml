@@ -52,7 +52,10 @@ jobs:
         run: npm install -g newman wait-on
       
       - name: Waiting API and BDD
-        run: wait-on http-get://localhost:8000/api/health -t 120000
+        run: wait-on http-get://localhost:8000/api/health -t 120000 || true
+      
+      - name: Debug - Voir les logs du conteneur
+        run: docker compose -f docker-compose.yml logs app
       
       - name: Run Postman Collection
         run: |
