@@ -12,6 +12,7 @@ if [ ! -f ".env" ]; then
     echo ".env:"
     cp .env.example .env
     php artisan key:generate --no-interaction
+    php artisan jwt:secret --force --no-interaction
 fi
 
 echo "migrations:"
