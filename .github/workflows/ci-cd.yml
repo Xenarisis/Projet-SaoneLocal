@@ -42,6 +42,9 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
       
+      - name: Give perms *
+        run: chmod -R 777 .
+      
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
       
@@ -49,10 +52,7 @@ jobs:
         run: npm install -g newman wait-on
       
       - name: Waiting API and BDD
-        run: wait-on http-get://localhost:8000/api/health -t 120000 || true
-      
-      - name: Debug
-        run: docker compose -f docker-compose.yml logs app
+        run: wait-on http-get://localhost:8000/api/health -t 120000
       
       - name: Run Postman Collection
         run: |
