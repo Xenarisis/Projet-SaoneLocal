@@ -16,7 +16,7 @@ class DiscountFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'discount' => fake()->numberBetween(1, 100),
+            'discount_percent' => fake()->numberBetween(1, 100),
             'code_name' => fake()->numerify('#########'),
             'availibility' => fake()->dateTimeBetween('now', '+1 month')
         ];
