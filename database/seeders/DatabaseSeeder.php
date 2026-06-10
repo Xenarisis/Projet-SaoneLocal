@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder {
             FollowSeeder::class,
             OrderSeeder::class,
             ComposeSeeder::class,
-            Cart_itemSeeder::class,
+            CartItemSeeder::class,
             ReviewSeeder::class,
             EventSeeder::class
         ]);
