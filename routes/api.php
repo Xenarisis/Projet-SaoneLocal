@@ -19,6 +19,18 @@ use App\Http\Controllers\ComposeController;
 // =======================================================
 // PUBLIC ROUTES (No token required)
 // =======================================================
+Route::match(['get', 'head'], '/', function () {
+    return redirect()->route('health');
+});
+
+Route::match(['get', 'head'], '/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'API is running',
+        'timestamp' => now()
+    ], 200);
+})->name('health');
+
 Route::prefix('users')->group(function () {
     // --- (POST) ---
     Route::post('/register', [AuthController::class, 'register']);
