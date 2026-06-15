@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Rules\CurrentPassword;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\ValidationRule;
 
 class DeleteUserRequest extends FormRequest {
     /**
@@ -16,8 +15,6 @@ class DeleteUserRequest extends FormRequest {
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
         if (auth('api')->user()->isAdmin()) {
