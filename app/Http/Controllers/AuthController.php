@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegisterUserRequest;
-use App\Http\Requests\LoginUserRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 
 class AuthController extends Controller {
-    public function register(RegisterUserRequest $request) {
+    public function register(RegisterUserRequest $request): UserResource {
         $validatedData = $request->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
         
@@ -21,7 +22,7 @@ class AuthController extends Controller {
         ]);
     }
 
-    public function login(LoginUserRequest $request) {
+    public function login(LoginUserRequest $request): JsonResponse {
         $credentials = $request->only('email', 'password');
 
         if (!$token = auth('api')->attempt($credentials)) {
@@ -42,7 +43,7 @@ class AuthController extends Controller {
         ], 200);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request): JsonResponse {
         auth('api')->logout();
 
         return response()->json([
@@ -50,7 +51,7 @@ class AuthController extends Controller {
         ], 200);
     }
 
-    public function refresh() {
+    public function refresh(): JsonResponse {
         return response()->json([
             'message' => 'Token rafraîchi avec succès.',
             'access_token' => auth('api')->refresh(),

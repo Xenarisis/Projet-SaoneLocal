@@ -4,71 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProductResource;
+use App\Http\Requests\GetProductRequest;
 use App\Http\Requests\PutProductRequest;
+use App\Http\Requests\ShowProductRequest;
 use App\Http\Requests\PatchProductRequest;
 use App\Http\Requests\DeleteProductRequest;
-use App\Http\Requests\RegisterProductRequest;
+use App\Http\Requests\CreateProductRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller {
     // Read
-    public function get(Request $request) {
+    public function index(GetProductRequest $request): AnonymousResourceCollection {
         $query = Product::with('producer');
 
         $exactFilters = ['id', 'quantity', 'category', 'subcategory', 'producer_id'];
+        
         foreach ($exactFilters as $filter) {
-            if ($request->has($filter)) {
-                $query->where($filter, $request->$filter);
+            if ($request->filled($filter)) {
+                $query->where($filter, $request->input($filter));
             }
         }
 
-        if ($request->has('min_price')) {
-            $query->where('price', '>=', $request->min_price);
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->input('min_price'));
         }
         
-        if ($request->has('max_price')) {
-            $query->where('price', '<=', $request->max_price);
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->input('max_price'));
         }
 
-        if ($request->has('name')) {
-            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        if ($request->filled('name')) {
+            $query->where('name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
-        if ($request->has('description')) {
-            $query->where('description', 'LIKE', '%' . $request->description . '%');
+        if ($request->filled('description')) {
+            $query->where('description', 'LIKE', '%' . $request->input('description') . '%');
         }
 
-        if ($request->has('producer_name')) {
+        if ($request->filled('producer_name')) {
             $query->whereHas('producer', function ($q) use ($request) {
-                $q->where('name', 'LIKE', '%' . $request->producer_name . '%');
+                $q->where('name', 'LIKE', '%' . $request->input('producer_name') . '%');
             });
         }
 
         $products = $query->paginate(25);
+        $products->appends($request->all());
 
         return ProductResource::collection($products);
     }
 
-    public function getProductById(Product $product) {
+    public function show(ShowProductRequest $request, Product $product): ProductResource {
         return new ProductResource($product->load('producer'));
     }
 
     // Create
-    public function createProduct(RegisterProductRequest $request) {
+    public function store(CreateProductRequest $request): JsonResponse {
         $validatedData = $request->validated();
 
-        $user = auth('api')->user();
+        $user = $request->user();
 
-        if($user->isAdmin()) {
-            if(!$request->has('producer_id')) {
+        if ($user->isAdmin()) {
+            if (!$request->has('producer_id')) {
                 return response()->json([
-                    'message' => 'En tant qu\'admin, vous devez spécifier un producer_id.s'
+                    'message' => 'En tant qu\'admin, vous devez spécifier un producer_id.'
                 ], 422);
             }
 
             $validatedData['producer_id'] = $request->producer_id;
         } else {
-            if(!$user->producer) {
+            if (!$user->producer) {
                 return response()->json([
                     'message' => 'Vous devez posséder un compte producteur pour créer un produit.'
                 ], 403);
@@ -79,11 +85,14 @@ class ProductController extends Controller {
 
         $product = Product::create($validatedData);
 
-        return (new ProductResource($product))->additional(['message' => 'Produit créé avec succès.'])->response()->setStatusCode(201);
+        return (new ProductResource($product))
+            ->additional(['message' => 'Produit créé avec succès.'])
+            ->response()
+            ->setStatusCode(201);
     }
 
-    // Put
-    public function putProduct(PutProductRequest $request, Product $product) {
+    // Update : Put
+    public function updatePut(PutProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
 
         $product->update($validatedData);
@@ -93,8 +102,8 @@ class ProductController extends Controller {
         ]);
     }
 
-    // Patch
-    public function patchProduct(PatchProductRequest $request, Product $product) {
+    // Update : Patch
+    public function updatePatch(PatchProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
 
         $product->update($validatedData);
@@ -105,7 +114,7 @@ class ProductController extends Controller {
     }
 
     // Delete
-    public function deleteProduct(DeleteProductRequest $request, Product $product) {
+    public function destroy(DeleteProductRequest $request, Product $product): JsonResponse {
         $product->delete();
 
         return response()->json([

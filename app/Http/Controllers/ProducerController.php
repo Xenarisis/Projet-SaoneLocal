@@ -4,107 +4,81 @@ namespace App\Http\Controllers;
 
 use App\Models\Producer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ProducerResource;
+use App\Http\Requests\GetProducerRequest;
 use App\Http\Requests\PutProducerRequest;
+use App\Http\Requests\ShowProducerRequest;
 use App\Http\Requests\PatchProducerRequest;
 use App\Http\Requests\DeleteProducerRequest;
 use App\Http\Requests\CreateProducerRequest;
-use Illuminate\Contracts\Support\ValidatedData;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProducerController extends Controller {
+    // Read
+    public function index(GetProducerRequest $request): AnonymousResourceCollection {
+        $query = Producer::query();
 
-    public function index() {
-        return $this->getAll();
-    }
-
-    // CREATE
-    public function createProducer(CreateProducerRequest $request) {
-        $validatedData = $request->validated();
-
-        $validatedData['user_id'] = $validatedData['user_id'] ?? auth('api')->id();
+        $exactFilters = ['id', 'name', 'city', 'postal_code'];
         
-        $producer = Producer::create($validatedData);
+        foreach ($exactFilters as $filter) {
+            if ($request->filled($filter)) {
+                $query->where($filter, $request->input($filter));
+            }
+        }
 
-        return (new ProducerResource($producer))->additional([
-            'message' => 'producteur créé avec succès'
-        ], 201);
-    }
+        $producers = $query->paginate(50);
+        $producers->appends($request->all());
 
-    // READ
-    public function getAll() {
-        Gate::authorize('viewAny', Producer::class);
-
-        $producers = Producer::paginate(50);
         return ProducerResource::collection($producers);
     }
 
-    public function getProducerById(Producer $producer) {
-        Gate::Authorize('view', $producer);
-
+    public function show(ShowProducerRequest $request, Producer $producer): ProducerResource {
         return new ProducerResource($producer);
     }
 
-    public function getProducerByName($name) {
-        $producerModel = Producer::where('name', $name)->firstOrFail();
-
-        Gate::authorize('view', $producerModel);
-
-        return new ProducerResource($producerModel);
-    }
-
-    public function getProducerByCity($city) {
-        $cityModel = Producer::where('city', $city)->get();
-
-        Gate::authorize('viewAny', $cityModel);
-
-        return ProducerResource::collection($cityModel);
-    }
-
-    public function getProducerByPostal_code($postal_code) {
-        $postal_codeModel = Producer::where('postal_code', $postal_code)->get();
-
-        Gate::authorize('viewAny', $postal_codeModel);
-
-        return ProducerResource::collection($postal_codeModel);
-    }
-
-    // UPDATE: put branch
-    public function putProducer(PutProducerRequest $request, Producer $producer) {
+    // Create
+    public function store(CreateProducerRequest $request): JsonResponse {
         $validatedData = $request->validated();
 
-        Gate::authorize('update', $producer);
+        $validatedData['user_id'] = $validatedData['user_id'] ?? $request->user()->id;
+        
+        $producer = Producer::create($validatedData);
+
+        return (new ProducerResource($producer))
+            ->additional(['message' => 'Producteur créé avec succès.'])
+            ->response()
+            ->setStatusCode(201);
+    }
+
+    // Update : Put
+    public function updatePut(PutProducerRequest $request, Producer $producer): ProducerResource {
+        $validatedData = $request->validated();
 
         $producer->update($validatedData);
 
-        return(new ProducerResource($producer))->additional([
-            'message' => 'Producteur mis à jour avec succès'
+        return (new ProducerResource($producer))->additional([
+            'message' => 'Producteur mis à jour avec succès.'
         ]);
     }
-    
-    // UPDATE: patch branch
-    public function patchProducer(PatchProducerRequest $request, Producer $producer) {
-        $validatedData = $request->validated();
 
-        Gate::authorize('update', $producer);
+    // Update : Patch
+    public function updatePatch(PatchProducerRequest $request, Producer $producer): ProducerResource {
+        $validatedData = $request->validated();
 
         $producer->update($validatedData);
 
-        return(new ProducerResource($producer))->additional([
-            'message' => 'Producteur mis à jour avec succès'
+        return (new ProducerResource($producer))->additional([
+            'message' => 'Producteur mis à jour avec succès.'
         ]);
     }
 
-    // DELETE
-    public function deleteProducer(DeleteProducerRequest $request, Producer $producer) {
-        $validatedAciton = $request->validated();
-
-        Gate::authorize('delete', $producer);
-
-        $producer->delete($validatedAciton);
+    // Delete
+    public function destroy(DeleteProducerRequest $request, Producer $producer): JsonResponse {
+        $producer->delete();
 
         return response()->json([
-            'message' => 'Producteur supprimer avec succès'
+            'message' => 'Producteur supprimé avec succès.'
         ], 200);
     }
 }

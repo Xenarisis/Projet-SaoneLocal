@@ -4,64 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\GetUserRequest;
 use App\Http\Requests\PutUserRequest;
+use App\Http\Requests\ShowUserRequest;
 use App\Http\Requests\PatchUserRequest;
 use App\Http\Requests\DeleteUserRequest;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller {
-    // Create : view AuthController
-
+    
     // Read
-    public function getAll() {
-        Gate::authorize('viewAny', User::class);
+    public function index(GetUserRequest $request): AnonymousResourceCollection {
+        $query = User::query();
 
-        $users = User::paginate(50);
+        $currentUser = $request->user();
+        
+        if ($currentUser && !$currentUser->isAdmin()) {
+            $query->where('id', $currentUser->id);
+        }
 
-        return UserResource::collection($users)->response();
+        if ($request->filled('id')) {
+            $query->where('id', $request->input('id'));
+        }
+
+        if ($request->filled('email')) {
+            $query->where('email', $request->input('email'));
+        }
+
+        if ($request->filled('username')) {
+            $query->where('username', $request->input('username'));
+        }
+
+        if ($request->filled('GoogleToken')) {
+            $query->where('GoogleToken', $request->input('GoogleToken'));
+        }
+
+        $users = $query->paginate(50);
+        $users->appends($request->all());
+
+        return UserResource::collection($users);
     }
 
-    public function getUserById(GetUserRequest $request, User $user) {
-        // Query string And Form Request
-        // Gate::authorize('view', $user);
+    public function show(ShowUserRequest $request, User $user): UserResource {
+        return new UserResource($user);
+    }
+
+    // Update : Put
+    public function updatePut(PutUserRequest $request, User $user): UserResource {
         $validatedData = $request->validated();
 
-        return new UserResource($user)->response();
-    }
-
-    public function getUserByEmail($email) {
-        $userModel = User::where('email', $email)->firstOrFail();
-
-        Gate::authorize('view', $userModel);
-
-        return new UserResource($userModel)->response();
-    }
-
-    public function getUserByGoogleToken($token) {
-        $userModel = User::where('GoogleToken', $token)->firstOrFail();
-
-        Gate::authorize('view', $userModel);
-
-        return new UserResource($userModel)->response();
-    }
-
-    public function getUserByUsername($username) {
-        $userModel = User::where('username', $username)->firstOrFail();
-
-        Gate::authorize('view', $userModel);
-
-        return new UserResource($userModel)->response();
-    }
-
-    // Put
-    public function putUser(PutUserRequest $request, User $user) {
-        $validatedData = $request->validated();
-
-        if($request->filled('password')) {
+        if ($request->filled('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
         } else {
             unset($validatedData['password']);
@@ -69,11 +64,13 @@ class UserController extends Controller {
 
         $user->update($validatedData);
 
-        return (new UserResource($user))->additional(['message' => 'Utilisateur mis à jour avec succès'])->response();
+        return (new UserResource($user))->additional([
+            'message' => 'Utilisateur mis à jour avec succès.'
+        ]);
     }
 
-    // Patch
-    public function patchUser(PatchUserRequest $request, User $user) {
+    // Update : Patch
+    public function updatePatch(PatchUserRequest $request, User $user): UserResource {
         $validatedData = $request->validated();
 
         if ($request->filled('password')) {
@@ -82,12 +79,14 @@ class UserController extends Controller {
 
         $user->update($validatedData);
 
-        return (new UserResource($user))->additional(['message' => 'Utilisateur mis à jour avec succès.'])->response();
+        return (new UserResource($user))->additional([
+            'message' => 'Utilisateur mis à jour avec succès.'
+        ]);
     }
 
     // Delete
-    public function deleteUser(DeleteUserRequest $request, User $user) {
-        $currentUser = auth('api')->user();
+    public function destroy(DeleteUserRequest $request, User $user): JsonResponse {
+        $currentUser = $request->user();
 
         $isAdmin = $currentUser->isAdmin();
         $isOwner = $currentUser->id === $user->id;
@@ -98,7 +97,7 @@ class UserController extends Controller {
 
         if ($isOwner && !$isAdmin) {
             if ($request->filled('GoogleToken')) {
-                if ($user->GoogleToken === null || $request->GoogleToken !== $user->GoogleToken) {
+                if ($user->GoogleToken === null || $request->input('GoogleToken') !== $user->GoogleToken) {
                     return response()->json(['message' => 'Action non autorisée. Token Google invalide.'], 403);
                 }
             }
@@ -106,6 +105,6 @@ class UserController extends Controller {
 
         $user->delete();
 
-        return response()->json(['message' => 'Utilisateur supprimé avec succès'], 200);
+        return response()->json(['message' => 'Utilisateur supprimé avec succès.'], 200);
     }
 }

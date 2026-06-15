@@ -3,53 +3,55 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reduce;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\DeleteReduceRequest;
-use App\Http\Requests\CreateReduceRequest;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\ReduceResource;
+use App\Http\Requests\GetReduceRequest;
+use App\Http\Requests\ShowReduceRequest;
+use App\Http\Requests\CreateReduceRequest;
+use App\Http\Requests\DeleteReduceRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class ReduceController extends Controller
-{
-    public function index() {
-        return $this->getAll();
+class ReduceController extends Controller {
+    // Read
+    public function index(GetReduceRequest $request): AnonymousResourceCollection {
+        $query = Reduce::query();
+
+        if ($request->filled('order_id')) {
+            $query->where('order_id', $request->input('order_id'));
+        }
+
+        if ($request->filled('discount_id')) {
+            $query->where('discount_id', $request->input('discount_id'));
+        }
+
+        $reduces = $query->paginate(50);
+        $reduces->appends($request->all());
+
+        return ReduceResource::collection($reduces);
     }
 
-    // CREATE
-    public function createReduce(CreateReduceRequest $request) {
+    public function show(ShowReduceRequest $request, Reduce $reduce): ReduceResource {
+        return new ReduceResource($reduce);
+    }
+
+    // Create
+    public function store(CreateReduceRequest $request): JsonResponse {
         $validatedData = $request->validated();
         
         $reduce = Reduce::create($validatedData);
 
-        return (new ReduceResource($reduce))->additional([
-            'message' => 'reduce créé avec succès'
-        ], 201);
+        return (new ReduceResource($reduce))
+            ->additional(['message' => 'Réduction crée avec succès.'])
+            ->response()
+            ->setStatusCode(201);
     }
 
-    // READ
-    public function getAll() {
-        Gate::authorize('viewAny', Reduce::class);
-
-        $reduces = Reduce::paginate(50);
-        return ReduceResource::collection($reduces);
-    }
-
-    public function getReduceByID($reduce) {
-        Gate::authorize('view', $reduce);
-
-        return new ReduceResource($reduce);
-    }
-
-    // DELETE
-    public function deleteReduce(DeleteReduceRequest $request, Reduce $reduce) {
-        $validatedAciton = $request->validated();
-
-        // Gate::authorize('delete', $reduce); //! optional because request make the validation
-
-        $reduce->delete($validatedAciton);
+    // Delete
+    public function destroy(DeleteReduceRequest $request, Reduce $reduce): JsonResponse {
+        $reduce->delete();
 
         return response()->json([
-            'message' => 'Reduce supprimer avec succès'
-        ], 201);
+            'message' => 'Réduction retirée avec succès.'
+        ], 200);
     }
 }

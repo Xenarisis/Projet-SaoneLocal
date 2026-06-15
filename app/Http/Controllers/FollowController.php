@@ -2,46 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Follow;
-use App\Models\Producer;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\JsonResponse;
 use App\Http\Resources\FollowResource;
+use App\Http\Requests\GetFollowRequest;
+use App\Http\Requests\ShowFollowRequest;
+use App\Http\Requests\CreateFollowRequest;
+use App\Http\Requests\DeleteFollowRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FollowController extends Controller {
     // Read
-    public function getFollowById(Follow $follow) {
-        Gate::authorize('view', $follow);
+    public function index(GetFollowRequest $request): AnonymousResourceCollection {
+        $query = Follow::with(['user', 'producer']);
+        $user = $request->user();
 
-        return new FollowResource($follow->load('user')->load('producer'));
-    }
+        if ($user && !$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        } 
+        elseif ($request->filled('user_id')) {
+            $query->where('user_id', $request->input('user_id'));
+        }
 
-    public function getUserFollow(User $user) {
-        Gate::authorize('viewUserFollows', [Follow::class, $user]);
+        if ($request->filled('producer_id')) {
+            $query->where('producer_id', $request->input('producer_id'));
+        }
 
-        $follows = $user->follows()->with('producer')->get(); 
-    
+        $follows = $query->paginate(50);
+        $follows->appends($request->all());
+
         return FollowResource::collection($follows);
     }
 
-    public function getProducerFollowers(Producer $producer) {
-        Gate::authorize('viewProducerFollowers', [Follow::class, $producer]);
-
-        $followers = $producer->followers()->with('user')->get();
-
-        return FollowResource::collection($followers);
+    public function show(ShowFollowRequest $request, Follow $follow): FollowResource {
+        return new FollowResource($follow->loadMissing(['user', 'producer']));
     }
 
     // Create
-    public function createFollow(Request $request, Producer $producer) {
-        Gate::authorize('create', Follow::class);
-
-        $user = $request->user();
-
+    public function store(CreateFollowRequest $request): JsonResponse {
         $follow = Follow::firstOrCreate([
-            'user_id' => $user->id,
-            'producer_id' => $producer->id
+            'user_id'     => $request->user()->id,
+            'producer_id' => $request->validated()['producer_id']
         ]);
 
         if (!$follow->wasRecentlyCreated) {
@@ -50,29 +51,18 @@ class FollowController extends Controller {
             ], 409);
         }
 
-        return (new FollowResource($follow))->additional(['message' => 'Follow ajouté avec succès.'])->response()->setStatusCode(201);
+        return (new FollowResource($follow))
+            ->additional(['message' => 'Abonnement ajouté avec succès.'])
+            ->response()
+            ->setStatusCode(201);
     }
 
-    // Update (no update needed in this controller)
-
     // Delete
-    public function deleteFollow(Request $request, Producer $producer) {
-        $user = $request->user();
-
-        $follow = Follow::where('user_id', $user->id)->where('producer_id', $producer->id)->first();
-
-        if (!$follow) {
-            return response()->json([
-                'message' => 'Vous ne suivez pas ce producteur.'
-            ], 404);
-        }
-
-        Gate::authorize('delete', $follow);
-
+    public function destroy(DeleteFollowRequest $request, Follow $follow): JsonResponse {
         $follow->delete();
 
         return response()->json([
             'message' => 'Abonnement supprimé avec succès.'
-        ], 204);
+        ], 200);
     }
 }

@@ -6,41 +6,53 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\CartItemResource;
+use App\Http\Requests\GetCartItemRequest;
 use App\Http\Requests\PutCartItemRequest;
-use App\Http\Requests\PatchCartItemRequest
-;
+use App\Http\Requests\ShowCartItemRequest;
+use App\Http\Requests\PatchCartItemRequest;
+use App\Http\Requests\DeleteCartItemRequest;
+use App\Http\Requests\CreateCartItemRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CartItemController extends Controller {
-    
     // Read
-    public function getCartItemById(CartItem $item) {
-        Gate::authorize('view', $item);
-        return new CartItemResource($item->load(['product.producer']));
-    }
+    public function index(GetCartItemRequest $request): AnonymousResourceCollection {
+        $query = CartItem::with(['product.producer', 'user']);
+        $user = auth('api')->user();
 
-    public function getCartItemByUserId(Request $request, User $user) {
-        Gate::authorize('viewUserCartItems', [CartItem::class, $user]);
+        if ($user && !$user->isAdmin()) {
+            $query->where('user_id', $user->id);
+        } elseif ($request->filled('user_id')) {
+            $query->where('user_id', $request->input('user_id'));
+        }
 
-        $items = $user->cartItems()->with(['product.producer'])->get(); 
+        if ($request->filled('product_id')) {
+            $query->where('product_id', $request->input('product_id'));
+        }
+
+        $items = $query->paginate(50);
+        $items->appends($request->all());
+
         return CartItemResource::collection($items);
     }
 
-    public function getCartItemByProductId(Request $request, Product $product) {
-        Gate::authorize('viewProducerCartItems', [CartItem::class, $product]);
-
-        $items = $product->cartItems()->with('user')->get();
-        return CartItemResource::collection($items);
+    public function show(ShowCartItemRequest $request, CartItem $cartItem): CartItemResource {
+        return new CartItemResource($cartItem->load(['product.producer']));
     }
     
     // Create
-    public function addCartItem(Request $request, Product $product) {
-        // Need to delete 'quantity' of product ++ check there is enought
+    public function store(CreateCartItemRequest $request): JsonResponse {
+        //! Need to delete 'quantity' of product ++ check there is enought
+        $validatedData = $request->validated();
         $user = $request->user();
-        $quantityToAdd = $request->input('quantity', 1);
+        
+        $productId = $validatedData['product_id'];
+        $quantityToAdd = $validatedData['quantity'] ?? 1;
 
-        $cartItem = $user->cartItems()->where('product_id', $product->id)->first();
+        $cartItem = $user->cartItems()->where('product_id', $productId)->first();
 
         if ($cartItem) {
             $cartItem->quantity += $quantityToAdd;
@@ -48,40 +60,42 @@ class CartItemController extends Controller {
             $message = 'Quantité mise à jour dans le panier.';
         } else {
             $cartItem = $user->cartItems()->create([
-                'product_id' => $product->id,
+                'product_id' => $productId,
                 'quantity' => $quantityToAdd
             ]);
-            
             $message = 'Produit ajouté au panier.';
         }
 
-        return (new CartItemResource($cartItem))->additional(['message' => $message])->response()->setStatusCode(201);
+        return (new CartItemResource($cartItem))
+            ->additional(['message' => $message])
+            ->response()
+            ->setStatusCode(201);
     }
 
-    // Put
-    public function putCartItem(PutCartItemRequest $request, CartItem $cartItem) {
+    // Update: Put
+    public function updatePut(PutCartItemRequest $request, CartItem $cartItem): CartItemResource {
         //! Need to check quantity
         $validatedData = $request->validated();
 
         $cartItem->update($validatedData);
 
-        return (new CartItemResource($cartItem))->additional(['message' => 'Élément du panier mis à jour.'])->response()->setStatusCode(200);
+        return (new CartItemResource($cartItem))
+            ->additional(['message' => 'Élément du panier mis à jour.']);
     }
 
-    // Patch
-    public function patchCartItem(PatchCartItemRequest $request, CartItem $cartItem) {
+    // Update: Patch
+    public function updatePatch(PatchCartItemRequest $request, CartItem $cartItem): CartItemResource {
         //! Need to check quantity
         $validatedData = $request->validated();
 
-        $cartItem->update(['quantity' => $request->quantity]);
+        $cartItem->update($validatedData);
 
-        return (new CartItemResource($cartItem))->additional(['message' => 'Quantité modifiée avec succès.'])->response()->setStatusCode(200);
+        return (new CartItemResource($cartItem))
+            ->additional(['message' => 'Élément du panier mis à jour.']);
     }
 
     // Delete
-    public function deleteCartItem(Request $request, CartItem $cartItem) {
-        Gate::authorize('delete', $cartItem);
-
+    public function destroy(DeleteCartItemRequest $request, CartItem $cartItem): JsonResponse {
         $cartItem->delete();
 
         return response()->json([
