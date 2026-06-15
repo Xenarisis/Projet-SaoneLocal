@@ -4,17 +4,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FollowController;
-use App\Http\Controllers\ProducerController;
 use App\Http\Controllers\ReduceController;
-use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ComposeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProducerController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\ComposeController;
 
 // =======================================================
 // PUBLIC ROUTES (No token required)
@@ -39,228 +39,207 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('products')->group(function () {
     // --- (GET) ---
-    Route::get('/', [ProductController::class, 'get']);
-    Route::get('/{product}', [ProductController::class, 'getProductById']);
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{product}', [ProductController::class, 'show']);
 });
 
 Route::prefix('reviews')->group(function () {
     // --- (GET) ---
-    Route::get('/{review}', [ReviewController::class, 'getReviewById']);
-    Route::get('/product/{product}', [ReviewController::class, 'getProductReviews']);
+    Route::get('/', [ReviewController::class, 'index']);
+    Route::get('/{review}', [ReviewController::class, 'show']);
 });
 
 // =======================================================
 // PRIVATE ROUTES (Token JWT required)
 // =======================================================
 Route::group(['middleware' => 'auth:api'], function () {
-
     Route::prefix('users')->group(function () {
         // --- (GET) ---
-        Route::get('/', [UserController::class, 'getAll']);
-        //! Query string
-        Route::get('/{user}', [UserController::class, 'getUserById']);
-        Route::get('/email/{email}', [UserController::class, 'getUserByEmail']);
-        Route::get('/GoogleToken/{token}', [UserController::class, 'getUserByGoogleToken']);
-        Route::get('/username/{username}', [UserController::class, 'getUserByUsername']);
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{user}', [UserController::class, 'show']);
 
         // --- (POST) ---
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
 
         // --- (PUT) ---
-        Route::put('/{user}', [UserController::class, 'putUser']);
-
+        Route::put('/{user}', [UserController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{user}', [UserController::class, 'patchUser']);
+        Route::patch('/{user}', [UserController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{user}', [UserController::class, 'deleteUser']);
+        Route::delete('/{user}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('products')->group(function () {
         // --- (POST) ---
-        Route::post('/new', [ProductController::class, 'createProduct']);
+        Route::post('/', [ProductController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{product}', [ProductController::class, 'putProduct']);
-
+        Route::put('/{product}', [ProductController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{product}', [ProductController::class, 'patchProduct']);;
+        Route::patch('/{product}', [ProductController::class, 'updatePatch']);
 
-        // --- (Delete) ---
-        Route::delete('/{product}', [ProductController::class, 'deleteProduct']);
+        // --- (DELETE) ---
+        Route::delete('/{product}', [ProductController::class, 'destroy']);
     });
 
     Route::prefix('orders')->group(function () {
         // --- (GET) ---
-        Route::get('/', [OrderController::class, 'getAll']);
-        //! Query string
-        Route::get('/{order}', [OrderController::class, 'getOrderById']);
-        Route::get('/number/{orderNumber}', [OrderController::class, 'getOrderByOrderNumber']);
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/{order}', [OrderController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/new', [OrderController::class, 'createOrder']);
+        Route::post('/', [OrderController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{order}', [OrderController::class, 'putOrder']);
-
+        Route::put('/{order}', [OrderController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{order}', [OrderController::class, 'patchOrder']);
+        Route::patch('/{order}', [OrderController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{order}', [OrderController::class, 'deleteOrder']);
+        Route::delete('/{order}', [OrderController::class, 'destroy']);
     });
 
     Route::prefix('follows')->group(function () {
         // --- (GET) ---
-        //! Query string
-        Route::get('/{follow}', [FollowController::class, 'getFollowById']);
-        Route::get('/user/{user}', [FollowController::class, 'getUserFollow']);
-        Route::get('/producer/{producer}', [FollowController::class, 'getProducerFollowers']);
+        Route::get('/', [FollowController::class, 'index']);
+        Route::get('/{follow}', [FollowController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/producer/{producer}', [FollowController::class, 'createFollow']);
+        Route::post('/', [FollowController::class, 'store']);
 
         // --- (DELETE) ---
-        Route::delete('/producer/{producer}', [FollowController::class, 'deleteFollow']);
+        Route::delete('/{follow}', [FollowController::class, 'destroy']);
     });
 
-    Route::prefix('producer')->group(function () {
+    Route::prefix('producers')->group(function () {
         // --- (GET) ---
-        Route::get('/', [ProducerController::class, 'getAll']);
-        //! Query string
-        Route::get('/{producer}', [ProducerController::class, 'getProducerByID']);
-        Route::get('/name/{name}', [ProducerController::class, 'getProducerByName']);
-        Route::get('/city/{city}', [ProducerController::class, 'getProducerByCity']);
-        Route::get('/postal_code/{postal_code}', [ProducerController::class, 'getProducerByPostal_code']);
+        Route::get('/', [ProducerController::class, 'index']);
+        Route::get('/{producer}', [ProducerController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/add', [ProducerController::class, 'createProducer']);
+        Route::post('/', [ProducerController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{producer}', [ProducerController::class, 'putProducer']);
+        Route::put('/{producer}', [ProducerController::class, 'updatePut']);
         
         // --- (PATCH) ---
-        Route::patch('/{producer}', [ProducerController::class, 'patchProducer']);    
+        Route::patch('/{producer}', [ProducerController::class, 'updatePatch']);    
 
         // --- (DELETE) ---
-        Route::delete('/delete/{producer}', [ProducerController::class, 'deleteProducer']);
+        Route::delete('/{producer}', [ProducerController::class, 'destroy']);
     });
 
-    Route::prefix('reduce')->group(function () {
+    Route::prefix('reduces')->group(function () {
         // --- (GET) ---
-        Route::get('/', [ReduceController::class, 'getAll']);
-        //! Query string
-        Route::get('/{reduce}', [ReduceController::class, 'getReduceByID']);
+        Route::get('/', [ReduceController::class, 'index']);
+        Route::get('/{reduce}', [ReduceController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/reduce', [ReduceController::class, 'createReduce']);
+        Route::post('/', [ReduceController::class, 'store']);
 
         // --- (DELETE) ---
-        Route::delete('/remove/{reduce}', [ReduceController::class, 'deleteReduce']);
+        Route::delete('/{reduce}', [ReduceController::class, 'destroy']);
     });
 
-    Route::prefix('cart')->group(function () {
+    Route::prefix('cart-items')->group(function () {
         // --- (GET) ---
-        Route::get('/{cartItem}', [CartItemController::class, 'getCartItemByID']);
-        //! Query string
-        Route::get('/user/{user}', [CartItemController::class, 'getCartItemByUserId']);
-        Route::get('/product/{product}', [CartItemController::class, 'getCartItemByProductId']);
+        Route::get('/', [CartItemController::class, 'index']);
+        Route::get('/{cartItem}', [CartItemController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/{product}', [CartItemController::class, 'addCartItem']);
+        Route::post('/', [CartItemController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{cartItem}', [CartItemController::class, 'putCartItem']);
-
+        Route::put('/{cartItem}', [CartItemController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{cartItem}', [CartItemController::class, 'patchCartItem']);
+        Route::patch('/{cartItem}', [CartItemController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{cartItem}', [CartItemController::class, 'deleteCartItem']);
+        Route::delete('/{cartItem}', [CartItemController::class, 'destroy']);
     });
 
     Route::prefix('reviews')->group(function () {
         // --- (POST) ---
-        Route::post('/product/{product}', [ReviewController::class, 'addReview']);
+        Route::post('/', [ReviewController::class, 'store']);
 
+        // --- (PUT) ---
+        Route::put('/{review}', [ReviewController::class, 'updatePut']); 
+        
         // --- (PATCH) ---
-        Route::patch('/{review}', [ReviewController::class, 'patchReview']);
+        Route::patch('/{review}', [ReviewController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{review}', [ReviewController::class, 'deleteReview']);
+        Route::delete('/{review}', [ReviewController::class, 'destroy']);
     });
 
     Route::prefix('bookmarks')->group(function () {
         // --- (GET) ---
-        //! Query string
-        Route::get('/user/{user}', [BookmarkController::class, 'getUserBookmarks']);
+        Route::get('/', [BookmarkController::class, 'index']);
 
         // --- (POST) ---
-        Route::post('/product/{product}', [BookmarkController::class, 'addBookmark']);
+        Route::post('/', [BookmarkController::class, 'store']);
 
         // --- (DELETE) ---
-        Route::delete('/{bookmark}', [BookmarkController::class, 'deleteBookmark']);
+        Route::delete('/{bookmark}', [BookmarkController::class, 'destroy']);
     });
 
     Route::prefix('discounts')->group(function () {
         // --- (GET) ---
-        Route::get('/', [DiscountController::class, 'getAll']);
-        //! Query string
-        Route::get('/{discount}', [DiscountController::class, 'getDiscountById']);
-        Route::get('/code/{code_name}', [DiscountController::class, 'getDiscountByCodeName']);
+        Route::get('/', [DiscountController::class, 'index']);
+        Route::get('/{discount}', [DiscountController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/new', [DiscountController::class, 'createDiscount']);
+        Route::post('/', [DiscountController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{discount}', [DiscountController::class, 'putDiscount']);
-
+        Route::put('/{discount}', [DiscountController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{discount}', [DiscountController::class, 'patchDiscount']);
+        Route::patch('/{discount}', [DiscountController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{discount}', [DiscountController::class, 'deleteDiscount']);
+        Route::delete('/{discount}', [DiscountController::class, 'destroy']);
     });
 
     Route::prefix('events')->group(function () {
         // --- (GET) ---
-        Route::get('/', [EventController::class, 'getAll']);
-        //! Query string
-        Route::get('/{event}', [EventController::class, 'getEventByID']);
-        Route::get('/name/{name}', [EventController::class, 'getEventByName']);
-        Route::get('/date/{date}', [EventController::class, 'getEventByDate']);
-        Route::get('/city/{city}', [EventController::class, 'getEventByCity']);
-        Route::get('/postal_code/{postal_code}', [EventController::class, 'getEventByPostal_code']);
+        Route::get('/', [EventController::class, 'index']);
+        Route::get('/{event}', [EventController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/new', [EventController::class, 'createEvent']);
+        Route::post('/', [EventController::class, 'store']);
 
         // --- (PUT) ---
-        Route::put('/{event}', [EventController::class, 'putEvent']);
-
+        Route::put('/{event}', [EventController::class, 'updatePut']);
+        
         // --- (PATCH) ---
-        Route::patch('/{event}', [EventController::class, 'patchEvent']);
+        Route::patch('/{event}', [EventController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{event}', [EventController::class, 'deleteEvent']);
+        Route::delete('/{event}', [EventController::class, 'destroy']);
     });
 
     Route::prefix('composes')->group(function () {
         // --- (GET) ---
-        Route::get('/', [ComposeController::class, 'getAll']);
-        //! Query string
-        Route::get('/{compose}', [ComposeController::class, 'getComposeByID']);
+        Route::get('/', [ComposeController::class, 'index']);
+        Route::get('/{compose}', [ComposeController::class, 'show']);
         
         // --- (POST) ---
-        Route::post('/new', [ComposeController::class, 'createCompose']);
+        Route::post('/', [ComposeController::class, 'store']);
 
-        // --- (PUT/PATCH) ---
-        Route::put('/{compose}', [ComposeController::class, 'putCompose']);
-        Route::patch('/{compose}', [ComposeController::class, 'putCompose']);
+        // --- (PUT) ---
+        Route::put('/{compose}', [ComposeController::class, 'updatePut']);
+        
+        // --- (PATCH) ---
+        Route::patch('/{compose}', [ComposeController::class, 'updatePatch']);
 
         // --- (DELETE) ---
-        Route::delete('/{compose}', [ComposeController::class, 'deleteCompose']);
+        Route::delete('/{compose}', [ComposeController::class, 'destroy']);
     });
-
 });
