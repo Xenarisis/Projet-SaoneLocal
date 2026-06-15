@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteBookmarkRequest extends FormRequest {
@@ -10,14 +9,11 @@ class DeleteBookmarkRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        $bookmark = $this->route('bookmark');
-        return $this->user()->can('delete', $bookmark);
+        return $this->user()->can('delete', $this->route('bookmark'));
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
         return [];

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PatchCartItemRequest extends FormRequest {
@@ -15,12 +14,20 @@ class PatchCartItemRequest extends FormRequest {
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
         return [
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'sometimes|integer|min:1',
+        ];
+    }
+
+    /**
+     * Get the customized validation error messages.
+     */
+    public function messages(): array {
+        return [
+            'quantity.integer'  => 'La quantité doit être un nombre entier.',
+            'quantity.min'      => 'La quantité doit être d\'au moins 1.',
         ];
     }
 }
