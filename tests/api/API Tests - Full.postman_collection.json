@@ -1,10 +1,7 @@
 {
   "info": {
-    "_postman_id": "2a61f680-ca7d-44f0-b042-945e08122af9",
     "name": "API Tests - Full",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55305811",
-    "_collection_link": "https://go.postman.co/collection/55305811-2a61f680-ca7d-44f0-b042-945e08122af9?source=collection_link"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
@@ -19,32 +16,16 @@
                 "exec": [
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disabledSystemHeaders": {
-              "user-agent": true,
-              "accept": true,
-              "connection": true,
-              "accept-encoding": true
-            }
-          },
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
@@ -56,8 +37,7 @@
                 "health"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Login - Admin",
@@ -65,12 +45,12 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('jwt_token', data.access_token); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -100,8 +80,7 @@
                 "login"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Register - Test User",
@@ -109,25 +88,25 @@
             {
               "listen": "prerequest",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "var timestamp = new Date().getTime();",
                   "pm.collectionVariables.set('test_email', 'test_' + timestamp + '@test.com');",
                   "pm.collectionVariables.set('test_password', 'password123');",
                   "pm.collectionVariables.set('test_username', 'user_' + timestamp);"
-                ]
+                ],
+                "type": "text/javascript"
               }
             },
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 200 or 201', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var userId = data.user ? data.user.id : (data.data ? data.data.id : (data.id ? data.id : null));",
                   "if(userId) { pm.collectionVariables.set('user_id', userId); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -157,8 +136,7 @@
                 "register"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Login - Test User",
@@ -166,12 +144,12 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('user_jwt_token', data.access_token); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -201,8 +179,7 @@
                 "login"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -216,12 +193,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -246,8 +220,7 @@
                 "users"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get User By Id",
@@ -256,12 +229,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -287,22 +257,18 @@
                 "{{user_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get User By Email",
+          "name": "Get User By Email (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -319,31 +285,32 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/users/email/{{test_email}}",
+              "raw": "{{base_url}}/users?email={{test_email}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "users",
-                "email",
-                "{{test_email}}"
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "{{test_email}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get User By GoogleToken",
+          "name": "Get User By GoogleToken (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -360,32 +327,32 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/users/GoogleToken/{{test_email}}",
+              "raw": "{{base_url}}/users?GoogleToken={{test_email}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "users",
-                "GoogleToken",
-                "{{test_email}}"
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "GoogleToken",
+                  "value": "{{test_email}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get User By Username",
+          "name": "Get User By Username (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -402,18 +369,21 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/users/username/{{test_username}}",
+              "raw": "{{base_url}}/users?username={{test_username}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "users",
-                "username",
-                "{{test_username}}"
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "username",
+                  "value": "{{test_username}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Refresh Jwt token",
@@ -426,9 +396,7 @@
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('jwt_token', data.access_token); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -454,8 +422,7 @@
                 "refresh"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put User",
@@ -464,12 +431,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -483,16 +447,15 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\": \"{{test_email}}\",\n    \"firstname\": \"test updated\",\n    \"lastname\": \"test new\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"email\": \"{{test_email}}\",\n    \"firstname\": \"test updated\",\n    \"lastname\": \"test new\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/users/{{user_id}}",
@@ -504,8 +467,7 @@
                 "{{user_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch User",
@@ -514,12 +476,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -533,16 +492,15 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"username\": \"patched {{$timestamp}}\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"username\": \"patched_{{$timestamp}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/users/{{user_id}}",
@@ -554,8 +512,7 @@
                 "{{user_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -574,9 +531,7 @@
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('producer_id', id); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -598,20 +553,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Postman {{$timestamp}}\",\n    \"street_line_1\": \"Test\",\n    \"city\": \"Paris\",\n    \"postal_code\": \"75000\",\n    \"user_id\": \"{{user_id}}\"\n}"
+              "raw": "{\n    \"name\": \"Postman {{$timestamp}}\",\n    \"street_line_1\": \"Test Adresse 1\",\n    \"city\": \"Paris\",\n    \"postal_code\": \"75000\",\n    \"user_id\": \"{{user_id}}\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/producer/add",
+              "raw": "{{base_url}}/producers",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer",
-                "add"
+                "producers"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get All Producers",
@@ -620,12 +573,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -642,16 +592,15 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/producer",
+              "raw": "{{base_url}}/producers",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer"
+                "producers"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Producer By Id",
@@ -660,12 +609,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -682,17 +628,16 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/producer/{{producer_id}}",
+              "raw": "{{base_url}}/producers/{{producer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer",
+                "producers",
                 "{{producer_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put Producer",
@@ -701,12 +646,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -720,29 +662,27 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Put {{$timestamp}}\",\n    \"street_line_1\": \"I live here\",\n    \"city\": \"USA\",\n    \"postal_code\": \"1\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"name\": \"Put {{$timestamp}}\",\n    \"street_line_1\": \"Adresse modifiée\",\n    \"city\": \"Lyon\",\n    \"postal_code\": \"69000\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/producer/{{producer_id}}",
+              "raw": "{{base_url}}/producers/{{producer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer",
+                "producers",
                 "{{producer_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Producer",
@@ -751,12 +691,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -770,29 +707,27 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"street_line_2\": \"high precision of my adress\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"street_line_2\": \"Complément d'adresse de test\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/producer/{{producer_id}}",
+              "raw": "{{base_url}}/producers/{{producer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer",
+                "producers",
                 "{{producer_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -811,9 +746,7 @@
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('product_id', id); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -835,20 +768,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Produit Test {{$timestamp}}\",\n    \"description\": \"Description du produit\",\n    \"price\": 49,\n    \"quantity\": 10,\n    \"category\": \"Test\",\n    \"subcategory\": \"Test sub\",\n    \"producer_id\": \"{{producer_id}}\"\n}"
+              "raw": "{\n    \"name\": \"Produit Test {{$timestamp}}\",\n    \"description\": \"Description détaillée du produit de test.\",\n    \"price\": 49.90,\n    \"quantity\": 10,\n    \"category\": \"Fruits\",\n    \"subcategory\": \"Pommes\",\n    \"producer_id\": \"{{producer_id}}\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/products/new",
+              "raw": "{{base_url}}/products",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "products",
-                "new"
+                "products"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put Product",
@@ -857,12 +788,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
-                  ""
+                  "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -884,7 +812,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Produit Test {{$timestamp}} Put\",\n    \"price\": 67,\n    \"quantity\": 100,\n    \"category\": \"Wow\"\n}"
+              "raw": "{\n    \"name\": \"Produit Test {{$timestamp}} Put\",\n    \"description\": \"Description mise à jour pour le test complet\",\n    \"price\": 67.50,\n    \"quantity\": 100,\n    \"category\": \"Légumes\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
@@ -896,8 +824,7 @@
                 "{{product_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Product",
@@ -906,12 +833,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
-                  ""
+                  "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -933,7 +857,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Good name for {{$timestamp}}\"\n}"
+              "raw": "{\n    \"name\": \"Produit Patché {{$timestamp}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
@@ -945,8 +869,7 @@
                 "{{product_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get All Products",
@@ -955,12 +878,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -981,44 +901,29 @@
                 "products"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get One Products",
+          "name": "Get One Product By Id",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
               {
                 "key": "Accept",
                 "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"Ferme Test Postman {{$timestamp}}\",\n    \"street_line_1\": \"Test\",\n    \"city\": \"Paris\",\n    \"postal_code\": \"75000\",\n    \"user_id\": \"{{user_id}}\"\n}"
-            },
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
               "host": [
@@ -1029,13 +934,12 @@
                 "{{product_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
     {
-      "name": "Cart",
+      "name": "Cart Items",
       "item": [
         {
           "name": "Add to Cart",
@@ -1043,13 +947,13 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('cart_item_id', id); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -1071,20 +975,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"quantity\": 2\n}"
+              "raw": "{\n    \"product_id\": \"{{product_id}}\",\n    \"quantity\": 2\n}"
             },
             "url": {
-              "raw": "{{base_url}}/cart/{{product_id}}",
+              "raw": "{{base_url}}/cart-items",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
-                "{{product_id}}"
+                "cart-items"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Cart By Id",
@@ -1093,53 +995,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/cart/{{cart_item_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "cart",
-                "{{cart_item_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Cart By User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1156,32 +1014,27 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/cart/user/{{user_id}}",
+              "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
-                "user",
-                "{{user_id}}"
+                "cart-items",
+                "{{cart_item_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Cart By Product",
+          "name": "Get Cart By User (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1194,22 +1047,67 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
+                "value": "Bearer {{user_jwt_token}}"
               }
             ],
             "url": {
-              "raw": "{{base_url}}/cart/product/{{product_id}}",
+              "raw": "{{base_url}}/cart-items?user_id={{user_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
-                "product",
-                "{{product_id}}"
+                "cart-items"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Get Cart By Product (Query Filter)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart-items?product_id={{product_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart-items"
+              ],
+              "query": [
+                {
+                  "key": "product_id",
+                  "value": "{{product_id}}"
+                }
+              ]
+            }
+          }
         },
         {
           "name": "Put Cart item",
@@ -1218,12 +1116,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1236,30 +1131,28 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
+                "value": "Bearer {{user_jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"quantity\": 6\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"quantity\": 6\n}"
             },
             "url": {
-              "raw": "{{base_url}}/cart/{{cart_item_id}}",
+              "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
+                "cart-items",
                 "{{cart_item_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Cart item",
@@ -1268,12 +1161,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1286,30 +1176,28 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
+                "value": "Bearer {{user_jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"quantity\": 60\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"quantity\": 60\n}"
             },
             "url": {
-              "raw": "{{base_url}}/cart/{{cart_item_id}}",
+              "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
+                "cart-items",
                 "{{cart_item_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -1322,13 +1210,13 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 201 or 409', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201, 409]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('bookmark_id', id); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -1342,35 +1230,37 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{user_jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"product_id\": \"{{product_id}}\"\n}"
+            },
             "url": {
-              "raw": "{{base_url}}/bookmarks/product/{{product_id}}",
+              "raw": "{{base_url}}/bookmarks",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "bookmarks",
-                "product",
-                "{{product_id}}"
+                "bookmarks"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get User Bookmarks",
+          "name": "Get User Bookmarks (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1387,18 +1277,21 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/bookmarks/user/{{user_id}}",
+              "raw": "{{base_url}}/bookmarks?user_id={{user_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "bookmarks",
-                "user",
-                "{{user_id}}"
+                "bookmarks"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -1411,13 +1304,13 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 201 or 409', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201, 409]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('follow_id', id); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -1431,35 +1324,37 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{user_jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"producer_id\": \"{{producer_id}}\"\n}"
+            },
             "url": {
-              "raw": "{{base_url}}/follows/producer/{{producer_id}}",
+              "raw": "{{base_url}}/follows",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "follows",
-                "producer",
-                "{{producer_id}}"
+                "follows"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get User Follows",
+          "name": "Get User Follows (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1476,18 +1371,21 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/follows/user/{{user_id}}",
+              "raw": "{{base_url}}/follows?user_id={{user_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "follows",
-                "user",
-                "{{user_id}}"
+                "follows"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Follow By Id",
@@ -1496,12 +1394,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1527,22 +1422,18 @@
                 "{{follow_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Producer Follows",
+          "name": "Get Producer Follows (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1559,18 +1450,21 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/follows/producer/{{producer_id}}",
+              "raw": "{{base_url}}/follows?producer_id={{producer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "follows",
-                "producer",
-                "{{producer_id}}"
+                "follows"
+              ],
+              "query": [
+                {
+                  "key": "producer_id",
+                  "value": "{{producer_id}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -1583,13 +1477,13 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('review_id', id); }"
-                ]
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -1611,21 +1505,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"rating\": 5,\n    \"comment\": \"Super produit !\"\n}"
+              "raw": "{\n    \"product_id\": \"{{product_id}}\",\n    \"rating\": 5,\n    \"comment\": \"Super produit de test !\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/reviews/product/{{product_id}}",
+              "raw": "{{base_url}}/reviews",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "reviews",
-                "product",
-                "{{product_id}}"
+                "reviews"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Review",
@@ -1634,12 +1525,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1652,23 +1540,16 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}",
-                "type": "text"
+                "value": "Bearer {{user_jwt_token}}"
               },
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"rating\": 3\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n    \"rating\": 3\n}"
             },
             "url": {
               "raw": "{{base_url}}/reviews/{{review_id}}",
@@ -1680,8 +1561,7 @@
                 "{{review_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Reviews By ID",
@@ -1690,12 +1570,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1717,22 +1594,18 @@
                 "{{review_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Product Reviews",
+          "name": "Get Product Reviews (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1745,18 +1618,21 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/reviews/product/{{product_id}}",
+              "raw": "{{base_url}}/reviews?product_id={{product_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "reviews",
-                "product",
-                "{{product_id}}"
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "product_id",
+                  "value": "{{product_id}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -1777,9 +1653,7 @@
                   "var code_name = data.code_name || (data.data ? data.data.code_name : null);",
                   "if(code_name) { pm.collectionVariables.set('discount_code_name', code_name); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1804,17 +1678,15 @@
               "raw": "{\n    \"discount_percent\": 15,\n    \"code_name\": \"T15_{{$timestamp}}\",\n    \"availibility\": \"2026-12-31\",\n    \"max_use\": 100\n}"
             },
             "url": {
-              "raw": "{{base_url}}/discounts/new",
+              "raw": "{{base_url}}/discounts",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "discounts",
-                "new"
+                "discounts"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get All Discount",
@@ -1823,18 +1695,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -1845,16 +1711,8 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{base_url}}/discounts",
               "host": [
@@ -1864,8 +1722,7 @@
                 "discounts"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Discount By Id",
@@ -1874,18 +1731,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -1896,16 +1747,8 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{base_url}}/discounts/{{discount_id}}",
               "host": [
@@ -1916,28 +1759,21 @@
                 "{{discount_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Discount By Code Name",
+          "name": "Get Discount By Code Name (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -1948,29 +1784,24 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
-              "raw": "{{base_url}}/discounts/code/{{discount_code_name}}",
+              "raw": "{{base_url}}/discounts?code_name={{discount_code_name}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "discounts",
-                "code",
-                "{{discount_code_name}}"
+                "discounts"
+              ],
+              "query": [
+                {
+                  "key": "code_name",
+                  "value": "{{discount_code_name}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put Discount",
@@ -1979,12 +1810,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             },
             {
@@ -1993,12 +1821,9 @@
                 "exec": [
                   "let futureDate = new Date();",
                   "futureDate.setDate(futureDate.getDate() + 5);",
-                  "pm.collectionVariables.set(\"future_date\", futureDate.toISOString().split('T')[0]);",
-                  ""
+                  "pm.collectionVariables.set(\"future_date\", futureDate.toISOString().split('T')[0]);"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2032,8 +1857,7 @@
                 "{{discount_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Discount",
@@ -2042,12 +1866,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2081,8 +1902,7 @@
                 "{{discount_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -2101,9 +1921,7 @@
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('event_id', id); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2125,20 +1943,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"event_name\": \"Postman {{$timestamp}}\",\n    \"event_date\": \"{{future_date}}\",\n    \"street_line_1\": \"test\",\n    \"city\": \"Lyon\",\n    \"postal_code\": \"69000\",\n    \"producer_ids\": [\"{{producer_id}}\"]\n}"
+              "raw": "{\n    \"event_name\": \"Postman {{$timestamp}}\",\n    \"event_date\": \"{{future_date}}\",\n    \"street_line_1\": \"Parc des Expositions\",\n    \"city\": \"Lyon\",\n    \"postal_code\": \"69000\",\n    \"producer_ids\": [\"{{producer_id}}\"]\n}"
             },
             "url": {
-              "raw": "{{base_url}}/events/new",
+              "raw": "{{base_url}}/events",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "events",
-                "new"
+                "events"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get All Event",
@@ -2147,18 +1963,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -2169,28 +1979,18 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
-              "raw": "{{base_url}}/events/",
+              "raw": "{{base_url}}/events",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "events",
-                ""
+                "events"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Get Event By Id",
@@ -2199,18 +1999,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -2221,16 +2015,8 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
               "raw": "{{base_url}}/events/{{event_id}}",
               "host": [
@@ -2241,8 +2027,7 @@
                 "{{event_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put Event",
@@ -2251,12 +2036,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2278,7 +2060,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"event_name\": \"Put {{$timestamp}}\",\n    \"description\": \"Test postman put\",\n    \"event_date\": \"{{future_date}}\",\n    \"street_line_1\": \"Mon adresse\",\n    \"city\": \"Lyon\",\n    \"postal_code\": \"67000\"\n}"
+              "raw": "{\n    \"event_name\": \"Put {{$timestamp}}\",\n    \"description\": \"Rassemblement de test Postman\",\n    \"event_date\": \"{{future_date}}\",\n    \"street_line_1\": \"Adresse de l'événement modifiée\",\n    \"city\": \"Lyon\",\n    \"postal_code\": \"67000\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/events/{{event_id}}",
@@ -2290,8 +2072,7 @@
                 "{{event_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Event",
@@ -2300,12 +2081,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2327,7 +2105,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"city\": \"Paris\"\n}"
+              "raw": "{\n    \"city\": \"Marseille\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/events/{{event_id}}",
@@ -2339,8 +2117,7 @@
                 "{{event_id}}"
               ]
             }
-          },
-          "response": []
+          }
         }
       ]
     },
@@ -2353,13 +2130,23 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('order_id', id); }"
-                ]
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "var timestamp = new Date().getTime();",
+                  "pm.collectionVariables.set('order_number', 'CMD-' + timestamp);"
+                ],
+                "type": "text/javascript"
               }
             }
           ],
@@ -2381,59 +2168,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"order_number\": \"CMD-{{$timestamp}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"unpaid\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/orders/new",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "orders",
-                "new"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All Order",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
+              "raw": "{\n    \"order_number\": \"{{order_number}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"unpaid\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders",
@@ -2444,28 +2179,21 @@
                 "orders"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Order By Id",
+          "name": "Get All Order",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -2476,16 +2204,44 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Order By Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/orders/{{order_id}}",
               "host": [
@@ -2496,28 +2252,21 @@
                 "{{order_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
-          "name": "Get Order By Number",
+          "name": "Get Order By Number (Query Filter)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
           "request": {
             "method": "GET",
             "header": [
@@ -2528,29 +2277,24 @@
               {
                 "key": "Authorization",
                 "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
             "url": {
-              "raw": "{{base_url}}/orders/number/CMD-{{$timestamp}}",
+              "raw": "{{base_url}}/orders?order_number={{order_number}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "orders",
-                "number",
-                "CMD-{{$timestamp}}"
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "order_number",
+                  "value": "{{order_number}}"
+                }
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Put Order",
@@ -2559,12 +2303,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2586,7 +2327,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"order_number\": \"CMD-{{$timestamp}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"paied\"\n}"
+              "raw": "{\n    \"order_number\": \"{{order_number}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"paid\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders/{{order_id}}",
@@ -2598,8 +2339,7 @@
                 "{{order_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Patch Order",
@@ -2608,12 +2348,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });",
-                  ""
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2635,7 +2372,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"status\": \"finished\"\n}"
+              "raw": "{\n    \"status\": \"shipped\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders/{{order_id}}",
@@ -2647,8 +2384,347 @@
                 "{{order_id}}"
               ]
             }
-          },
-          "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "Composes",
+      "item": [
+        {
+          "name": "Create Compose",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
+                  "var data = pm.response.json();",
+                  "var id = data.id || (data.data ? data.data.id : null);",
+                  "if(id) { pm.collectionVariables.set('compose_id', id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"product_id\": \"{{product_id}}\",\n    \"quantity\": 5,\n    \"unit_price\": 49.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/composes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Composes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/composes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Compose By Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes",
+                "{{compose_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Put Compose",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"quantity\": 10,\n    \"unit_price\": 45.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes",
+                "{{compose_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Patch Compose",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"quantity\": 12\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes",
+                "{{compose_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reduces",
+      "item": [
+        {
+          "name": "Create Reduce",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
+                  "var data = pm.response.json();",
+                  "var id = data.id || (data.data ? data.data.id : null);",
+                  "if(id) { pm.collectionVariables.set('reduce_id', id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"discount_id\": \"{{discount_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reduces",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reduces"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Reduces",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reduces",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reduces"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Reduce By Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reduces/{{reduce_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reduces",
+                "{{reduce_id}}"
+              ]
+            }
+          }
         }
       ]
     },
@@ -2656,18 +2732,89 @@
       "name": "Teardown (Deletes)",
       "item": [
         {
+          "name": "Delete Compose",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes",
+                "{{compose_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Reduce",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reduces/{{reduce_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reduces",
+                "{{reduce_id}}"
+              ]
+            }
+          }
+        },
+        {
           "name": "Delete Order",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2693,8 +2840,7 @@
                 "{{order_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Event",
@@ -2703,12 +2849,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2734,8 +2877,7 @@
                 "{{event_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Discount",
@@ -2744,12 +2886,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2775,8 +2914,7 @@
                 "{{discount_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Review",
@@ -2785,12 +2923,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2816,8 +2951,7 @@
                 "{{review_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Follow",
@@ -2826,12 +2960,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2848,18 +2979,16 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/follows/producer/{{producer_id}}",
+              "raw": "{{base_url}}/follows/{{follow_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "follows",
-                "producer",
-                "{{producer_id}}"
+                "{{follow_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Bookmark",
@@ -2868,12 +2997,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2899,8 +3025,7 @@
                 "{{bookmark_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Cart Item",
@@ -2909,12 +3034,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2931,17 +3053,16 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/cart/{{cart_item_id}}",
+              "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "cart",
+                "cart-items",
                 "{{cart_item_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Product",
@@ -2950,12 +3071,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2981,8 +3099,7 @@
                 "{{product_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete Producer",
@@ -2991,12 +3108,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -3013,18 +3127,16 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/producer/delete/{{producer_id}}",
+              "raw": "{{base_url}}/producers/{{producer_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "producer",
-                "delete",
+                "producers",
                 "{{producer_id}}"
               ]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Delete User",
@@ -3033,12 +3145,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });",
-                  ""
+                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -3064,8 +3173,44 @@
                 "{{user_id}}"
               ]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Logout Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "logout"
+              ]
+            }
+          }
         }
       ]
     }
@@ -3121,6 +3266,18 @@
     },
     {
       "key": "order_id",
+      "value": ""
+    },
+    {
+      "key": "compose_id",
+      "value": ""
+    },
+    {
+      "key": "reduce_id",
+      "value": ""
+    },
+    {
+      "key": "order_number",
       "value": ""
     },
     {
