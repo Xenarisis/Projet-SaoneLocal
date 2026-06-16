@@ -45,6 +45,24 @@ jobs:
       - name: Give perms *
         run: chmod -R 777 .
       
+      - name: Create dummy .env for tests
+        run: |
+          cp .env.example .env
+          echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=db" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=saonelocal_app" >> .env
+          echo "DB_USERNAME=laravel_user" >> .env
+          echo "DB_PASSWORD=test_password" >> .env
+          echo "MYSQL_DATABASE=saonelocal_app" >> .env
+          echo "MYSQL_USER=laravel_user" >> .env
+          echo "MYSQL_PASSWORD=test_password" >> .env
+          echo "MYSQL_ROOT_PASSWORD=test_password" >> .env
+
+      - name: Starting API
+        run: docker compose -f docker-compose.yml up -d
+      
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
       
@@ -86,9 +104,23 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
             cd /home/${{ secrets.EC2_USERNAME }}/projet-saonelocal
+            
+            echo "APP_ENV=production" > .env
+            echo "APP_DEBUG=false" >> .env
+            echo "APP_KEY=${{ secrets.ENV_PROD_APP_KEY }}" >> .env
+            echo "DB_CONNECTION=mysql" >> .env
+            echo "DB_HOST=db" >> .env
+            echo "DB_PORT=3306" >> .env
+            echo "DB_DATABASE=saonelocal_app" >> .env
+            echo "DB_USERNAME=laravel_user" >> .env
+            echo "DB_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}" >> .env
+            echo "MYSQL_DATABASE=saonelocal_app" >> .env
+            echo "MYSQL_USER=laravel_user" >> .env
+            echo "MYSQL_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}" >> .env
+            echo "MYSQL_ROOT_PASSWORD=${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}" >> .env
+            
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d
