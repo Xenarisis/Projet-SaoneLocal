@@ -13,7 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(append: [
-            \App\Http\Middleware\SecurityHeaders::class
+            \App\Http\Middleware\SecurityHeaders::class,
+            \App\Http\Middleware\CheckIfBanned::class,
+        ]);
+        
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckIfBanned::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
