@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FollowController;
@@ -53,13 +54,18 @@ Route::prefix('reviews')->group(function () {
 // PRIVATE ROUTES (Token JWT required)
 // =======================================================
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::prefix('admin')->group(function () {
+        // --- (PUT) ---
+        Route::post('/toggle-ban/{user}', [AdminController::class, 'toggleBan']);
+    });
+
     Route::prefix('users')->group(function () {
         // --- (GET) ---
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{user}', [UserController::class, 'show']);
 
         // --- (POST) ---
-        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/refresh', [AuthController::class, 'refresh']);
 
         // --- (PUT) ---
