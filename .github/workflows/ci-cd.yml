@@ -63,14 +63,22 @@ jobs:
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
       
-      - name: Starting API
-        run: docker compose -f docker-compose.yml up -d
+      - name: Install Newman & Wait-on
+        run: npm install -g newman wait-on
+      
+      - name: Check Containers Status
+        run: docker ps -a
+        
+      - name: Display Docker Logs (Debug)
+        run: docker compose -f docker-compose.yml logs
       
       - name: Install Newman & Wait-on
         run: npm install -g newman wait-on
       
       - name: Waiting API and BDD
-        run: wait-on http-get://localhost:8000/api/health -t 240000
+        run: |
+          sleep 10 
+          wait-on http-get://localhost:8000/api/health -t 240000
 
       - name: Run Postman Collection
         run: |
