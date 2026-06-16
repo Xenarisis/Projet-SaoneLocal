@@ -16,9 +16,10 @@ return new class extends Migration {
             $table->string('username')->unique();
             $table->string('role')->default('user')->nullable();
             $table->string('password');
+            $table->boolean('is_banned')->default(false);
             $table->dateTime('lastLogin')->nullable();
-            $table->timestamps();
             $table->string('GoogleToken')->unique()->nullable();
+            $table->timestamps();
         });
 
         // Table Password Reset Tokens
