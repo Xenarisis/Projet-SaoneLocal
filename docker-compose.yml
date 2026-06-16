@@ -17,22 +17,14 @@ services:
         depends_on:
             db:
                 condition: service_healthy
-        environment:
-            - DB_CONNECTION=mysql
-            - DB_HOST=db
-            - DB_PORT=3306
-            - DB_DATABASE=saonelocal_app
-            - DB_USERNAME=laravel_user
-            - DB_PASSWORD=secret_password
+        env_file:
+            - .env
     db:
         image: mysql:8.0
         ports:
             - "3307:3306"
-        environment:
-            - MYSQL_DATABASE=saonelocal_app
-            - MYSQL_USER=laravel_user
-            - MYSQL_PASSWORD=secret_password
-            - MYSQL_ROOT_PASSWORD=secret_password
+        env_file:
+            - .env
         volumes:
             - db_data:/var/lib/mysql
         healthcheck:
