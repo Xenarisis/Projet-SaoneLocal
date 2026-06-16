@@ -27,6 +27,7 @@ class User extends Authenticatable implements JWTSubject {
         'password',
         'GoogleToken',
         'lastLogin',
+        'is_banned'
     ];
 
     protected $hidden = [
