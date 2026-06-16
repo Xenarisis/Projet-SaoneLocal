@@ -517,6 +517,130 @@
       ]
     },
     {
+      "name": "Ban Management",
+      "item": [
+        {
+          "name": "1. Toggle Ban (Bannir l'utilisateur)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "var jsonData = pm.response.json();",
+                  "pm.test('L\\'utilisateur est bien banni', function () { pm.expect(jsonData.data.is_banned).to.eql(true); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users/{{user_id}}/toggle-ban",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{user_id}}",
+                "toggle-ban"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Test Accès API (Utilisateur Banni)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('L\\'accès doit être refusé (403)', function () { pm.expect(pm.response.code).to.be.oneOf([403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{user_jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Toggle Ban (Débannir l'utilisateur)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
+                  "var jsonData = pm.response.json();",
+                  "pm.test('L\\'utilisateur n\\'est plus banni', function () { pm.expect(jsonData.data.is_banned).to.eql(false); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/users/{{user_id}}/toggle-ban",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{user_id}}",
+                "toggle-ban"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Producers",
       "item": [
         {
