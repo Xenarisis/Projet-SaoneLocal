@@ -70,15 +70,16 @@ jobs:
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
       
+      - name: Display Docker Logs (Debug)
+        if: failure()
+        run: docker compose -f docker-compose.yml logs
+
       - name: Install Newman & Wait-on
         run: npm install -g newman wait-on
       
       - name: Check Containers Status
         run: docker ps -a
         
-      - name: Display Docker Logs (Debug)
-        run: docker compose -f docker-compose.yml logs
-      
       - name: Install Newman & Wait-on
         run: npm install -g newman wait-on
       
