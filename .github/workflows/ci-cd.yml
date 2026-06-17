@@ -33,6 +33,8 @@ jobs:
           context: .
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/xenarisis/projet-saonelocal:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   newman-test:
     name: Newman Test
@@ -42,62 +44,41 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
       
-      - name: Give perms *
-        run: chmod -R 777 .
+      - name: Set Laravel permissions
+        run: chmod -R 777 storage bootstrap/cache || true
       
-      - name: Create dummy .env for tests
+      - name: Create test .env
         run: |
-          cp .env.example .env
-          
-          echo "APP_ENV=testing" >> .env
-          echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
-          echo "APP_DEBUG=true" >> .env
-          
-          echo "CACHE_STORE=array" >> .env
-          echo "SESSION_DRIVER=array" >> .env
-          echo "QUEUE_CONNECTION=sync" >> .env
-          
-          echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
-          echo "JWT_ALGO=HS256" >> .env
-          echo "JWT_TTL=60" >> .env
-          
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=db" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=saonelocal_app" >> .env
-          echo "DB_USERNAME=laravel_user" >> .env
-          echo "DB_PASSWORD=test_password" >> .env
-          
-          echo "MYSQL_DATABASE=saonelocal_app" >> .env
-          echo "MYSQL_USER=laravel_user" >> .env
-          echo "MYSQL_PASSWORD=test_password" >> .env
-          echo "MYSQL_ROOT_PASSWORD=test_password" >> .env
+          cat <<EOF > .env
+          APP_ENV=testing
+          APP_KEY=base64:$(openssl rand -base64 32)
+          APP_DEBUG=true
+          CACHE_STORE=array
+          SESSION_DRIVER=array
+          QUEUE_CONNECTION=sync
+          JWT_SECRET=$(openssl rand -hex 32)
+          JWT_ALGO=HS256
+          JWT_TTL=60
+          DB_CONNECTION=mysql
+          DB_HOST=db
+          DB_PORT=3306
+          DB_DATABASE=saonelocal_app
+          DB_USERNAME=laravel_user
+          DB_PASSWORD=test_password
+          MYSQL_DATABASE=saonelocal_app
+          MYSQL_USER=laravel_user
+          MYSQL_PASSWORD=test_password
+          MYSQL_ROOT_PASSWORD=test_password
+          EOF
 
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
       
-      - name: Display Docker Logs (Debug)
-        if: failure()
-        run: docker compose -f docker-compose.yml logs
-
-      - name: Install Newman & Wait-on
-        run: npm install -g newman wait-on
-      
-      - name: Check Containers Status
-        run: docker ps -a
-        
       - name: Install Newman & Wait-on
         run: npm install -g newman wait-on
       
       - name: Waiting API and BDD
-        run: |
-          sleep 140
-          
-          echo "Try :"
-          curl -v http://localhost:8000/api/health
-          
-          echo "Lancement de wait-on :"
-          wait-on http-get://localhost:8000/api/health -t 60000
+        run: wait-on http-get://localhost:8000/api/health -t 140000 -i 2000
 
       - name: Run Postman Collection
         run: |
@@ -105,6 +86,10 @@ jobs:
             echo "Run collection : $file"
             newman run "$file"
           done
+
+      - name: Display Docker Logs (Debug)
+        if: failure()
+        run: docker compose -f docker-compose.yml logs
 
   deploy-to-ec2:
     name: Deploy to EC2
@@ -133,20 +118,22 @@ jobs:
           script: |
             cd /home/${{ secrets.EC2_USERNAME }}/projet-saonelocal
             
-            echo "APP_ENV=production" > .env
-            echo "APP_DEBUG=false" >> .env
-            echo "APP_KEY=${{ secrets.ENV_PROD_APP_KEY }}" >> .env
-            echo "DB_CONNECTION=mysql" >> .env
-            echo "DB_HOST=db" >> .env
-            echo "DB_PORT=3306" >> .env
-            echo "DB_DATABASE=saonelocal_app" >> .env
-            echo "DB_USERNAME=laravel_user" >> .env
-            echo "DB_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}" >> .env
-            echo "MYSQL_DATABASE=saonelocal_app" >> .env
-            echo "MYSQL_USER=laravel_user" >> .env
-            echo "MYSQL_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}" >> .env
-            echo "MYSQL_ROOT_PASSWORD=${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}" >> .env
-            echo "JWT_SECRET=${{ secrets.ENV_PROD_JWT_SECRET }}" >> .env
+            cat <<EOF > .env
+            APP_ENV=production
+            APP_DEBUG=false
+            APP_KEY=${{ secrets.ENV_PROD_APP_KEY }}
+            DB_CONNECTION=mysql
+            DB_HOST=db
+            DB_PORT=3306
+            DB_DATABASE=saonelocal_app
+            DB_USERNAME=laravel_user
+            DB_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}
+            MYSQL_DATABASE=saonelocal_app
+            MYSQL_USER=laravel_user
+            MYSQL_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}
+            MYSQL_ROOT_PASSWORD=${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}
+            JWT_SECRET=${{ secrets.ENV_PROD_JWT_SECRET }}
+            EOF
             
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
