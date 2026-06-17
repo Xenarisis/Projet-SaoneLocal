@@ -77,8 +77,13 @@ jobs:
       
       - name: Waiting API and BDD
         run: |
-          sleep 10 
-          wait-on http-get://localhost:8000/api/health -t 240000
+          sleep 140
+          
+          echo "Debug :"
+          curl -v http://localhost:8000/api/health
+          
+          echo "Lancement de wait-on :"
+          wait-on http-get://localhost:8000/api/health -t 60000
 
       - name: Run Postman Collection
         run: |
