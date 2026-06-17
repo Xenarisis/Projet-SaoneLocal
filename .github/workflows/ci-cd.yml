@@ -48,19 +48,24 @@ jobs:
       - name: Create dummy .env for tests
         run: |
           cp .env.example .env
-
-          echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
+          echo "APP_ENV=testing" >> .env
           echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
+          echo "APP_DEBUG=true" >> .env
+          
+          echo "CACHE_STORE=array" >> .env
+          echo "SESSION_DRIVER=array" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          
+          echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
+          echo "JWT_ALGO=HS256" >> .env
+          echo "JWT_TTL=60" >> .env
+          
           echo "DB_CONNECTION=mysql" >> .env
           echo "DB_HOST=db" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=saonelocal_app" >> .env
           echo "DB_USERNAME=laravel_user" >> .env
           echo "DB_PASSWORD=test_password" >> .env
-          echo "MYSQL_DATABASE=saonelocal_app" >> .env
-          echo "MYSQL_USER=laravel_user" >> .env
-          echo "MYSQL_PASSWORD=test_password" >> .env
-          echo "MYSQL_ROOT_PASSWORD=test_password" >> .env
 
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
@@ -81,7 +86,7 @@ jobs:
         run: |
           sleep 140
           
-          echo "Debug :"
+          echo "Try :"
           curl -v http://localhost:8000/api/health
           
           echo "Lancement de wait-on :"
