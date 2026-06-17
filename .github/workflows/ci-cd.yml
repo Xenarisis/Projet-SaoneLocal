@@ -46,7 +46,6 @@ jobs:
       
       - name: Prepare Laravel Folders & Permissions
         run: |
-          mkdir -p vendor
           mkdir -p storage/framework/views
           mkdir -p storage/framework/cache
           mkdir -p storage/framework/sessions
