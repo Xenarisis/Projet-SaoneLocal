@@ -38,6 +38,6 @@ services:
             - ./:/var/www/html
         ports:
             - "5173:5173"
-        command: sh -c "npm install -g npm@11.12.0 && npm install && npm run dev -- --host 0.0.0.0"
+        command: sh -c "npm install -g npm@11.17.0 && npm install && npm run dev -- --host 0.0.0.0"
 volumes:
     db_data:
