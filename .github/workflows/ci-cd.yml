@@ -44,8 +44,16 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
       
-      - name: Set Laravel permissions
-        run: chmod -R 777 storage bootstrap/cache || true
+      - name: Prepare Laravel Folders & Permissions
+        run: |
+          mkdir -p vendor
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/logs
+          mkdir -p bootstrap/cache
+          
+          chmod -R 777 .
       
       - name: Create test .env
         run: |
