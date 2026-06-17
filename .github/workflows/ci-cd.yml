@@ -48,6 +48,8 @@ jobs:
       - name: Create dummy .env for tests
         run: |
           cp .env.example .env
+
+          echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
           echo "APP_KEY=base64:$(openssl rand -base64 32)" >> .env
           echo "DB_CONNECTION=mysql" >> .env
           echo "DB_HOST=db" >> .env
