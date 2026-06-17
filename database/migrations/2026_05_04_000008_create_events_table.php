@@ -11,8 +11,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
-            $table->string('event_name');
+            $table->string('event_name')->unique();
             $table->string('description')->nullable();
             $table->dateTime('event_date');
             $table->string('street_line_1', 60);
@@ -20,6 +19,8 @@ return new class extends Migration
             $table->string('city', 50);
             $table->string('postal_code', 20);
             $table->timestamps();
+            // Now use pivot table (event_producer)
+            // $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
         });
     }
 

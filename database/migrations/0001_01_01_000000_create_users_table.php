@@ -5,23 +5,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    public function up(): void
-    {
+return new class extends Migration {
+    public function up(): void {
         // Table Users
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('role');
-            $table->string('hashed_password');
-            $table->dateTime('last_login')->nullable();
-            $table->dateTime('updated_at')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->integer('Gtoken')->nullable();
-            $table->timestamps(); 
+            $table->string('username')->unique();
+            $table->string('role')->default('user')->nullable();
+            $table->string('password');
+            $table->boolean('is_banned')->default(false);
+            $table->dateTime('lastLogin')->nullable();
+            $table->string('GoogleToken')->unique()->nullable();
+            $table->timestamps();
         });
 
         // Table Password Reset Tokens
@@ -31,21 +29,20 @@ return new class extends Migration
         //     $table->timestamp('created_at')->nullable();
         // });
 
-        // Table Sessions
-        // Schema::create('sessions', function (Blueprint $table) {
-        //     $table->string('id')->primary();
-        //     $table->foreignId('user_id')->nullable()->index();
-        //     $table->string('ip_address', 45)->nullable();
-        //     $table->text('user_agent')->nullable();
-        //     $table->longText('payload');
-        //     $table->integer('last_activity')->index();
-        // });
+        // Table Sessions (Laravel need it)
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
     }
 
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('users');
         // Schema::dropIfExists('password_reset_tokens');
-        // Schema::dropIfExists('sessions');
+        Schema::dropIfExists('sessions');
     }
 };

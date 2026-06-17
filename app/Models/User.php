@@ -3,14 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Follow;
+use App\Models\CartItem;
+use App\Models\Producer;
+use App\Models\Bookmark;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements JWTSubject {
     use HasFactory, Notifiable;
 
     protected $fillable = [
@@ -18,9 +24,47 @@ class User extends Authenticatable {
         'firstname',
         'lastname',
         'username',
-        'role',
         'password',
-        'last_login_at',
-        'token'
-        ];
+        'GoogleToken',
+        'lastLogin',
+        'is_banned'
+    ];
+
+    protected $hidden = [
+        'password',
+        'GoogleToken',
+        'remember_token',
+    ];
+
+    public function getJWTIdentifier() {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims() {
+        return [];
+    }
+
+    public function isAdmin(): bool {
+        return $this->role === 'admin';
+    }
+
+    public function producer() {
+        return $this->hasOne(Producer::class);
+    }
+
+    public function follows(): HasMany {
+        return $this->hasMany(Follow::class);
+    }
+
+    public function cartItems(): HasMany {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class);
+    }
+
+    public function bookmarks(): HasMany {
+        return $this->hasMany(Bookmark::class);
+    }
 }
