@@ -1,25 +1,15 @@
 #!/bin/bash
 set -e
 
-echo "Init Laravel environement"
+echo "Init Laravel production environment..."
 
-if [ ! -d "vendor" ]; then
-    echo "composer install: "
-    composer install --no-interaction --prefer-dist --optimize-autoloader
-fi
+echo "Caching configuration and routes..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
-if [ ! -f ".env" ]; then
-    echo ".env:"
-    cp .env.example .env
-    php artisan key:generate --no-interaction
-    php artisan jwt:secret --force --no-interaction
-fi
+echo "Running migrations and Seeder..."
+php artisan migrate:fresh --seed --force
 
-echo "migrations:"
-php artisan migrate --force
-
-echo "seeder: "
-php artisan db:seed
-
-echo "starting:"
+echo "Starting PHP-FPM..."
 exec "$@"
