@@ -8,7 +8,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "Running migrations and Seeder..."
+echo "Wiping database, migrating and seeding..."
 php artisan migrate:fresh --seed --force
 
 echo "Starting PHP-FPM..."
