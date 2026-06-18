@@ -25,7 +25,7 @@ RUN mkdir -p /home/$user/.composer && \
 
 WORKDIR /var/www/html
 
-COPY --chown=$user:$user . /var/www/html
+COPY . /var/www/html
 
 USER root
 
@@ -36,14 +36,10 @@ RUN mkdir -p storage/framework/views \
     bootstrap/cache
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-
 RUN npm install
 RUN npm run build
 
-RUN chown -R $user:$user /var/www/html/storage \
-    /var/www/html/bootstrap/cache \
-    /var/www/html/public \
-    /var/www/html/vendor
+RUN chown -R $user:$user /var/www/html
 
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
