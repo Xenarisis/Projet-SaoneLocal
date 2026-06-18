@@ -35,7 +35,7 @@ RUN mkdir -p storage/framework/views \
     storage/logs \
     bootstrap/cache
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 RUN npm install
 RUN npm run build
 
