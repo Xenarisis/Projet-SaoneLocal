@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.5-fpm
 
 ARG user=laravel
 ARG uid=1000
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.9.7 /usr/bin/composer /usr/bin/composer
 
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
@@ -27,6 +27,8 @@ WORKDIR /var/www/html
 
 COPY . /var/www/html
 
+USER root
+
 RUN mkdir -p storage/framework/views \
     storage/framework/cache \
     storage/framework/sessions \
@@ -34,11 +36,10 @@ RUN mkdir -p storage/framework/views \
     bootstrap/cache
 
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-
 RUN npm install
 RUN npm run build
 
-RUN chown -R $user:$user /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public
+RUN chown -R $user:$user /var/www/html
 
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
