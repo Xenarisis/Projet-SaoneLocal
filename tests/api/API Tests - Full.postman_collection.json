@@ -1823,7 +1823,9 @@
                   "var code_name = data.code_name || (data.data ? data.data.code_name : null);",
                   "if(code_name) { pm.collectionVariables.set('discount_code_name', code_name); }"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -1845,7 +1847,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"discount_percent\": 15,\n    \"code_name\": \"T15_{{$timestamp}}\",\n    \"availibility\": \"2026-12-31\",\n    \"max_use\": 100\n}"
+              "raw": "{\n    \"discount_percent\": 15,\n    \"code_name\": \"T15_{{$timestamp}}\",\n    \"available_until\": \"2026-12-31\",\n    \"max_use\": 100\n}"
             },
             "url": {
               "raw": "{{base_url}}/discounts",
@@ -1986,7 +1988,9 @@
                 "exec": [
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             },
             {
@@ -1997,7 +2001,9 @@
                   "futureDate.setDate(futureDate.getDate() + 5);",
                   "pm.collectionVariables.set(\"future_date\", futureDate.toISOString().split('T')[0]);"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -2019,7 +2025,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"discount_percent\": 45,\n    \"code_name\": \"{{discount_code_name}}\",\n    \"availibility\": \"{{future_date}}\"\n}"
+              "raw": "{\n    \"discount_percent\": 45,\n    \"code_name\": \"{{discount_code_name}}\",\n    \"available_until\": \"{{future_date}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/discounts/{{discount_id}}",
@@ -2043,7 +2049,9 @@
                 "exec": [
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],

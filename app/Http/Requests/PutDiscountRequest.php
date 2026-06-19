@@ -45,9 +45,9 @@ class PutDiscountRequest extends FormRequest {
             'code_name.string'          => 'Le code doit être une chaîne de caractères.',
             'code_name.max'             => 'Le code ne doit pas dépasser 30 caractères.',
             'code_name.unique'          => 'Ce code de réduction existe déjà.',
-            'available_until.required'     => 'La date de validité est obligatoire.',
-            'available_until.date'         => 'Le format de la date est invalide.',
-            'available_until.after'        => 'La date de validité doit être dans le futur.',
+            'available_until.required'  => 'La date de validité est obligatoire.',
+            'available_until.date'      => 'Le format de la date est invalide.',
+            'available_until.after'     => 'La date de validité doit être dans le futur.',
             'max_use.integer'           => 'Le nombre d\'utilisations doit être un entier.',
             'max_use.min'               => 'Le nombre d\'utilisations doit être au moins de 1.',
         ];
