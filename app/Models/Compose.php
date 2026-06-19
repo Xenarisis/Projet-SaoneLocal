@@ -22,4 +22,10 @@ class Compose extends Model {
         'order_id',
         'product_id'
     ];
+    
+    protected function casts(): array {
+        return [
+            'unit_price' => 'decimal:2'
+        ];
+    }
 }

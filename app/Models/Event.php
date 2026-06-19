@@ -26,6 +26,12 @@ class Event extends Model {
         'producer_id'
     ];
 
+    protected function casts(): array {
+        return [
+            'event_date' => 'datetime'
+        ];
+    }
+
     public function producers(): BelongsToMany {
         return $this->belongsToMany(Producer::class);
     }

@@ -14,7 +14,7 @@ return new class extends Migration {
             // Why not linking directly discounts table to order table instead of using reduce table as intermediate 
             $table->integer('discount_percent');
             $table->string('code_name', 30);
-            $table->datetime('availibility');
+            $table->datetime('available_until');
             $table->integer('max_use')->nullable();
             $table->timestamps();
         });

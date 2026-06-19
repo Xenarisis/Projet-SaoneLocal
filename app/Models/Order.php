@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Order extends Model
-{
+class Order extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -25,6 +24,13 @@ class Order extends Model
     protected $hidden = [
         'user_id'
     ];
+
+    protected function casts(): array {
+        return [
+            'total_excl_tax' => 'decimal:2',
+            'percentage_tax' => 'decimal:2'
+        ];
+    }
 
     public function discounts(): BelongsToMany {
         return $this->belongsToMany(Discount::class, 'reduces');

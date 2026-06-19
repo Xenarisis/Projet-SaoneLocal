@@ -32,7 +32,7 @@ class AuthController extends Controller {
         }
 
         $user = auth('api')->user();
-        $user->lastLogin = now();
+        $user->last_login = now();
         $user->save();
 
         return response()->json([
