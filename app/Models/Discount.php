@@ -12,9 +12,15 @@ class Discount extends Model {
     protected $fillable = [
         'discount_percent',
         'code_name',
-        'availibility',
+        'available_until',
         'max_use'
     ];
+
+    protected function casts(): array {
+        return [
+            'available_until' => 'datetime'
+        ];
+    }
 
     public function orders(): BelongsToMany {
         return $this->belongsToMany(Order::class, 'reduces');

@@ -27,8 +27,8 @@ class DiscountController extends Controller {
             $query->where('code_name', 'LIKE', '%' . $request->input('code_name') . '%');
         }
 
-        if ($request->filled('availibility')) {
-            $query->where('availibility', $request->input('availibility'));
+        if ($request->filled('available_until')) {
+            $query->where('available_until', $request->input('available_until'));
         }
         
         if ($request->filled('max_use')) {

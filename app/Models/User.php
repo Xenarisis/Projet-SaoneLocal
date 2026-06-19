@@ -25,16 +25,24 @@ class User extends Authenticatable implements JWTSubject {
         'lastname',
         'username',
         'password',
-        'GoogleToken',
-        'lastLogin',
+        'google_token',
+        'last_login',
         'is_banned'
     ];
 
     protected $hidden = [
         'password',
-        'GoogleToken',
+        'google_token',
         'remember_token',
     ];
+
+    protected function casts(): array {
+        return [
+            'is_banned' => 'boolean',
+            'last_login' => 'datetime',
+            'password'  => 'hashed'
+        ];
+    }
 
     public function getJWTIdentifier() {
         return $this->getKey();

@@ -15,7 +15,6 @@ use App\Http\Requests\DeleteUserRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller {
-    
     // Read
     public function index(GetUserRequest $request): AnonymousResourceCollection {
         $query = User::query();
@@ -38,8 +37,8 @@ class UserController extends Controller {
             $query->where('username', $request->input('username'));
         }
 
-        if ($request->filled('GoogleToken')) {
-            $query->where('GoogleToken', $request->input('GoogleToken'));
+        if ($request->filled('google_token')) {
+            $query->where('google_token', $request->input('google_token'));
         }
 
         $users = $query->paginate(50);
@@ -96,8 +95,8 @@ class UserController extends Controller {
         }
 
         if ($isOwner && !$isAdmin) {
-            if ($request->filled('GoogleToken')) {
-                if ($user->GoogleToken === null || $request->input('GoogleToken') !== $user->GoogleToken) {
+            if ($request->filled('google_token')) {
+                if ($user->google_token === null || $request->input('google_token') !== $user->google_token) {
                     return response()->json(['message' => 'Action non autorisée. Token Google invalide.'], 403);
                 }
             }
