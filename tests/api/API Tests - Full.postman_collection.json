@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "cbb58395-82af-48da-890d-01d71ce53f75",
+    "_postman_id": "148f0f9a-d4e4-4f35-84a4-3f5bbb8fa55e",
     "name": "API Tests - Full",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55305811",
-    "_collection_link": "https://go.postman.co/collection/55305811-cbb58395-82af-48da-890d-01d71ce53f75?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/55305811-148f0f9a-d4e4-4f35-84a4-3f5bbb8fa55e?source=collection_link"
   },
   "item": [
     {
@@ -95,7 +95,7 @@
               "script": {
                 "exec": [
                   "var timestamp = new Date().getTime();",
-                  "pm.collectionVariables.set('test_email', 'test_' + timestamp + '@test.com');",
+                  "pm.collectionVariables.set('test_email', 'test' + timestamp + '@test.com');",
                   "pm.collectionVariables.set('test_password', 'password123');",
                   "pm.collectionVariables.set('test_username', 'user_' + timestamp);"
                 ],
@@ -545,9 +545,7 @@
                   "var jsonData = pm.response.json();",
                   "pm.test('L\\'utilisateur est bien banni', function () { pm.expect(jsonData.data.is_banned).to.eql(true); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -626,9 +624,7 @@
                   "var jsonData = pm.response.json();",
                   "pm.test('L\\'utilisateur n\\'est plus banni', function () { pm.expect(jsonData.data.is_banned).to.eql(false); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1344,7 +1340,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"quantity\": 60\n}"
+              "raw": "{\n    \"quantity\": 6\n}"
             },
             "url": {
               "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
@@ -1823,9 +1819,7 @@
                   "var code_name = data.code_name || (data.data ? data.data.code_name : null);",
                   "if(code_name) { pm.collectionVariables.set('discount_code_name', code_name); }"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -1988,9 +1982,7 @@
                 "exec": [
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             },
             {
@@ -2001,9 +1993,7 @@
                   "futureDate.setDate(futureDate.getDate() + 5);",
                   "pm.collectionVariables.set(\"future_date\", futureDate.toISOString().split('T')[0]);"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2049,9 +2039,7 @@
                 "exec": [
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -2323,17 +2311,9 @@
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
-                  "if(id) { pm.collectionVariables.set('order_id', id); }"
-                ],
-                "type": "text/javascript"
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  "var timestamp = new Date().getTime();",
-                  "pm.collectionVariables.set('order_number', 'CMD-' + timestamp);"
+                  "if(id) { pm.collectionVariables.set('order_id', id); }",
+                  "var orderNum = data.order_number || (data.data ? data.data.order_number : null);",
+                  "if(orderNum) { pm.collectionVariables.set('order_number', orderNum); }"
                 ],
                 "type": "text/javascript"
               }
@@ -2348,7 +2328,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
+                "value": "Bearer {{user_jwt_token}}"
               },
               {
                 "key": "Content-Type",
@@ -2357,7 +2337,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"order_number\": \"{{order_number}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"unpaid\"\n}"
+              "raw": "{\n    \"order_number\": \"CMD-{{$timestamp}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"pending\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders",
@@ -2584,226 +2564,6 @@
       ]
     },
     {
-      "name": "Composes",
-      "item": [
-        {
-          "name": "Create Compose",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
-                  "var data = pm.response.json();",
-                  "var id = data.id || (data.data ? data.data.id : null);",
-                  "if(id) { pm.collectionVariables.set('compose_id', id); }"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"product_id\": \"{{product_id}}\",\n    \"quantity\": 5,\n    \"unit_price\": 49.00\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/composes",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get All Composes",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/composes",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get Compose By Id",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes",
-                "{{compose_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Put Compose",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"quantity\": 10,\n    \"unit_price\": 45.00\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes",
-                "{{compose_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Patch Compose",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"quantity\": 12\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes",
-                "{{compose_id}}"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "Reduces",
       "item": [
         {
@@ -2934,44 +2694,6 @@
     {
       "name": "Teardown (Deletes)",
       "item": [
-        {
-          "name": "Delete Compose",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "composes",
-                "{{compose_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
         {
           "name": "Delete Reduce",
           "event": [
@@ -3245,7 +2967,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
+                  "pm.test('Status is 200, 204 or 404 (Emptied by Order creation)', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204, 404]); });"
                 ],
                 "type": "text/javascript"
               }
@@ -3482,10 +3204,6 @@
     },
     {
       "key": "order_id",
-      "value": ""
-    },
-    {
-      "key": "compose_id",
       "value": ""
     },
     {
