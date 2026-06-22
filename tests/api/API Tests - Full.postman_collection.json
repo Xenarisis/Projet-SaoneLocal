@@ -3181,48 +3181,6 @@
           "response": []
         },
         {
-          "name": "Register - Password Confirmation Mismatch (expect 422)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/users/register",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "users",
-                "register"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"Mismatch User\",\n    \"firstname\": \"a\",\n    \"lastname\": \"b\",\n    \"username\": \"mismatch_user\",\n    \"email\": \"mismatch@test.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"different456\"\n}"
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Get Nonexistent Product (expect 404)",
           "event": [
             {
@@ -3593,6 +3551,90 @@
               ],
               "path": [
                 "composes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Invalid Email Format (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Bad Email User\",\n    \"firstname\": \"a\",\n    \"lastname\": \"b\",\n    \"username\": \"bademail_user\",\n    \"email\": \"not-an-email\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Duplicate Email (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Duplicate Admin\",\n    \"firstname\": \"a\",\n    \"lastname\": \"b\",\n    \"username\": \"duplicate_admin_user\",\n    \"email\": \"admin@admin.admin\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "register"
               ]
             }
           },
