@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('role')->default('user')->nullable();
             $table->string('password');
             $table->boolean('is_banned')->default(false);
-            $table->dateTime('lastLogin')->nullable();
-            $table->string('GoogleToken')->unique()->nullable();
+            $table->dateTime('last_login')->nullable();
+            $table->string('google_token')->unique()->nullable();
             $table->timestamps();
         });
 
