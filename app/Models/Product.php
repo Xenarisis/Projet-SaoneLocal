@@ -22,7 +22,8 @@ class Product extends Model {
         'quantity',
         'category',
         'subcategory',
-        'producer_id'
+        'producer_id',
+        'image_path'
     ];
     
     protected function casts(): array {

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Follow;
 use App\Models\CartItem;
 use App\Models\Producer;
@@ -27,7 +26,8 @@ class User extends Authenticatable implements JWTSubject {
         'password',
         'google_token',
         'last_login',
-        'is_banned'
+        'is_banned',
+        'pdp_path'
     ];
 
     protected $hidden = [
