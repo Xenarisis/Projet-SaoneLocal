@@ -22,7 +22,8 @@ class RegisterUserRequest extends FormRequest {
             'lastname'      => 'required|string|min:1|max:20',
             'username'      => 'nullable|string|unique:users|min:1|max:25',
             'GoogleToken'   => 'nullable|string|unique:users',
-            'password'      => 'required|string|min:6|max:50'
+            'password'      => 'required|string|min:6|max:50',
+            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ];
     }
 }

@@ -19,15 +19,9 @@ return new class extends Migration {
             $table->boolean('is_banned')->default(false);
             $table->dateTime('last_login')->nullable();
             $table->string('google_token')->unique()->nullable();
+            $table->string('pdp_path')->nullable();
             $table->timestamps();
         });
-
-        // Table Password Reset Tokens
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
 
         // Table Sessions (Laravel need it)
         Schema::create('sessions', function (Blueprint $table) {
@@ -42,7 +36,6 @@ return new class extends Migration {
 
     public function down(): void {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

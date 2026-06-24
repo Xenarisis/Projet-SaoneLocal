@@ -24,7 +24,8 @@ class UserFactory extends Factory {
             'username'  => fake()->unique()->userName(),
             'role'      => 'user',
             'is_banned' => false,
-            'password'  => Hash::make('password')
+            'password'  => Hash::make('password'),
+            'pdp_path'  => null
         ];
     }
 

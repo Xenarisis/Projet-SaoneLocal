@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('category');
             $table->string('subcategory')->nullable();
             $table->foreignId('producer_id')->constrained('producers')->onDelete('cascade');
+            $table->string('image_path')->nullable();
         });
     }
 

@@ -18,7 +18,8 @@ class UserSeeder extends Seeder {
             'lastname' => 'admin',
             'username' => 'admin',
             'role' => 'admin',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('admin'),
+            'pdp_path' => null
         ]);
 
         User::factory()->count(50)->create();
