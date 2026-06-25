@@ -30,21 +30,22 @@ class PutUserRequest extends FormRequest {
                 'max:255',
                 Rule::unique('users', 'email')->ignore($userId)
             ],
-            'firstname'   => 'required|string|min:1|max:20',
-            'lastname'    => 'required|string|min:1|max:20',
-            'username'    => [
+            'firstname'     => 'required|string|min:1|max:20',
+            'lastname'      => 'required|string|min:1|max:20',
+            'username'      => [
                 'nullable',
                 'string',
                 'min:1',
                 'max:25',
                 Rule::unique('users', 'username')->ignore($userId)
             ],
-            'GoogleToken' => [
+            'GoogleToken'   => [
                 'nullable',
                 'string',
                 Rule::unique('users', 'GoogleToken')->ignore($userId)
             ],
-            'password'    => 'nullable|string|min:6|max:50'
+            'password'      => 'nullable|string|min:6|max:50',
+            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048' // <-- Ajout ici
         ];
     }
 
@@ -53,15 +54,15 @@ class PutUserRequest extends FormRequest {
      */
     public function messages(): array {
         return [
-            'email.unique'         => 'Cette adresse e-mail est déjà utilisée par un autre utilisateur.',
-            'email.required'       => 'L\'adresse e-mail est obligatoire.',
-            'username.unique'      => 'Ce nom d\'utilisateur est déjà pris.',
-            'username.max'         => 'Le nom d\'utilisateur ne doit pas dépasser 25 caractères.',
-            'firstname.required'   => 'Le prénom est requis.',
-            'lastname.required'    => 'Le nom est requis.',
-            'password.min'         => 'Le mot de passe doit comporter au moins 6 caractères.',
-            'password.max'         => 'Le mot de passe ne peut pas dépasser 50 caractères.',
-            'GoogleToken.unique'   => 'Ce compte Google est déjà associé à un autre utilisateur.',
+            'email.unique'          => 'Cette adresse e-mail est déjà utilisée par un autre utilisateur.',
+            'email.required'        => 'L\'adresse e-mail est obligatoire.',
+            'username.unique'       => 'Ce nom d\'utilisateur est déjà pris.',
+            'username.max'          => 'Le nom d\'utilisateur ne doit pas dépasser 25 caractères.',
+            'firstname.required'    => 'Le prénom est requis.',
+            'lastname.required'     => 'Le nom est requis.',
+            'password.min'          => 'Le mot de passe doit comporter au moins 6 caractères.',
+            'password.max'          => 'Le mot de passe ne peut pas dépasser 50 caractères.',
+            'GoogleToken.unique'    => 'Ce compte Google est déjà associé à un autre utilisateur.',
         ];
     }
 }

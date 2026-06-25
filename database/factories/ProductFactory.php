@@ -22,7 +22,8 @@ class ProductFactory extends Factory {
             'quantity' => fake()->numberBetween(1, 100),
             'category' => fake()->word(),
             'subcategory' => '',
-            'producer_id' => \App\Models\Producer::factory()
+            'producer_id' => \App\Models\Producer::factory(),
+            'image_path' => null
         ];
     }
 }
