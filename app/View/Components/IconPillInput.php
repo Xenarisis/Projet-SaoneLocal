@@ -2,25 +2,42 @@
 
 namespace App\View\Components;
 
-use Closure;
-use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class IconPillInput extends Component
-{
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
-    {
-        //
+class IconPillInput extends Component {
+    public $icon;
+    public $asterisk;
+    public $textId;
+
+    public function __construct($icon = null, $asterisk = false) {
+        $this->icon = $icon;
+        $this->asterisk = $asterisk;
+        $this->textId = 'file-text-' . Str::random(8);
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
-    public function render(): View|Closure|string
-    {
+    public function getSvgIcon() {
+        if (!$this->icon) {
+            return null;
+        }
+
+        $path = public_path($this->icon);
+        $isSvg = str_ends_with(strtolower($this->icon), '.svg');
+
+        return ($isSvg && file_exists($path)) ? file_get_contents($path) : null;
+    }
+
+    public function getAsteriskSvg() {
+        $path = public_path('images/asterisk.svg');
+        
+        if (file_exists($path)) {
+            return file_get_contents($path);
+        }
+
+        return null;
+    }
+
+    public function render() {
         return view('components.icon-pill-input');
     }
 }
