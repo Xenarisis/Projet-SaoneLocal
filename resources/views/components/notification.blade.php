@@ -7,7 +7,6 @@
     x-transition:leave-end="opacity-0 transform translate-x-4"
     {{ $attributes->merge(['class' => 'fixed top-4 right-4 z-50 flex items-start w-full max-w-sm p-4 gap-3 bg-white border border-slate-200 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-700']) }}
 >
-    <!-- Icon avec CSS Mask dynamique -->
     <div class="flex-shrink-0">
         <div 
             class="w-8 h-8 {{ $color() }}" 
@@ -17,7 +16,6 @@
         ></div>
     </div>
 
-    <!-- Texte + Desc -->
     <div class="flex flex-col flex-1">
         <span class="text-base font-semibold text-slate-800 dark:text-white">
             {{ $title }}
@@ -27,7 +25,6 @@
         </span>
     </div>
 
-    <!-- Button / icon (Bouton de fermeture) -->
     <div class="flex-shrink-0 ml-2">
         <button 
             @click="show = false" 
