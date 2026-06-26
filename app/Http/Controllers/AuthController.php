@@ -17,8 +17,15 @@ class AuthController extends Controller {
         
         $user = User::create($validatedData);
 
+        $user->last_login = now();
+        $user->role = 'user';
+        $user->save();
+
+        $token = auth('api')->login($user);
+
         return (new UserResource($user))->additional([
-            'message' => 'Utilisateur créé avec succès'
+            'access_token'  => $token,
+            'message'       => 'Utilisateur créé avec succès'
         ]);
     }
 

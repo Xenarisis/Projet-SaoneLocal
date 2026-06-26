@@ -14,7 +14,7 @@ class Notification extends Component {
     /**
      * Create a new component instance.
      */
-    public function __construct(string $title, string $description, string $type = 'success') {
+    public function __construct(string $title = '', string $description = '', string $type = 'success') {
         $this->title = $title;
         $this->description = $description;
         $this->type = $type;
@@ -31,10 +31,10 @@ class Notification extends Component {
 
     public function icon(): string {
         return match ($this->type) {
-            'info'    => 'images/info-notif.svg',
-            'error'   => 'images/error-notif.svg',
-            'warning' => 'images/warn-notif.svg',
-            default   => 'images/check-notif.svg',
+            'info'    => 'images/notif/info.svg',
+            'error'   => 'images/notif/error.svg',
+            'warning' => 'images/notif/warn.svg',
+            default   => 'images/notif/check.svg',
         };
     }
 
