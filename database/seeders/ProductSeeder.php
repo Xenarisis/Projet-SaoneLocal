@@ -18,7 +18,8 @@ class ProductSeeder extends Seeder {
             'quantity' => 40,
             'category' => 'Nourriture',
             'subcategory' => 'Frais',
-            'producer_id' => 1
+            'producer_id' => 1,
+            'image_path' => null
         ]);
 
         Product::factory()->count(50)->create();

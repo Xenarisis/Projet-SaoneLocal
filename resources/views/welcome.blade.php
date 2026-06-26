@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<x-layouts.app title="home">
+        <h1 >Hello</h1>
+        <p >Bienvenue sur Saone Local !</p>
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -25,3 +23,4 @@
         <p class="text-white">Notre api est disponible : <a href="https://saone-local.ddns.net/api">https://saone-local.ddns.net/</a></p>
     </body>
 </html>
+</x-layouts.app >
