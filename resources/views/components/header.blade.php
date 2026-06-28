@@ -49,9 +49,10 @@
                     <g> <polygon class="st0" points="236.42,425.105 271.759,425.105 273.104,357.194 235.091,357.194 "></polygon> <polygon class="st0" points="415.611,269.952 373.037,269.952 369.713,328.786 410.439,328.786 "></polygon> <path class="st0" d="M402.637,417.747l5.318-60.553h-39.854l-3.836,67.911h30.326C398.772,425.105,402.263,421.911,402.637,417.747 z"></path> <polygon class="st0" points="344.537,269.952 303.3,269.952 302.138,328.786 341.213,328.786 "></polygon> <polygon class="st0" points="339.609,357.194 301.596,357.194 300.251,425.105 335.773,425.105 "></polygon> <polygon class="st0" points="273.654,328.786 274.807,269.952 233.387,269.952 234.533,328.786 "></polygon> <polygon class="st0" points="172.421,425.105 207.936,425.105 206.599,357.194 168.578,357.194 "></polygon> <polygon class="st0" points="206.041,328.786 204.895,269.952 163.634,269.952 166.966,328.786 "></polygon> <path class="st0" d="M105.557,417.747c0.367,4.164,3.859,7.358,8.046,7.358h30.318l-3.843-67.911h-39.839L105.557,417.747z"></path> <polygon class="st0" points="138.481,328.786 135.158,269.952 92.583,269.952 97.741,328.786 "></polygon> <path class="st0" d="M485.838,181.075h-52.904L325.206,66.73c0.512-2.147,0.833-4.355,0.833-6.632 c0-7.74-3.179-14.877-8.268-19.935c-5.065-5.089-12.194-8.267-19.926-8.252c-7.74-0.015-14.877,3.179-19.935,8.252 c-5.089,5.058-8.259,12.195-8.252,19.935c-0.007,7.74,3.163,14.876,8.252,19.934c5.058,5.081,12.195,8.268,19.935,8.252 c1.696,0,3.354-0.176,4.982-0.466l87.846,93.256h-269.36l87.854-93.256c1.62,0.29,3.285,0.466,4.989,0.466 c7.733,0.016,14.869-3.171,19.928-8.252c5.081-5.058,8.267-12.195,8.259-19.934c0.008-7.74-3.178-14.877-8.259-19.935 c-5.058-5.073-12.188-8.267-19.928-8.252c-7.748-0.015-14.884,3.163-19.942,8.252c-5.074,5.058-8.26,12.195-8.252,19.935 c0,2.277,0.305,4.485,0.818,6.632L79.059,181.075H26.154C11.706,181.075,0,192.78,0,207.228V219.5 c0,13.96,10.949,25.329,24.718,26.078L50.024,432.28h0.008c1.551,13.532,8.069,25.498,17.574,34.009 c9.574,8.604,22.296,13.8,36.049,13.8H404.54c13.746,0,26.468-5.196,36.049-13.8c9.506-8.512,16.015-20.477,17.574-34.009 l25.299-186.625h2.376c14.441,0,26.162-11.714,26.162-26.154v-12.272C512,192.78,500.279,181.075,485.838,181.075z M298.204,59.747 l-0.726,0.695l-0.152-0.343l0.152-0.367l0.367-0.145l0.359,0.145V59.747z M213.78,59.732l0.375-0.145l0.359,0.145l0.145,0.367 l-0.137,0.343l-0.742-0.695V59.732z M432.742,429.025l-0.008,0.146c-0.795,7.228-4.202,13.494-9.261,18.039 c-5.073,4.531-11.667,7.244-18.934,7.252H103.654c-7.266,0-13.868-2.72-18.934-7.252c-5.065-4.546-8.466-10.811-9.26-18.039 l-0.015-0.123l-0.031-0.206L50.971,248.565h406.244L432.742,429.025z"></path>
                 </svg>
             </a>
-            <el-dropdown class="inline-block">
-                <button class="inline-flex w-full justify-center gap-x-1.5 rounded-md">
-                    <svg class="h-8 w-8 lg:h-12 lg:w-12 m-1 lg:m-2 hover:fill-white/40 " viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <x-dropdown width="w-48" align="right" >
+                <x-slot name="trigger">
+                    <svg class="h-8 w-8 lg:h-12 lg:w-12 m-1 lg:m-2 hover:fill-white/40 transition-transform" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z"
                             stroke="currentColor"
@@ -60,14 +61,11 @@
                             stroke-linejoin="round"
                         />
                     </svg>
-                </button>
-                <el-menu anchor="bottom end" popover class="w-56 origin-top-right rounded-md bg-gray-800 outline-1 -outline-offset-1 outline-white/10 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
-                <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:text-white focus:outline-hidden" >register</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 focus:bg-white/5 focus:text-white focus:outline-hidden" >login</a>
-                </div>
-                </el-menu>
-            </el-dropdown>
+                </x-slot>
+                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-xl">s'enregister</a>
+                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se connecter</a>
+                
+            </x-dropdown>
         </div>
     </nav>
 </header>
