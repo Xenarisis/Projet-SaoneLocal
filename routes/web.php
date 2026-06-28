@@ -3,17 +3,31 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn() => view('welcome'))->name('home');
 
-Route::middleware('guest')->group(function () {
+Route::get('/search', fn() => view('search'))->name('search');
+
+// Guest only
+Route::middleware('guest')->prefix('users')->name('users.')->group(function () {
     Route::view('/register', 'users.register')->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    
+    Route::post('/register', [AuthController::class, 'register']);
+
     Route::view('/login', 'users.login')->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::view('/test', 'users.test')->name('test');
+// Auth required
+Route::middleware('auth')->group(function () {
+    Route::prefix('users')->name('users.')->group(function () {
+        // profil, settings...
+    });
 
-Route::view('/ban', 'errors.banned')->name('banned.page');
+    Route::prefix('producers')->name('producers.')->group(function () {
+        // pages producteurs...
+    });
+});
+
+// Admin only
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // dashboard admin...
+});
