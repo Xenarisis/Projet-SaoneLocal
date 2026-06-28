@@ -4,7 +4,7 @@
     <x-tab />
 
     <nav class="bg-[#820606] text-[#DEDEDE] w-full rounded-full p-2 lg:p-3 flex justify-around mt-2" >
-        <a href="/" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
+        <a href=" {{ route('home') }} " class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
             accueil
         </a>
         <a href="" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
