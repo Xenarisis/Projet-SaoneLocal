@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', fn() => view('welcome'))->name('home');
 
+// Free to go
 Route::get('/search', fn() => view('search'))->name('search');
+Route::get('/about', fn() => view('pages.about'))->name('about');
 
 // Guest only
 Route::middleware('guest')->prefix('users')->name('users.')->group(function () {
