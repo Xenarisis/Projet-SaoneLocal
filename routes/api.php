@@ -61,12 +61,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::prefix('users')->group(function () {
         // --- (GET) ---
+        Route::get('/me', [AuthController::class, 'me']);
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{user}', [UserController::class, 'show']);
 
         // --- (POST) ---
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::post('/complete-profile', [AuthController::class, 'completeProfile']);
 
         // --- (PUT) ---
         Route::put('/{user}', [UserController::class, 'updatePut']);

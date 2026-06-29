@@ -27,7 +27,8 @@ class User extends Authenticatable implements JWTSubject {
         'google_token',
         'last_login',
         'is_banned',
-        'pdp_path'
+        'pdp_path',
+        'role'
     ];
 
     protected $hidden = [
@@ -49,7 +50,9 @@ class User extends Authenticatable implements JWTSubject {
     }
 
     public function getJWTCustomClaims() {
-        return [];
+        return [
+            'role' => $this->role
+        ];
     }
 
     public function isAdmin(): bool {

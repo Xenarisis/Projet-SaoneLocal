@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * @extends Factory<User>
  */
 class UserFactory extends Factory {
+    protected static ?string $password;
+
     /**
      * Define the model's default state.
      *
@@ -24,7 +26,7 @@ class UserFactory extends Factory {
             'username'  => fake()->unique()->userName(),
             'role'      => 'user',
             'is_banned' => false,
-            'password'  => Hash::make('password'),
+            'password'  => static::$password ??= Hash::make('password'),
             'pdp_path'  => null
         ];
     }

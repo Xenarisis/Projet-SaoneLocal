@@ -50,6 +50,40 @@ class AuthController extends Controller {
         ], 200);
     }
 
+    public function me(): JsonResponse {
+        return response()->json(auth('api')->user());
+    }
+
+    public function completeProfile(Request $request) {
+        $user = auth('api')->user();
+
+        $request->validate([
+            'username' => 'required|string|unique:users,username,' . $user->id,
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        $user->username = $request->username;
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+        
+        if ($user->role === 'google_new') {
+            $user->role = 'user';
+        }
+        
+        $user->save();
+        
+        $newToken = auth('api')->login($user);
+
+        return response()->json([
+            'message' => 'Profil complété avec succès !',
+            'data' => $user,
+            'token' => $newToken
+        ], 200);
+    }
+
     public function logout(Request $request): JsonResponse {
         auth('api')->logout();
 
