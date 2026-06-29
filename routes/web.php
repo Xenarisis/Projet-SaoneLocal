@@ -11,6 +11,7 @@ use App\Http\Controllers\GoogleController;
 */
 Route::get('/', fn() => view('welcome'))->name('home');
 Route::get('/search', fn() => view('search'))->name('search');
+Route::get('/about', fn() => view('pages.about'))->name('about');
 
 /*
 |--------------------------------------------------------------------------

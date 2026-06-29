@@ -10,7 +10,7 @@
         <a href="" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
             calendrier
         </a>
-        <a href="" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
+        <a href="{{ route('about') }}" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
             à propos
         </a>
         <a href="" class="text-xs lg:text-sm px-1 lg:px-2 hover:text-white/40" >
