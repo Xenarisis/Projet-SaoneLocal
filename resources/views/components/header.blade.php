@@ -28,7 +28,7 @@
             </a>
         </div>
         <div class="flex-1 flex justify-center">
-            <form action="/serach" method="GET" class="flex-1 flex justify-center">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 flex justify-center">
                 <input
                     type="search"
                     name="q"
