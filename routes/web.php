@@ -9,9 +9,26 @@ use App\Http\Controllers\GoogleController;
 | Public Pages
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn() => view('welcome'))->name('home');
-Route::get('/search', fn() => view('search'))->name('search');
+Route::get('/', function () {
+    $products = \App\Models\Product::latest()->take(8)->get();
+    $producers = \App\Models\Producer::latest()->take(8)->get();
+    return view('welcome', compact('products', 'producers'));
+})->name('home');
+
+Route::get('/products/{product}', function ($product) {
+    $product = \App\Models\Product::findOrFail($product);
+    return view('pages.product', compact('product'));
+})->name('products.show');
+
+Route::get('/producers/{producer}', function ($producer) {
+    $producer = \App\Models\Producer::findOrFail($producer);
+    return view('pages.producer', compact('producer'));
+})->name('producers.show');
+
+Route::get('/search', fn() => view('pages.search'))->name('search');
 Route::get('/about', fn() => view('pages.about'))->name('about');
+Route::get('/product', fn() => view('pages.product'))->name('product');
+Route::get('/producer', fn() => view('pages.producer'))->name('producer');
 
 /*
 |--------------------------------------------------------------------------
