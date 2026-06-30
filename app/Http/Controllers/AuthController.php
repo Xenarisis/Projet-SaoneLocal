@@ -14,7 +14,12 @@ class AuthController extends Controller {
     public function register(RegisterUserRequest $request): UserResource {
         $validatedData = $request->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
-        
+
+        if ($request->hasFile('pdp')) {
+            $path = $request->file('pdp')->store('avatars', 'local');
+            $validatedData['pdp_path'] = basename($path);
+        }
+
         $user = User::create($validatedData);
 
         $user->last_login = now();
@@ -33,6 +38,13 @@ class AuthController extends Controller {
         $credentials = $request->only('email', 'password');
 
         if (!$token = auth('api')->attempt($credentials)) {
+            $user = User::where('email', $request->email)->first();
+            if ($user && $user->google_token) {
+                return response()->json([
+                    'message' => 'Identifiants incorrects. Note : Ce compte est lié à Google, essayez de vous connecter via le bouton Google ou de définir un mot de passe dans votre profil.'
+                ], 401);
+            }
+
             return response()->json([
                 'message' => 'Les identifiants sont incorrects.'
             ], 401);
@@ -50,8 +62,8 @@ class AuthController extends Controller {
         ], 200);
     }
 
-    public function me(): JsonResponse {
-        return response()->json(auth('api')->user());
+    public function me(): UserResource {
+        return new UserResource(auth('api')->user());
     }
 
     public function completeProfile(Request $request) {
@@ -68,13 +80,13 @@ class AuthController extends Controller {
         $user->firstname = $request->firstname;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
-        
+
         if ($user->role === 'google_new') {
             $user->role = 'user';
         }
-        
+
         $user->save();
-        
+
         $newToken = auth('api')->login($user);
 
         return response()->json([

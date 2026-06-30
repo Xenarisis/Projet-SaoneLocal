@@ -20,7 +20,7 @@ class UserController extends Controller {
         $query = User::query();
 
         $currentUser = $request->user();
-        
+
         if ($currentUser && !$currentUser->isAdmin()) {
             $query->where('id', $currentUser->id);
         }
@@ -61,6 +61,15 @@ class UserController extends Controller {
             unset($validatedData['password']);
         }
 
+        if ($request->boolean('delete_pdp')) {
+            $validatedData['pdp_path'] = null;
+        }
+
+        if ($request->hasFile('pdp')) {
+            $path = $request->file('pdp')->store('avatars', 'local');
+            $validatedData['pdp_path'] = basename($path);
+        }
+
         $user->update($validatedData);
 
         return (new UserResource($user))->additional([
@@ -74,6 +83,15 @@ class UserController extends Controller {
 
         if ($request->filled('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        if ($request->boolean('delete_pdp')) {
+            $validatedData['pdp_path'] = null;
+        }
+
+        if ($request->hasFile('pdp')) {
+            $path = $request->file('pdp')->store('avatars', 'local');
+            $validatedData['pdp_path'] = basename($path);
         }
 
         $user->update($validatedData);
@@ -105,5 +123,15 @@ class UserController extends Controller {
         $user->delete();
 
         return response()->json(['message' => 'Utilisateur supprimé avec succès.'], 200);
+    }
+
+    public function showAvatar($filename) {
+        $path = storage_path('app/avatars/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
     }
 }

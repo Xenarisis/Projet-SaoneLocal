@@ -20,7 +20,7 @@ class ProductController extends Controller {
         $query = Product::with('producer');
 
         $exactFilters = ['id', 'quantity', 'category', 'subcategory', 'producer_id'];
-        
+
         foreach ($exactFilters as $filter) {
             if ($request->filled($filter)) {
                 $query->where($filter, $request->input($filter));
@@ -30,7 +30,7 @@ class ProductController extends Controller {
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->input('min_price'));
         }
-        
+
         if ($request->filled('max_price')) {
             $query->where('price', '<=', $request->input('max_price'));
         }
@@ -83,6 +83,13 @@ class ProductController extends Controller {
             $validatedData['producer_id'] = $user->producer->id;
         }
 
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image_path'] = basename($path);
+        }
+
+        unset($validatedData['image']);
+
         $product = Product::create($validatedData);
 
         return (new ProductResource($product))
@@ -95,6 +102,13 @@ class ProductController extends Controller {
     public function updatePut(PutProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
 
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image_path'] = basename($path);
+        }
+
+        unset($validatedData['image']);
+
         $product->update($validatedData);
 
         return (new ProductResource($product))->additional([
@@ -105,6 +119,13 @@ class ProductController extends Controller {
     // Update : Patch
     public function updatePatch(PatchProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image_path'] = basename($path);
+        }
+
+        unset($validatedData['image']);
 
         $product->update($validatedData);
 
