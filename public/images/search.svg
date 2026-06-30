@@ -1,0 +1,22 @@
+<svg width="64px" height="64px" viewBox="0 0 24 24" fill="currentColor">
+    <circle
+        fill="none"
+        stroke="currentColor"
+        stroke-miterlimit="10"
+        stroke-width="2px"
+        cx="9.14"
+        cy="9.14"
+        r="7.64"
+    />
+
+    <line
+        fill="none"
+        stroke="currentColor"
+        stroke-miterlimit="10"
+        stroke-width="2px"
+        x1="22.5"
+        y1="22.5"
+        x2="14.39"
+        y2="14.39"
+    />
+</svg>

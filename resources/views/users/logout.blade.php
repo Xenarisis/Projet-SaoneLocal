@@ -1,6 +1,6 @@
 <x-layouts.app title="Déconnexion">
-    <div class="min-h-screen bg-[#dcdcdc] flex flex-col justify-center items-center p-4 font-sans">
-        <div class="bg-[#057941] w-full max-w-[400px] rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-8 flex flex-col items-center">
+    <div class="min-h-screen flex flex-col justify-center items-center p-4 font-body">
+        <div class="bg-base-green w-full max-w-[400px] rounded-[32px] shadow-2xl p-8 flex flex-col items-center">
             <h1 class="text-white text-center font-bold text-2xl mb-4">
                 Déconnexion en cours...
             </h1>
