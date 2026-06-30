@@ -14,7 +14,10 @@
                 <x-cards 
                 title="{{ $product->name }}"
                 href="{{ route('products.show', $product->id) }}"
-                ></x-cards>
+                image="{{ asset('images/product.jpg') }}"
+                >
+                <p>{{ $product->price }} €</p>
+            </x-cards>
             @endforeach
         </div>
     </div>
@@ -25,7 +28,10 @@
                 <x-cards 
                 title="{{ $producer->name }}"
                 href="{{ route('producers.show', $producer->id) }}"
-                ></x-cards>
+                image="{{ asset('images/producter.jpg') }}"
+                >
+                <p>{{ $producer->city }}</p>
+            </x-cards>
             @endforeach
         </div>
     </div>
