@@ -17,18 +17,6 @@ class DeleteUserRequest extends FormRequest {
      * Get the validation rules that apply to the request.
      */
     public function rules(): array {
-        if (auth('api')->user()->isAdmin()) {
-            return [];
-        }
-
-        return [
-            'GoogleToken' => 'sometimes|string',
-            'password' => [
-                'required_without:GoogleToken',
-                'string',
-                'max:255',
-                new CurrentPassword()
-            ]
-        ];
+        return [];
     }
 }

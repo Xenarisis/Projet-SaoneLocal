@@ -9,15 +9,36 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller {
-    public function redirect() {
-        return Socialite::driver('google')->stateless()->redirect();
+    public function redirect(Request $request) {
+        $driver = Socialite::driver('google')->stateless();
+
+        $params = ['hl' => 'fr']; 
+        if ($request->has('token')) {
+            $params['state'] = $request->token;
+        }
+
+        return $driver->with($params)->redirect();
     }
 
-    public function callback() {
+    public function callback(Request $request) {
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
         } catch (\Exception $e) {
             return redirect('/login')->withErrors(['msg' => 'Erreur de connexion Google']);
+        }
+
+        $token = $request->input('state');
+        if ($token) {
+            $currentUser = auth('api')->setToken($token)->user();
+            if ($currentUser) {
+                $existing = User::where('google_token', $googleUser->getId())->first();
+                if ($existing && $existing->id !== $currentUser->id) {
+                    return redirect('/auth/google/success?token=' . $token . '&error=already_linked');
+                }
+
+                $currentUser->update(['google_token' => $googleUser->getId()]);
+                return redirect('/auth/google/success?token=' . $token . '&linked=1');
+            }
         }
 
         $user = User::where('google_token', $googleUser->getId())->first();
@@ -32,11 +53,16 @@ class GoogleController extends Controller {
                 ]);
             } else {
                 $isNewUser = true;
-                $user = User::create([
-                    'email'        => $googleUser->getEmail(),
-                    'firstname'    => $googleUser->user['given_name'] ?? '',
-                    'lastname'     => $googleUser->user['family_name'] ?? '',
-                    'username'     => $googleUser->user['given_name'] ?? Str::random(10),
+                $fullName = $googleUser->getName() ?: '';
+                $nameParts = explode(' ', $fullName, 2);
+                    $fallbackFirst = $nameParts[0] ?? '';
+                    $fallbackLast = $nameParts[1] ?? '';
+
+                    $user = User::create([
+                        'email'        => $googleUser->getEmail(),
+                        'firstname'    => $googleUser->user['given_name'] ?? $fallbackFirst,
+                        'lastname'     => $googleUser->user['family_name'] ?? $fallbackLast,
+                        'username'     => 'User_' . Str::random(5),
                     'password'     => Hash::make(Str::random(24)),
                     'role'         => 'google_new',
                     'google_token' => $googleUser->getId(),

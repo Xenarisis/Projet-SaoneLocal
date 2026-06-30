@@ -36,13 +36,11 @@ Route::get('/producer', fn() => view('pages.producer'))->name('producer');
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::prefix('users')->name('users.')->group(function () {
-        Route::view('/register', 'users.register')->name('register');
-        Route::post('/register', [AuthController::class, 'register']);
+    Route::view('/register', 'users.register')->name('users.register');
+    Route::post('/register', [AuthController::class, 'register']);
 
-        Route::view('/login', 'users.login')->name('login');
-        Route::post('/login', [AuthController::class, 'login']);
-    });
+    Route::view('/login', 'users.login')->name('users.login');
+    Route::post('/login', [AuthController::class, 'login']);
 
     // Google Authentication
     Route::prefix('auth/google')->controller(GoogleController::class)->group(function () {
@@ -57,6 +55,7 @@ Route::middleware('guest')->group(function () {
 | Profile and Session Management
 |--------------------------------------------------------------------------
 */
+Route::view('/profile', 'users.profile')->name('users.profile');
 Route::view('/complete-profile', 'users.complete-profile')->name('complete-profile');
 Route::view('/logout', 'users.logout')->name('logout.page');
 

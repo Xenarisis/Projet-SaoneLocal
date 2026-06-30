@@ -26,8 +26,22 @@
         }
     }"
     x-init="
-        setStyle(type);
-        if(title !== '') { show = true; setTimeout(() => show = false, 5000); }
+        const flashNotif = sessionStorage.getItem('flash_notification');
+        if (flashNotif) {
+            const data = JSON.parse(flashNotif);
+            title = data.title;
+            description = data.description;
+            type = data.type || 'success';
+            sessionStorage.removeItem('flash_notification');
+            setTimeout(() => {
+                setStyle(type);
+                show = true;
+                setTimeout(() => show = false, 5000);
+            }, 100);
+        } else {
+            setStyle(type);
+            if(title !== '') { show = true; setTimeout(() => show = false, 5000); }
+        }
     "
     @notify.window="
         title = $event.detail.title;
@@ -45,7 +59,7 @@
     x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 transform translate-x-0"
     x-transition:leave-end="opacity-0 transform translate-x-4"
-    {{ $attributes->merge(['class' => 'fixed top-4 right-4 z-50 flex items-start w-full max-w-sm p-4 gap-3 bg-white border border-slate-200 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-700']) }}
+    {{ $attributes->merge(['class' => 'fixed top-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-full sm:max-w-sm z-50 flex items-start p-4 gap-3 bg-white border border-slate-200 rounded-lg shadow-lg dark:bg-slate-800 dark:border-slate-700']) }}
 >
     <div class="flex-shrink-0">
         <div 

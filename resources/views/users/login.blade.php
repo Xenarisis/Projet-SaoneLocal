@@ -1,10 +1,9 @@
 <x-layouts.app title="Connexion">
     <div class="min-h-screen bg-[#dcdcdc] flex flex-col justify-center items-center p-4 font-sans">
         <form id="loginForm" 
-            class="bg-[#057941] w-full max-w-[700px] rounded-2xl sm:rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-6 sm:p-10 flex flex-col items-center relative">
+            class="bg-[#057941] w-full max-w-4xl rounded-2xl sm:rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-6 sm:p-10 flex flex-col items-center relative">
             @csrf
 
-            <!-- Logo Circle -->
             <div class="w-[100px] h-[100px] bg-[#2E0B0B] rounded-full flex items-center justify-center shadow-lg border-4 border-[#057941] mb-2">
                 <a href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="45" height="47" viewBox="0 0 55 57" fill="#ffffff" class="h-10 w-10 text-white">
@@ -22,7 +21,7 @@
                 <h1 class="text-white text-center font-bold text-3xl sm:text-4xl italic tracking-wide">
                     Bienvenue
                 </h1>
-                
+
                 <p class="text-sm text-white text-center mt-2 max-w-[280px]">
                     connectez-vous pour accéder à votre profil et gérer vos commandes
                 </p>
@@ -32,40 +31,46 @@
             <div id="errorMessages" class="hidden w-full bg-red-500/20 border border-red-500 text-white rounded-lg p-3 mb-6 text-sm leading-relaxed"></div>
 
             <div class="w-full flex flex-col gap-8">
-                <x-icon-pill-input
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="Email"
-                    icon="images/mail.svg"
-                    :asterisk="false"
-                />
+                <div class="flex flex-col gap-1.5 w-full">
+                    <span class="text-white ml-2 text-sm font-semibold tracking-wide">Adresse Email</span>
+                    <x-icon-pill-input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="Email"
+                        icon="images/mail.svg"
+                        :asterisk="false"
+                    />
+                </div>
 
-                <x-icon-pill-input
-                    type="password"
-                    name="password"
-                    required
-                    placeholder="Mot de passe"
-                    icon="images/lock.svg"
-                    :asterisk="false"
-                />
+                <div class="flex flex-col gap-1.5 w-full">
+                    <span class="text-white ml-2 text-sm font-semibold tracking-wide">Mot de passe</span>
+                    <x-icon-pill-input
+                        type="password"
+                        name="password"
+                        required
+                        placeholder="Mot de passe"
+                        icon="images/lock.svg"
+                        :asterisk="false"
+                    />
+                </div>
 
                 <div class="mt-4 flex justify-center w-full">
                     <x-pill-button type="submit" id="submitBtn">
                         <div class="flex items-center gap-2">
-                            <!-- SVG arrow like in mockup -->
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                             Se connecter
                         </div>
                     </x-pill-button>
                 </div>
-                
+
                 <div class="flex flex-col items-center w-full mt-4 gap-2">
-                    <a href="{{ url('/auth/google/redirect') }}" class="px-6 sm:px-10 py-3 sm:py-4 text-white bg-transparent border-2 border-white rounded-full hover:bg-white/20 transition-all duration-200 text-xs sm:text-sm font-medium tracking-wide focus:outline-none cursor-pointer flex items-center gap-3 justify-center w-full sm:w-[85%] sm:max-w-[400px] mx-auto whitespace-nowrap">
+                    <a href="{{ url('/auth/google/redirect') }}" class="px-6 sm:px-10 py-3 sm:py-4 text-gray-800 bg-white rounded-full hover:bg-gray-100 transition-all duration-200 text-xs sm:text-sm font-bold tracking-wide focus:outline-none cursor-pointer flex items-center gap-3 justify-center w-full sm:w-[85%] sm:max-w-[400px] mx-auto whitespace-nowrap shadow-md">
                         <img src="{{ asset('images/google-logo.svg') }}" alt="Google Logo" class="w-4 h-4 sm:w-5 sm:h-5">
                         Se connecter avec Google
                     </a>
-                    
+
                     <a href="/register" class="text-white text-sm hover:underline">
                         Pas de compte ? S'inscrire
                     </a>
@@ -77,13 +82,13 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            
+
             const submitBtn = document.getElementById('submitBtn');
             const errorContainer = document.getElementById('errorMessages');
-            
+
             submitBtn.disabled = true;
             submitBtn.querySelector('div').innerHTML = 'Connexion...';
             errorContainer.classList.add('hidden');
@@ -103,18 +108,18 @@
 
                 if (response.ok) {
                     localStorage.setItem('jwt_token', result.access_token);
-                    
+
                     sessionStorage.setItem('flash_notification', JSON.stringify({
                         title: 'Bon retour !',
                         description: result.message || 'Connexion réussie.',
                         type: 'success'
                     }));
-                    
+
                     window.location.href = '/';
                 } else {
                     submitBtn.disabled = false;
                     submitBtn.querySelector('div').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Se connecter`;
-                    
+
                     let errorsHtml = '';
                     if (result.errors) {
                         for (const [field, messages] of Object.entries(result.errors)) {
@@ -125,7 +130,7 @@
                     } else {
                         errorsHtml = '• Une erreur est survenue lors de la connexion.';
                     }
-                    
+
                     errorContainer.innerHTML = errorsHtml;
                     errorContainer.classList.remove('hidden');
                 }

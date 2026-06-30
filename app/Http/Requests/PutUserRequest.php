@@ -12,7 +12,7 @@ class PutUserRequest extends FormRequest {
      */
     public function authorize(): bool {
         $user = $this->route('user');
-        
+
         return $user instanceof User && $this->user()->can('update', $user);
     }
 
@@ -22,7 +22,7 @@ class PutUserRequest extends FormRequest {
     public function rules(): array {
         $user = $this->route('user');
         $userId = $user instanceof User ? $user->id : $user;
-        
+
         return [
             'email' => [
                 'required',
@@ -44,8 +44,9 @@ class PutUserRequest extends FormRequest {
                 'string',
                 Rule::unique('users', 'GoogleToken')->ignore($userId)
             ],
-            'password'      => 'nullable|string|min:6|max:50',
-            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048' // <-- Ajout ici
+            'password'      => 'nullable|string|min:6|max:50|confirmed',
+            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'delete_pdp'    => 'nullable|boolean'
         ];
     }
 
@@ -62,6 +63,7 @@ class PutUserRequest extends FormRequest {
             'lastname.required'     => 'Le nom est requis.',
             'password.min'          => 'Le mot de passe doit comporter au moins 6 caractères.',
             'password.max'          => 'Le mot de passe ne peut pas dépasser 50 caractères.',
+            'password.confirmed'    => 'La confirmation du mot de passe ne correspond pas.',
             'GoogleToken.unique'    => 'Ce compte Google est déjà associé à un autre utilisateur.',
         ];
     }
