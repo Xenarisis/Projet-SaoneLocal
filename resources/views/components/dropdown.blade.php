@@ -1,7 +1,7 @@
 @props (['width'=> 'w-48', 'align' => 'left'])
 
 <div class="relative" x-data="{ open: false }">
-    <button @click="open = !open" class="rounded-full focus:outline-none focus:ring-2 focus:ring-white/20">
+    <button @click="open = !open" class="rounded-full focus:outline-none">
         {{ $trigger }}
     </button>
 

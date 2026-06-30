@@ -1,7 +1,7 @@
 <x-layouts.app title="Compléter le profil">
-    <div class="min-h-screen bg-[#dcdcdc] flex flex-col justify-center items-center p-4 font-sans">
+    <div class="min-h-screen flex flex-col justify-center items-center p-4 font-body">
         <form id="completeProfileForm" 
-            class="bg-[#057941] w-full max-w-4xl rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-8 sm:p-10 flex flex-col items-center relative">
+            class="bg-base-green w-full max-w-4xl rounded-[32px] shadow-2xl p-8 sm:p-10 flex flex-col items-center relative">
             @csrf
 
             <div class="mb-10 flex flex-col gap-2 w-full items-center">

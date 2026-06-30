@@ -3,7 +3,7 @@
     $placeholder = $attributes->get('placeholder', 'Choisir un fichier');
 @endphp
 
-<label class="relative w-full flex items-center px-6 py-3 sm:py-4 border-2 border-white focus-within:border-[#5db0e5] rounded-full bg-transparent hover:bg-white/20 cursor-pointer transition-all duration-200">
+<label class="relative w-full flex items-center px-6 py-3 sm:py-4 border-2 border-white focus-within:border-info rounded-full bg-transparent hover:bg-white/20 cursor-pointer transition-all duration-200">
     @if($asterisk)
         <span class="absolute top-1.5 right-4 flex items-center justify-center text-red-700 [&>svg]:w-3 [&>svg]:h-3">
             {!! $getAsteriskSvg() !!}

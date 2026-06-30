@@ -21,7 +21,7 @@ class UserSeeder extends Seeder {
             'password' => Hash::make('admin'),
             'pdp_path' => null
         ]);
-        // rajouter les users présents dans le projet + police + couleur 
+        // rajouter les users présents dans le projet + police + zoom sur tel + squelette
 
         User::factory()->count(50)->create();
     }

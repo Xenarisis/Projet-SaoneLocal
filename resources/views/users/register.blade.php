@@ -1,7 +1,9 @@
 <x-layouts.app title="Inscription">
-    <div class="min-h-screen bg-[#dcdcdc] flex flex-col justify-center items-center p-4 font-sans">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <div class="min-h-screen flex flex-col justify-center items-center p-4 font-body">
         <form id="registerForm" enctype="multipart/form-data" 
-            class="bg-[#057941] w-full max-w-4xl rounded-2xl sm:rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-6 sm:p-10 flex flex-col items-center relative">
+            class="bg-base-green w-full max-w-4xl rounded-2xl sm:rounded-[32px] shadow-2xl p-6 sm:p-10 flex flex-col items-center relative">
             @csrf
 
             <div class="mb-10 flex flex-col gap-2 w-full items-center">
@@ -96,14 +98,7 @@
                 <div class="flex justify-center w-full mt-2">
                     <div class="w-full sm:w-2/3 flex flex-col gap-1.5">
                         <span class="text-white ml-2 text-sm font-semibold tracking-wide text-center">Photo de profil (optionnel)</span>
-                        <x-icon-pill-input
-                            type="file"
-                            id="pdp_path"
-                            name="pdp_path"
-                            accept="image/*"
-                            placeholder="Photo de profil"
-                            icon="images/camera.svg"
-                        />
+                        <x-avatar-cropper inputId="pdp_path" inputName="pdp" />
                     </div>
                 </div>
 

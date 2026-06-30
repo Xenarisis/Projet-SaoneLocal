@@ -1,10 +1,10 @@
 <x-layouts.app title="Connexion">
-    <div class="min-h-screen bg-[#dcdcdc] flex flex-col justify-center items-center p-4 font-sans">
+    <div class="min-h-screen flex flex-col justify-center items-center p-4 font-body">
         <form id="loginForm" 
-            class="bg-[#057941] w-full max-w-4xl rounded-2xl sm:rounded-[32px] shadow-[0_0_15px_rgba(93,176,229,0.4)] p-6 sm:p-10 flex flex-col items-center relative">
+            class="bg-base-green w-full max-w-4xl rounded-2xl sm:rounded-[32px] shadow-2xl p-6 sm:p-10 flex flex-col items-center relative">
             @csrf
 
-            <div class="w-[100px] h-[100px] bg-[#2E0B0B] rounded-full flex items-center justify-center shadow-lg border-4 border-[#057941] mb-2">
+            <div class="w-[100px] h-[100px] bg-cachou rounded-full flex items-center justify-center shadow-lg border-4 border-base-green mb-2">
                 <a href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="45" height="47" viewBox="0 0 55 57" fill="#ffffff" class="h-10 w-10 text-white">
                         <g fill="currentColor" clip-path="url(#a)">
