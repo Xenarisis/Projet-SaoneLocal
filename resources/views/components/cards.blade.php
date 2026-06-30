@@ -7,7 +7,7 @@
     'href' => '#'
 ])
 
-<a href="{{ $href }}" class="block bg-base-gray rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
+<a href="{{ $href }}" class="block bg-base-gray rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition mt-8 border-2 border-black">
     
     @if($image)
     <img src="{{ $image }}" alt="{{ $title }}" class="w-full h-48 object-cover">

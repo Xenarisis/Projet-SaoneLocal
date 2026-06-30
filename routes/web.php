@@ -25,10 +25,13 @@ Route::get('/producers/{producer}', function ($producer) {
     return view('pages.producer', compact('producer'));
 })->name('producers.show');
 
-Route::get('/search', fn() => view('pages.search'))->name('search');
+Route::get('/search', function () {
+    $products = \App\Models\Product::all();
+    $producers = \App\Models\Producer::all();
+    return view('pages.search', compact('products', 'producers'));
+})->name('search');
+
 Route::get('/about', fn() => view('pages.about'))->name('about');
-Route::get('/product', fn() => view('pages.product'))->name('product');
-Route::get('/producer', fn() => view('pages.producer'))->name('producer');
 
 /*
 |--------------------------------------------------------------------------
