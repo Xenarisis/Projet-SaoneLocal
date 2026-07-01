@@ -1,6 +1,12 @@
 <x-layouts.app title="{{ $product->name }}">
     <img src="{{ asset('images/product.jpg') }}" alt="{{ $product->name }}" class="w-full lg:h-248 rounded-2xl m-2">
 
+    <h1 class="lg:text-2xl bg-base-green rounded-2xl text-base-gray text-center">{{ $product->name }}</h1>
+
+    <div class="w-full flex justify-center">
+        <button class="border-2 border-black rounded-2xl text-black p-2 mt-4"> Ajouter au panier +</button>
+    </div>
+
     <div x-data="{ open: false }" class="cursor-pointer text-base-gray text-center rounded-2xl m-2">
         
         <div @click="open = !open" class="p-4">
