@@ -1,5 +1,5 @@
 <x-layouts.app title="{{ $product->name }}">
-    <img src="{{ asset('images/product.jpg') }}" alt="{{ $product->name }}" class="w-full lg:h-248 rounded-2xl m-2">
+    <img src="{{ $product->image_path }}" alt="{{ $product->name }}" class="w-full lg:h-248 rounded-2xl m-2">
 
     <h1 class="lg:text-2xl bg-base-green rounded-2xl text-base-gray text-center">{{ $product->name }}</h1>
 
