@@ -22,7 +22,9 @@ class ProducerFactory extends Factory {
             'street_line_2' => fake()->longitude(),
             'city' => fake()->city(),
             'postal_code' => fake()->postcode(),
-            'user_id' => \App\Models\User::factory()
+            'user_id' => \App\Models\User::factory([
+                'pdp' => fake()->randomElement(["{{ asset('images/agriculteur.jpg')}}", "{{ asset('images/agricultrice.jpg')}}", "{{ asset('images/boulanger.jpg')}}", "{{ asset('images/boulanger2.jpg')}}", "{{ asset('images/producter.jpg')}}"])
+            ])
         ];
     }
 }

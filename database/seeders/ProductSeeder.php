@@ -19,7 +19,7 @@ class ProductSeeder extends Seeder {
             'category' => 'Nourriture',
             'subcategory' => 'Frais',
             'producer_id' => 1,
-            'image_path' => null
+            'image_path' => fake()->randomElement(["{{ asset('images/pain.jpg') }}", "{{ asset('images/salade.jpg') }}", "{{ asset('images/vin.jpg') }}", "{{ asset('images/product.jpg') }}"])
         ]);
 
         Product::factory()->count(50)->create();

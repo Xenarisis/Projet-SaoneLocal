@@ -1,4 +1,14 @@
 <x-layouts.app title="search">
+    <x-dropdown width="w-48" align="right" >
+        <x-slot name="trigger">
+            <span class="inline-block h-8 w-8 lg:h-12 lg:w-12 m-1 lg:m-2 text-white hover:text-gray-300 transition-colors [&>svg]:w-full [&>svg]:h-full cursor-pointer">
+                {!! file_get_contents(public_path('images/user.svg')) !!}
+            </span>
+        </x-slot>
+
+    </x-dropdown>
+
+    
     <div>
     </div>
 
