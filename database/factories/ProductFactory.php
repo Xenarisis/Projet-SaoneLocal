@@ -23,7 +23,7 @@ class ProductFactory extends Factory {
             'category' => fake()->word(),
             'subcategory' => '',
             'producer_id' => \App\Models\Producer::factory(),
-            'image_path' => null
+            'image_path' => fake()->randomElement(['images/pain.jpg', 'images/product.jpg', 'images/vin.jpg', 'images/salade.jpg'])
         ];
     }
 }

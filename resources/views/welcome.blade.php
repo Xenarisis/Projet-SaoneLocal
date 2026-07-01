@@ -14,7 +14,7 @@
                 <x-cards 
                 title="{{ $product->name }}"
                 href="{{ route('products.show', $product->id) }}"
-                image="{{ asset('images/product.jpg') }}"
+                image="{{ asset($product->image_path) }}"
                 >
                 <p>{{ $product->price }} €</p>
             </x-cards>
@@ -25,10 +25,11 @@
         <h1 class="font-bold rounded-2xl bg-base-green text-base-gray text-center p-2 text-2xl">nos producteurs</h1>
         <div class="flex flex-wrap gap-2 justify-center font-bold">
             @foreach($producers as $producer)
+
                 <x-cards 
                 title="{{ $producer->name }}"
                 href="{{ route('producers.show', $producer->id) }}"
-                image="{{ asset('images/producter.jpg') }}"
+                image="{{ asset($producer->user->pdp_path) }}"
                 >
                 <p>{{ $producer->city }}</p>
             </x-cards>
