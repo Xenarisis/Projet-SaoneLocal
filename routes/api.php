@@ -45,6 +45,11 @@ Route::prefix('products')->group(function () {
     Route::get('/{product}', [ProductController::class, 'show']);
 });
 
+Route::prefix('producers')->group(function () {
+    Route::get('/', [OrderController::class, 'index']);
+    Route::get('/{order}', [OrderController::class, 'show']);
+});
+
 Route::prefix('reviews')->group(function () {
 
     Route::get('/', [ReviewController::class, 'index']);
@@ -86,9 +91,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::prefix('orders')->group(function () {
-
-        Route::get('/', [OrderController::class, 'index']);
-        Route::get('/{order}', [OrderController::class, 'show']);
 
         Route::post('/', [OrderController::class, 'store']);
 
