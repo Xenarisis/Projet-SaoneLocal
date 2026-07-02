@@ -19,12 +19,16 @@ class ProducerController extends Controller {
     public function index(GetProducerRequest $request): AnonymousResourceCollection {
         $query = Producer::query();
 
-        $exactFilters = ['id', 'name', 'city', 'postal_code'];
+        $exactFilters = ['id', 'city', 'postal_code'];
         
         foreach ($exactFilters as $filter) {
             if ($request->filled($filter)) {
                 $query->where($filter, $request->input($filter));
             }
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
         $producers = $query->paginate(50);

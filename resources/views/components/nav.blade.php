@@ -9,7 +9,7 @@
         <a href="{{ route('home') }}" class="{{ $linkClasses }}" >
             Accueil
         </a>
-        <a href="" class="{{ $linkClasses }}" >
+        <a href="{{ route('calendar') }}" class="{{ $linkClasses }}" >
             Calendrier
         </a>
         <a href="{{ route('about') }}" class="{{ $linkClasses }}" >

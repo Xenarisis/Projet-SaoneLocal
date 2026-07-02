@@ -33,6 +33,17 @@ Route::get('/search', function () {
 
 Route::get('/about', fn() => view('pages.about'))->name('about');
 
+Route::get('/calendar', fn() => view('pages.calendar'))->name('calendar');
+
+Route::get('/mention-legale', fn() => view('pages.mentionlegale'))->name('mentionlegale');
+
+Route::get('/contact', fn() => view('pages.contact'))->name('contact');
+
+Route::get('/CGV', fn() => view('pages.CGV'))->name('CGV');
+
+Route::get('/CGU', fn() => view('pages.CGU'))->name('CGU');
+
+
 /*
 |--------------------------------------------------------------------------
 | Authentication (Guests Only)
