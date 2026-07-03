@@ -35,11 +35,11 @@
                         <!-- Numéro du jour + Bouton + -->
                         <div class="flex justify-between items-start mb-1">
                             <span class="font-bold text-lg leading-none"
-                                  :class="{'text-red-blood bg-red-100 rounded-full w-8 h-8 flex items-center justify-center shadow-sm': isToday(day), 'text-chrome-green': !isToday(day)}" 
+                                  :class="{'text-red-blood bg-red-100 rounded-full w-8 h-8 flex items-center justify-center shadow-sm': isToday(day), 'text-chrome-green dark:text-base-gray': !isToday(day)}" 
                                   x-text="day">
                             </span>
                             
-                            <button @click="selectDate(day)" class="text-chrome-green/40 hover:text-chrome-green font-bold text-xl leading-none transition" title="Ajouter un événement">
+                            <button @click="selectDate(day)" class="text-chrome-green/40 dark:text-base-gray hover:text-chrome-green font-bold text-xl leading-none transition" title="Ajouter un événement">
                                 +
                             </button>
                         </div>

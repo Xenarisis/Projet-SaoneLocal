@@ -1,9 +1,9 @@
-@props(['bgcolor' => '#DEDEDE', 'title' => null])
+@props(['title' => null])
 
 <!DOCTYPE html>
-<html lang="fr" {{ $attributes }}>
+<html lang="fr" {{ $attributes }} x-data="{ dark: localStorage.getItem('theme') === 'dark' }" :class="{ 'dark': dark }">
     <x-header/>
-    <body style="background-color: {{ $bgcolor }}" class="text-dark flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col pt-24 lg:pt-28">
+    <body class=" flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col pt-24 lg:pt-28 bg-base-gray dark:bg-cachou text-cachou dark:text-base-gray">
         <x-notification/>
         <x-alert/>
         <main>

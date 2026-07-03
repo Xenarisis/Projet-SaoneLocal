@@ -31,12 +31,14 @@ Route::get('/search', function () {
     return view('pages.search', compact('products', 'producers'));
 })->name('search');
 
-Route::get('/about', fn() => view('pages.about'))->name('about');
-
 Route::get('/calendar', function () {
     $events = \App\Models\Event::all();
     return view(('pages.calendar'), compact('events'));
 })->name('calendar');
+
+Route::get('/about', fn() => view('pages.about'))->name('about');
+
+Route::get('/settings', fn() => view('pages.settings'))->name('parametres');
 
 Route::get('/mention-legale', fn() => view('pages.mentionlegale'))->name('mentionlegale');
 

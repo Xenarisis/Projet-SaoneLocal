@@ -34,15 +34,22 @@
                 <input
                     type="search"
                     name="q"
-                    class="relative m-0 block flex-auto rounded-l-full bg-white bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:outline-none max-w-[100px] lg:max-w-none max-h-[25px] lg:max-h-none"
+                    class="relative m-0 block flex-auto rounded-l-full bg-white bg-clip-padding px-3 py-[0.25rem] text-cachou font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:outline-none max-w-[100px] lg:max-w-none max-h-[25px] lg:max-h-none"
                     placeholder="Search"
                     aria-label="Search"
                     id="searchInput"
                 />
                 <button
                     type="submit"
-                    class="flex items-center rounded-r-full whitespace-nowrap px-3 py-[0.25rem] text-surface bg-white [&>svg]:h-4 [&>svg]:w-5"
-                    onclick="if(document.getElementById('searchInput').value === '') { event.preventDefault(); document.getElementById('searchInput').focus(); }"
+                    class="flex items-center rounded-r-full whitespace-nowrap px-3 py-[0.25rem] text-surface bg-white hover:bg-base-gray/30 [&>svg]:h-4 [&>svg]:w-5"
+                    onclick="if (document.getElementById('searchInput').value === '' && document.activeElement === document.getElementById('searchInput')) {
+                        event.preventDefault(); // Prevent default form submission if inside a form
+                        document.getElementById('SearchButton').click(); // Programmatically click the button
+                    } else {
+                        // Optional: If not focused, focus it
+                        document.getElementById('searchInput').focus();
+                    }"
+                    id="SearchButton"
                 >
                     <span class="inline-block h-4 w-4 lg:h-5 lg:w-5 text-black transition-colors [&>svg]:w-full [&>svg]:h-full">
                         {!! file_get_contents(public_path('images/search.svg')) !!}

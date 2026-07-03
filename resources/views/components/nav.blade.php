@@ -15,7 +15,7 @@
         <a href="{{ route('about') }}" class="{{ $linkClasses }}" >
             À propos
         </a>
-        <a href="" class="{{ $linkClasses }}" >
+        <a href="{{ route('parametres') }}" class="{{ $linkClasses }}" >
             Paramètres
         </a>
     </nav>
