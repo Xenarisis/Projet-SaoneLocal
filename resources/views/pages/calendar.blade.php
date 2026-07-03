@@ -4,7 +4,7 @@
 
 <div class="w-screen rounded-3xl overflow-hidden"">
         <!-- Composant Calendrier -->
-        <div x-data="calendar()" x-init="fetchEvents()" class="w-full bg-base-green/20 rounded-lg shadow-lg overflow-hidden border border-chrome-green/30">
+        <div x-data="calendar()" x-init="" class="w-full bg-base-green/20 rounded-lg shadow-lg overflow-hidden border border-chrome-green/30">
             
             <!-- En-tête : Navigation -->
             <div class="flex items-center justify-between p-4 bg-chrome-green text-base-gray">
@@ -96,8 +96,8 @@
                 isToday(day) {
                     const today = new Date();
                     return day === today.getDate() && 
-                           this.month === today.getMonth() && 
-                           this.year === today.getFullYear();
+                        this.month === today.getMonth() && 
+                        this.year === today.getFullYear();
                 },
 
                 // Récupération des événements via API
