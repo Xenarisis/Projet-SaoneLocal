@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder {
      * Seed the application's database.
      */
     public function run(): void {
+        \Illuminate\Support\Facades\DB::disableQueryLog();
+        
         // Create an admin user who is also a producer
         $adminUser = User::create([
             'email' => 'admin@admin.admin',
