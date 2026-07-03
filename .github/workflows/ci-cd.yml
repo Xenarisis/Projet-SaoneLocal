@@ -155,5 +155,6 @@ jobs:
             
             sudo docker compose -f docker-compose.prod.yml down
             sudo docker image prune -af
+            sudo docker volume rm projet-saonelocal_app_public || true
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d
