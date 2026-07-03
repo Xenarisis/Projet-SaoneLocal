@@ -33,7 +33,10 @@ Route::get('/search', function () {
 
 Route::get('/about', fn() => view('pages.about'))->name('about');
 
-Route::get('/calendar', fn() => view('pages.calendar'))->name('calendar');
+Route::get('/calendar', function () {
+    $events = \App\Models\Event::all();
+    return view(('pages.calendar'), compact('events'));
+})->name('calendar');
 
 Route::get('/mention-legale', fn() => view('pages.mentionlegale'))->name('mentionlegale');
 
