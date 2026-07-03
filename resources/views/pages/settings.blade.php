@@ -11,12 +11,24 @@
 
             <div class="flex flex-col gap-6 w-3/5">
                 <section class="bg-base-green/30 rounded-2xl p-4 shadow-sm m-1 lg:m-2 mb-2 hover:bg-base-green/50">
-                    <a href="" class="flex justify-center items-center">
-                        <h2 class="font-bold text-lg">Compte Utilisateur</h2>
-                        <span class="inline-block h-8 w-8 lg:h-10 lg:w-10 text-dark transition-colors [&>svg]:w-full [&>svg]:h-full cursor-pointer">
-                            {!! file_get_contents(public_path('images/user.svg')) !!}
-                        </span>
-                    </a>
+                    <div x-data="{ isLoggedIn: !!localStorage.getItem('jwt_token') }">
+                        <template x-if="!isLoggedIn">
+                            <a href="{{ route('users.login') }}" class="flex justify-center items-center">
+                                <h2 class="font-bold text-lg">Se connecter</h2>
+                                <span class="inline-block h-8 w-8 lg:h-10 lg:w-10 text-dark transition-colors [&>svg]:w-full [&>svg]:h-full cursor-pointer">
+                                    {!! file_get_contents(public_path('images/user.svg')) !!}
+                                </span>
+                            </a>
+                        </template>
+                        <template x-if="isLoggedIn">
+                            <a href="{{ route('users.profile') }}" class="flex justify-center items-center">
+                                <h2 class="font-bold text-lg">Compte Utilisateur</h2>
+                                <span class="inline-block h-8 w-8 lg:h-10 lg:w-10 text-dark transition-colors [&>svg]:w-full [&>svg]:h-full cursor-pointer">
+                                    {!! file_get_contents(public_path('images/user.svg')) !!}
+                                </span>
+                            </a>
+                        </template>
+                    </div>
                 </section>
 
                 <section class="bg-base-green/30 rounded-2xl p-4 shadow-sm m-1 lg:m-2 mb-15 hover:bg-base-green/50 text-center">
