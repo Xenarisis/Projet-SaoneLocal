@@ -19,12 +19,16 @@ class ProducerController extends Controller {
     public function index(GetProducerRequest $request): AnonymousResourceCollection {
         $query = Producer::query();
 
-        $exactFilters = ['id', 'name', 'city', 'postal_code'];
+        $exactFilters = ['id', 'city', 'postal_code'];
         
         foreach ($exactFilters as $filter) {
             if ($request->filled($filter)) {
                 $query->where($filter, $request->input($filter));
             }
+        }
+
+        if ($request->filled('name')) {
+            $query->where('name', 'LIKE', '%' . $request->input('name') . '%');
         }
 
         $producers = $query->paginate(50);
@@ -43,7 +47,14 @@ class ProducerController extends Controller {
 
         $validatedData['user_id'] = $validatedData['user_id'] ?? $request->user()->id;
         
-        $producer = Producer::create($validatedData);
+        $producer = Producer::updateOrCreate(
+            ['user_id' => $validatedData['user_id']],
+            $validatedData
+        );
+
+        if ($producer->user && $producer->user->role !== 'producer') {
+            $producer->user->update(['role' => 'producer']);
+        }
 
         return (new ProducerResource($producer))
             ->additional(['message' => 'Producteur créé avec succès.'])

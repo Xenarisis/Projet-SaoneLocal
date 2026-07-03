@@ -22,8 +22,15 @@ class Product extends Model {
         'quantity',
         'category',
         'subcategory',
-        'producer_id'
+        'producer_id',
+        'image_path'
     ];
+    
+    protected function casts(): array {
+        return [
+            'price' => 'decimal:2'
+        ];
+    }
 
     public function producer() {
         return $this->belongsTo(Producer::class);

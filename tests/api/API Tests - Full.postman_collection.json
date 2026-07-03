@@ -1,10 +1,7 @@
 {
   "info": {
-    "_postman_id": "cbb58395-82af-48da-890d-01d71ce53f75",
     "name": "API Tests - Full",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55305811",
-    "_collection_link": "https://go.postman.co/collection/55305811-cbb58395-82af-48da-890d-01d71ce53f75?source=collection_link"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
@@ -17,6 +14,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });"
                 ],
                 "type": "text/javascript"
@@ -50,6 +49,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('jwt_token', data.access_token); }"
@@ -95,7 +96,7 @@
               "script": {
                 "exec": [
                   "var timestamp = new Date().getTime();",
-                  "pm.collectionVariables.set('test_email', 'test_' + timestamp + '@test.com');",
+                  "pm.collectionVariables.set('test_email', 'test' + timestamp + '@test.com');",
                   "pm.collectionVariables.set('test_password', 'password123');",
                   "pm.collectionVariables.set('test_username', 'user_' + timestamp);"
                 ],
@@ -106,6 +107,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 201', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var userId = data.user ? data.user.id : (data.data ? data.data.id : (data.id ? data.id : null));",
@@ -151,6 +154,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });",
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('user_jwt_token', data.access_token); }"
@@ -200,6 +205,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -237,6 +244,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -275,6 +284,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -318,6 +329,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -361,6 +374,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -404,6 +419,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
                   "var data = pm.response.json();",
                   "if(data.access_token) { pm.collectionVariables.set('jwt_token', data.access_token); }"
@@ -444,6 +461,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -490,6 +509,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -528,6 +549,294 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Current User (Me) [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User (Me) [Unauthorized]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Complete Profile [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/complete-profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "complete-profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 422', function () { pm.expect(pm.response.code).to.be.oneOf([200, 422]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Become Producer [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/become-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "become-producer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Become Producer [Unauthorized]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/become-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "become-producer"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stop Producer [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/stop-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "stop-producer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Avatar [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/avatars/default.png",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "avatars",
+                "default.png"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200, 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -535,19 +844,19 @@
       "name": "Ban Management",
       "item": [
         {
-          "name": "Toggle Ban",
+          "name": "Toggle Ban (Ban User)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
                   "var jsonData = pm.response.json();",
                   "pm.test('L\\'utilisateur est bien banni', function () { pm.expect(jsonData.data.is_banned).to.eql(true); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -584,6 +893,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('L\\'accès doit être refusé (403)', function () { pm.expect(pm.response.code).to.be.oneOf([403]); });"
                 ],
                 "type": "text/javascript"
@@ -616,19 +927,19 @@
           "response": []
         },
         {
-          "name": "Toggle Ban",
+          "name": "Toggle Ban (Unban User)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });",
                   "var jsonData = pm.response.json();",
                   "pm.test('L\\'utilisateur n\\'est plus banni', function () { pm.expect(jsonData.data.is_banned).to.eql(false); });"
                 ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "type": "text/javascript"
               }
             }
           ],
@@ -670,6 +981,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -718,6 +1031,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -755,6 +1070,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -793,6 +1110,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -839,6 +1158,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -877,6 +1198,335 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Producer Dashboard Stats [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer Dashboard Products [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "products"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer Dashboard Orders [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status [Fail - Non Producer]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders/{{order_item_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders",
+                "{{order_item_id}}",
+                "status"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"prête\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.expect(pm.response.code).to.be.oneOf([403, 404]);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.sendRequest({",
+                  "    url: pm.variables.get('base_url') + '/cart-items',",
+                  "    method: 'POST',",
+                  "    header: {",
+                  "        'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "        'Content-Type': 'application/json',",
+                  "        'Accept': 'application/json'",
+                  "    },",
+                  "    body: { mode: 'raw', raw: JSON.stringify({ product_id: 1, quantity: 1 }) }",
+                  "}, function (err, res) {",
+                  "    pm.sendRequest({",
+                  "        url: pm.variables.get('base_url') + '/orders',",
+                  "        method: 'POST',",
+                  "        header: {",
+                  "            'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "            'Content-Type': 'application/json',",
+                  "            'Accept': 'application/json'",
+                  "        },",
+                  "        body: { mode: 'raw', raw: '{}' }",
+                  "    }, function (err, res) {",
+                  "        if (res && res.json() && res.json().data && res.json().data.items) {",
+                  "            var items = res.json().data.items;",
+                  "            if(items && items.length > 0) {",
+                  "                pm.collectionVariables.set('order_item_id', items[0].id);",
+                  "            }",
+                  "        }",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status [Fail - Not Found/Other Producer]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders/999999/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders",
+                "999999",
+                "status"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"prête\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404', function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.sendRequest({",
+                  "    url: pm.variables.get('base_url') + '/cart-items',",
+                  "    method: 'POST',",
+                  "    header: {",
+                  "        'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "        'Content-Type': 'application/json',",
+                  "        'Accept': 'application/json'",
+                  "    },",
+                  "    body: { mode: 'raw', raw: JSON.stringify({ product_id: 1, quantity: 1 }) }",
+                  "}, function (err, res) {",
+                  "    pm.sendRequest({",
+                  "        url: pm.variables.get('base_url') + '/orders',",
+                  "        method: 'POST',",
+                  "        header: {",
+                  "            'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "            'Content-Type': 'application/json',",
+                  "            'Accept': 'application/json'",
+                  "        },",
+                  "        body: { mode: 'raw', raw: '{}' }",
+                  "    }, function (err, res) {",
+                  "        if (res && res.json() && res.json().data && res.json().data.items) {",
+                  "            var items = res.json().data.items;",
+                  "            if(items && items.length > 0) {",
+                  "                pm.collectionVariables.set('order_item_id', items[0].id);",
+                  "            }",
+                  "        }",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -890,6 +1540,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -938,6 +1590,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });"
                 ],
                 "type": "text/javascript"
@@ -984,6 +1638,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 200', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });"
                 ],
                 "type": "text/javascript"
@@ -1030,6 +1686,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1063,6 +1721,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1102,6 +1762,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -1150,6 +1812,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1188,6 +1852,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1231,6 +1897,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1274,6 +1942,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1320,6 +1990,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1344,7 +2016,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"quantity\": 60\n}"
+              "raw": "{\n    \"quantity\": 6\n}"
             },
             "url": {
               "raw": "{{base_url}}/cart-items/{{cart_item_id}}",
@@ -1371,6 +2043,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 409', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201, 409]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -1419,6 +2093,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1467,6 +2143,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201 or 409', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201, 409]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -1515,6 +2193,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1558,6 +2238,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1596,6 +2278,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1644,6 +2328,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -1692,6 +2378,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1738,6 +2426,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1772,6 +2462,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1803,6 +2495,92 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Update Review [Success]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}/reviews/{{review_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}",
+                "reviews",
+                "{{review_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"rating\":4,\"comment\":\"Updated comment\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Review [Unauthorized]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reviews/{{review_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reviews",
+                "{{review_id}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -1816,6 +2594,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -1845,7 +2625,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"discount_percent\": 15,\n    \"code_name\": \"T15_{{$timestamp}}\",\n    \"availibility\": \"2026-12-31\",\n    \"max_use\": 100\n}"
+              "raw": "{\n    \"discount_percent\": 15,\n    \"code_name\": \"T15_{{$timestamp}}\",\n    \"available_until\": \"2026-12-31\",\n    \"max_use\": 100\n}"
             },
             "url": {
               "raw": "{{base_url}}/discounts",
@@ -1866,6 +2646,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1903,6 +2685,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1941,6 +2725,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -1984,6 +2770,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2019,7 +2807,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"discount_percent\": 45,\n    \"code_name\": \"{{discount_code_name}}\",\n    \"availibility\": \"{{future_date}}\"\n}"
+              "raw": "{\n    \"discount_percent\": 45,\n    \"code_name\": \"{{discount_code_name}}\",\n    \"available_until\": \"{{future_date}}\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/discounts/{{discount_id}}",
@@ -2041,6 +2829,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2092,6 +2882,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -2140,6 +2932,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2177,6 +2971,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2215,6 +3011,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2261,6 +3059,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2312,20 +3112,16 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
-                  "if(id) { pm.collectionVariables.set('order_id', id); }"
-                ],
-                "type": "text/javascript"
-              }
-            },
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  "var timestamp = new Date().getTime();",
-                  "pm.collectionVariables.set('order_number', 'CMD-' + timestamp);"
+                  "if(id) { pm.collectionVariables.set('order_id', id); }",
+                  "var orderNum = data.order_number || (data.data ? data.data.order_number : null);",
+                  "if(orderNum) { pm.collectionVariables.set('order_number', orderNum); }",
+                  "var items = data.items || (data.data ? data.data.items : null);",
+                  "if(items && items.length > 0) { pm.collectionVariables.set('order_item_id', items[0].id); }"
                 ],
                 "type": "text/javascript"
               }
@@ -2340,7 +3136,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
+                "value": "Bearer {{user_jwt_token}}"
               },
               {
                 "key": "Content-Type",
@@ -2349,7 +3145,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"order_number\": \"{{order_number}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"unpaid\"\n}"
+              "raw": "{\n    \"order_number\": \"CMD-{{$timestamp}}\",\n    \"status\": \"pending\",\n    \"total_excl_tax\": 100,\n    \"percentage_tax\": 20,\n    \"payment_status\": \"pending\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/orders",
@@ -2370,6 +3166,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2407,6 +3205,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2445,6 +3245,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2488,6 +3290,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2534,6 +3338,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2585,10 +3391,14 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
+                  "pm.test('Status is 201 or 200', function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
-                  "var id = data.id || (data.data ? data.data.id : null);",
-                  "if(id) { pm.collectionVariables.set('compose_id', id); }"
+                  "var d = data.data || data;",
+                  "var id = d.id || null;",
+                  "if(id) { pm.collectionVariables.set('compose_id', id); }",
+                  "pm.test('Response contains order_id, product_id, quantity, unit_price', function () { pm.expect(d).to.have.property('order_id'); pm.expect(d).to.have.property('product_id'); pm.expect(d).to.have.property('quantity'); pm.expect(d).to.have.property('unit_price'); });"
                 ],
                 "type": "text/javascript"
               }
@@ -2602,18 +3412,14 @@
                 "value": "application/json"
               },
               {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"product_id\": \"{{product_id}}\",\n    \"quantity\": 5,\n    \"unit_price\": 49.00\n}"
-            },
             "url": {
               "raw": "{{base_url}}/composes",
               "host": [
@@ -2622,6 +3428,10 @@
               "path": [
                 "composes"
               ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"order_id\": \"{{order_id}}\",\n    \"product_id\": \"{{product_id}}\",\n    \"quantity\": 2,\n    \"unit_price\": 9.99\n}"
             }
           },
           "response": []
@@ -2633,7 +3443,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "pm.test('Response is an array or paginated list', function () { var data = pm.response.json(); var list = data.data || data; pm.expect(list).to.be.an('array'); });"
                 ],
                 "type": "text/javascript"
               }
@@ -2670,7 +3481,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                  "pm.test('Status is 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "pm.test('Returned compose has correct id', function () { var data = pm.response.json(); var d = data.data || data; pm.expect(Number(d.id)).to.eql(Number(pm.collectionVariables.get('compose_id'))); });"
                 ],
                 "type": "text/javascript"
               }
@@ -2702,84 +3514,161 @@
           "response": []
         },
         {
-          "name": "Put Compose",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
+          "name": "Update Compose (PUT) [Success]",
           "request": {
             "method": "PUT",
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "type": "text"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"quantity\": 10,\n    \"unit_price\": 45.00\n}"
-            },
             "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "composes",
+                "orders",
+                "{{order_id}}",
+                "compose",
                 "{{compose_id}}"
               ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"quantity\":2,\"unit_price\":15}"
             }
           },
-          "response": []
-        },
-        {
-          "name": "Patch Compose",
+          "response": [],
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
                 ],
                 "type": "text/javascript"
               }
             }
-          ],
+          ]
+        },
+        {
+          "name": "Update Compose (PATCH) [Success]",
           "request": {
             "method": "PATCH",
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{jwt_token}}"
-              },
-              {
-                "key": "Content-Type",
-                "value": "application/json"
+                "value": "application/json",
+                "type": "text"
               }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"quantity\": 12\n}"
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "compose",
+                "{{compose_id}}"
+              ]
             },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Compose [Success]",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "compose",
+                "{{compose_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Compose [Unauthorized]",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/composes/{{compose_id}}",
               "host": [
@@ -2791,7 +3680,18 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -2805,6 +3705,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 201', function() { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
                   "var data = pm.response.json();",
                   "var id = data.id || (data.data ? data.data.id : null);",
@@ -2853,6 +3755,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2890,6 +3794,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200', function() { pm.expect(pm.response.code).to.be.oneOf([200]); });"
                 ],
                 "type": "text/javascript"
@@ -2924,16 +3830,494 @@
       ]
     },
     {
-      "name": "Teardown (Deletes)",
+      "name": "Negative & Edge Cases",
       "item": [
         {
-          "name": "Delete Compose",
+          "name": "No Token - Get Users (expect 401)",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
+                  "pm.test('Status is 401 (Unauthorized)', function () { pm.expect(pm.response.code).to.eql(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Token - Create Product (expect 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401 (Unauthorized)', function () { pm.expect(pm.response.code).to.eql(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Unauthorized Product\",\n    \"price\": 10\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Token - Get Orders (expect 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401 (Unauthorized)', function () { pm.expect(pm.response.code).to.eql(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Wrong Password (expect 401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401 (Unauthorized)', function () { pm.expect(pm.response.code).to.eql(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@admin.admin\",\n    \"password\": \"wrong_password_xyz\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Unknown Email (expect 401 or 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([401, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"does-not-exist-99999@test.com\",\n    \"password\": \"whatever123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Missing Required Fields (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"incomplete@test.com\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Nonexistent Product (expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404 (Not Found)', function () { pm.expect(pm.response.code).to.eql(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/999999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "999999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Nonexistent Order (expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404 (Not Found)', function () { pm.expect(pm.response.code).to.eql(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/999999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "999999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Nonexistent User (expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404 (Not Found)', function () { pm.expect(pm.response.code).to.eql(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/999999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "999999999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Product - Missing Required Fields (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Missing name and price\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Producer - Missing Required Fields (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order - Missing Required Fields (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (Bad Request)', function () { pm.expect(pm.response.code).to.eql(400); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Already-Deleted User (expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404 (Not Found)', function () { pm.expect(pm.response.code).to.eql(404); });"
                 ],
                 "type": "text/javascript"
               }
@@ -2952,18 +4336,200 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "raw": "{{base_url}}/users/999999999",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "composes",
-                "{{compose_id}}"
+                "users",
+                "999999999"
               ]
             }
           },
           "response": []
         },
+        {
+          "name": "Update Nonexistent Discount (expect 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404 (Not Found)', function () { pm.expect(pm.response.code).to.eql(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/discounts/999999999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "discounts",
+                "999999999"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code_name\": \"GHOST\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Compose - Missing Required Fields (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/composes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Invalid Email Format (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Bad Email User\",\n    \"firstname\": \"a\",\n    \"lastname\": \"b\",\n    \"username\": \"bademail_user\",\n    \"email\": \"not-an-email\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register - Duplicate Email (expect 422)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Duplicate Admin\",\n    \"firstname\": \"a\",\n    \"lastname\": \"b\",\n    \"username\": \"duplicate_admin_user\",\n    \"email\": \"admin@admin.admin\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Teardown (Deletes)",
+      "item": [
         {
           "name": "Delete Reduce",
           "event": [
@@ -2971,6 +4537,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3009,6 +4577,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3047,6 +4617,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3085,6 +4657,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3123,6 +4697,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3161,6 +4737,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3199,6 +4777,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3237,7 +4817,9 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
+                  "pm.test('Status is 200, 204 or 404 (Emptied by Order creation)', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204, 404]); });"
                 ],
                 "type": "text/javascript"
               }
@@ -3275,6 +4857,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3313,6 +4897,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3351,6 +4937,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 or 204', function () { pm.expect(pm.response.code).to.be.oneOf([200, 204]); });"
                 ],
                 "type": "text/javascript"
@@ -3389,6 +4977,8 @@
               "listen": "test",
               "script": {
                 "exec": [
+                  "pm.test('Response time is acceptable (<2000ms)', function () { pm.expect(pm.response.responseTime).to.be.below(2000); });",
+                  "pm.test('Content-Type is application/json', function () { pm.response.to.have.header('Content-Type'); });",
                   "pm.test('Status is 200 OK', function () { pm.response.to.have.status(200); });"
                 ],
                 "type": "text/javascript"
@@ -3477,10 +5067,6 @@
       "value": ""
     },
     {
-      "key": "compose_id",
-      "value": ""
-    },
-    {
       "key": "reduce_id",
       "value": ""
     },
@@ -3506,6 +5092,10 @@
     },
     {
       "key": "future_date",
+      "value": ""
+    },
+    {
+      "key": "compose_id",
       "value": ""
     }
   ]

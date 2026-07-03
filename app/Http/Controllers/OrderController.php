@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\GetOrderRequest;
 use App\Http\Requests\PutOrderRequest;
@@ -18,7 +20,7 @@ class OrderController extends Controller {
     
     // Read
     public function index(GetOrderRequest $request): AnonymousResourceCollection {
-        $query = Order::query();
+        $query = Order::with('items');
 
         $user = $request->user();
         if ($user && !$user->isAdmin()) {
@@ -36,12 +38,14 @@ class OrderController extends Controller {
         }
 
         if ($request->filled('min_total')) {
-            $query->where('total', '>=', $request->input('min_total'));
+            $query->where('total_excl_tax', '>=', $request->input('min_total'));
         }
 
         if ($request->filled('max_total')) {
-            $query->where('total', '<=', $request->input('max_total'));
+            $query->where('total_excl_tax', '<=', $request->input('max_total'));
         }
+
+        $query->orderBy('created_at', 'desc');
 
         $orders = $query->paginate(50);
         $orders->appends($request->all());
@@ -55,15 +59,52 @@ class OrderController extends Controller {
 
     // Create
     public function store(CreateOrderRequest $request): JsonResponse {
-        //! Automaticly fill order_number & status & total & everything based on cart / list of item (every cart items not neccesary pay now)
-        $validatedData = $request->validated();
+        $user = $request->user();
         
-        $order = new Order($validatedData);
-        $order->user_id = $request->user()->id;
-        $order->save();
+        $cartItems = $user->cartItems()->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json([
+                'message' => 'Impossible de créer une commande : le panier est vide.'
+            ], 400);
+        }
+
+        $order = DB::transaction(function () use ($user, $cartItems, $request) {
+            $totalExclTax = 0;
+
+            foreach ($cartItems as $cartItem) {
+                $totalExclTax += $cartItem->quantity * $cartItem->product->price; 
+            }
+
+            $order = new Order();
+            $order->order_number = 'ORD-' . strtoupper(uniqid()); 
+            $order->status = 'pending';
+            $order->total_excl_tax = $totalExclTax;
+            $order->percentage_tax = 20.00;
+            $order->payment_status = $request->input('payment_method') === 'counter' ? 'counter' : 'paid';
+            $order->user_id = $user->id;
+            
+            $order->save();
+
+            foreach ($cartItems as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'product_name' => $cartItem->product->name,
+                    'unit_price' => $cartItem->product->price,
+                    'quantity' => $cartItem->quantity,
+                ]);
+            }
+
+            $user->cartItems()->delete();
+
+            return $order;
+        });
+
+        $order->load('items');
 
         return (new OrderResource($order))
-            ->additional(['message' => 'Commande créée avec succès.'])
+            ->additional(['message' => 'Commande créée avec succès à partir du panier.'])
             ->response()
             ->setStatusCode(201);
     }

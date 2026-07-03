@@ -25,5 +25,9 @@ class AppServiceProvider extends ServiceProvider {
             
             return null;
         });
+
+        \Illuminate\Support\Facades\Blade::anonymousComponentPath(__DIR__.'/../../resources/views/components/ui');
+        \Illuminate\Support\Facades\Blade::anonymousComponentPath(__DIR__.'/../../resources/views/components/form');
+        \Illuminate\Support\Facades\Blade::anonymousComponentPath(__DIR__.'/../../resources/views/components/layout');
     }
 }

@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  * @extends Factory<User>
  */
 class UserFactory extends Factory {
+    protected static ?string $password;
+
     /**
      * Define the model's default state.
      *
@@ -24,7 +26,8 @@ class UserFactory extends Factory {
             'username'  => fake()->unique()->userName(),
             'role'      => 'user',
             'is_banned' => false,
-            'password'  => Hash::make('password')
+            'password'  => static::$password ??= Hash::make('password'),
+            'pdp_path'  => fake()->boolean(70) ? fake()->randomElement(['images/agriculteur.jpg', 'images/agricultrice.jpg', 'images/boulanger.jpg', 'images/boulanger2.jpg', 'images/producter.jpg', 'images/vigneron.jpg']) : null
         ];
     }
 

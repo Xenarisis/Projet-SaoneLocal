@@ -14,7 +14,7 @@ class DiscountSeeder extends Seeder {
         Discount::create([
             'discount_percent' => 67,
             'code_name' => 'Mathys',
-            'availibility' => '2026-05-22'
+            'available_until' => '2026-05-22'
         ]);
 
         Discount::factory()->count(5)->create();

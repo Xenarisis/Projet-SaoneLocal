@@ -20,6 +20,7 @@ class OrderResource extends JsonResource {
             'percentage_tax'    => $this->percentage_tax,
             'payment_status'    => $this->payment_status,
             'user_id'           => $this->user_id,
+            'items'             => $this->whenLoaded('items'),
             'created_at'        => $this->created_at,
             'updated_at'        => $this->updated_at
         ];

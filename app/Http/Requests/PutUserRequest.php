@@ -12,7 +12,7 @@ class PutUserRequest extends FormRequest {
      */
     public function authorize(): bool {
         $user = $this->route('user');
-        
+
         return $user instanceof User && $this->user()->can('update', $user);
     }
 
@@ -22,7 +22,7 @@ class PutUserRequest extends FormRequest {
     public function rules(): array {
         $user = $this->route('user');
         $userId = $user instanceof User ? $user->id : $user;
-        
+
         return [
             'email' => [
                 'required',
@@ -30,21 +30,29 @@ class PutUserRequest extends FormRequest {
                 'max:255',
                 Rule::unique('users', 'email')->ignore($userId)
             ],
-            'firstname'   => 'required|string|min:1|max:20',
-            'lastname'    => 'required|string|min:1|max:20',
-            'username'    => [
+            'firstname'     => 'required|string|min:1|max:20',
+            'lastname'      => 'required|string|min:1|max:20',
+            'username'      => [
                 'nullable',
                 'string',
                 'min:1',
                 'max:25',
                 Rule::unique('users', 'username')->ignore($userId)
             ],
-            'GoogleToken' => [
+            'GoogleToken'   => [
                 'nullable',
                 'string',
                 Rule::unique('users', 'GoogleToken')->ignore($userId)
             ],
-            'password'    => 'nullable|string|min:6|max:50'
+            'password'      => 'nullable|string|min:6|max:50|confirmed',
+            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'delete_pdp'    => 'nullable|boolean',
+            'producer_name' => 'nullable|string|max:100',
+            'presentation'  => 'nullable|string|max:1000',
+            'street_line_1' => 'nullable|string|max:255',
+            'street_line_2' => 'nullable|string|max:255',
+            'city'          => 'nullable|string|max:100',
+            'postal_code'   => 'nullable|string|max:20'
         ];
     }
 
@@ -53,15 +61,16 @@ class PutUserRequest extends FormRequest {
      */
     public function messages(): array {
         return [
-            'email.unique'         => 'Cette adresse e-mail est déjà utilisée par un autre utilisateur.',
-            'email.required'       => 'L\'adresse e-mail est obligatoire.',
-            'username.unique'      => 'Ce nom d\'utilisateur est déjà pris.',
-            'username.max'         => 'Le nom d\'utilisateur ne doit pas dépasser 25 caractères.',
-            'firstname.required'   => 'Le prénom est requis.',
-            'lastname.required'    => 'Le nom est requis.',
-            'password.min'         => 'Le mot de passe doit comporter au moins 6 caractères.',
-            'password.max'         => 'Le mot de passe ne peut pas dépasser 50 caractères.',
-            'GoogleToken.unique'   => 'Ce compte Google est déjà associé à un autre utilisateur.',
+            'email.unique'          => 'Cette adresse e-mail est déjà utilisée par un autre utilisateur.',
+            'email.required'        => 'L\'adresse e-mail est obligatoire.',
+            'username.unique'       => 'Ce nom d\'utilisateur est déjà pris.',
+            'username.max'          => 'Le nom d\'utilisateur ne doit pas dépasser 25 caractères.',
+            'firstname.required'    => 'Le prénom est requis.',
+            'lastname.required'     => 'Le nom est requis.',
+            'password.min'          => 'Le mot de passe doit comporter au moins 6 caractères.',
+            'password.max'          => 'Le mot de passe ne peut pas dépasser 50 caractères.',
+            'password.confirmed'    => 'La confirmation du mot de passe ne correspond pas.',
+            'GoogleToken.unique'    => 'Ce compte Google est déjà associé à un autre utilisateur.',
         ];
     }
 }

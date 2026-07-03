@@ -14,11 +14,39 @@ class AuthController extends Controller {
     public function register(RegisterUserRequest $request): UserResource {
         $validatedData = $request->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
-        
+
+        if ($request->hasFile('pdp')) {
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('pdp'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('local')->put('avatars/' . $filename, $encoded->toString());
+            $validatedData['pdp_path'] = $filename;
+        }
+
         $user = User::create($validatedData);
 
+        $user->last_login = now();
+        $user->role = $request->input('role', 'user');
+        $user->save();
+
+        if ($user->role === 'producer') {
+            \App\Models\Producer::create([
+                'user_id' => $user->id,
+                'name' => $request->input('producer_name'),
+                'presentation' => $request->input('presentation'),
+                'street_line_1' => $request->input('street_line_1'),
+                'street_line_2' => $request->input('street_line_2'),
+                'city' => $request->input('city'),
+                'postal_code' => $request->input('postal_code'),
+            ]);
+        }
+
+        $token = auth('api')->login($user);
+
         return (new UserResource($user))->additional([
-            'message' => 'Utilisateur créé avec succès'
+            'access_token'  => $token,
+            'message'       => 'Utilisateur créé avec succès'
         ]);
     }
 
@@ -26,13 +54,20 @@ class AuthController extends Controller {
         $credentials = $request->only('email', 'password');
 
         if (!$token = auth('api')->attempt($credentials)) {
+            $user = User::where('email', $request->email)->first();
+            if ($user && $user->google_token) {
+                return response()->json([
+                    'message' => 'Identifiants incorrects. Note : Ce compte est lié à Google, essayez de vous connecter via le bouton Google ou de définir un mot de passe dans votre profil.'
+                ], 401);
+            }
+
             return response()->json([
                 'message' => 'Les identifiants sont incorrects.'
             ], 401);
         }
 
         $user = auth('api')->user();
-        $user->lastLogin = now();
+        $user->last_login = now();
         $user->save();
 
         return response()->json([
@@ -40,6 +75,40 @@ class AuthController extends Controller {
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
+        ], 200);
+    }
+
+    public function me(): UserResource {
+        return new UserResource(auth('api')->user());
+    }
+
+    public function completeProfile(Request $request) {
+        $user = auth('api')->user();
+
+        $request->validate([
+            'username' => 'required|string|unique:users,username,' . $user->id,
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+        ]);
+
+        $user->username = $request->username;
+        $user->firstname = $request->firstname;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+
+        if ($user->role === 'google_new') {
+            $user->role = 'user';
+        }
+
+        $user->save();
+
+        $newToken = auth('api')->login($user);
+
+        return response()->json([
+            'message' => 'Profil complété avec succès !',
+            'data' => $user,
+            'token' => $newToken
         ], 200);
     }
 

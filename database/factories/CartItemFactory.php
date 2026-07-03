@@ -18,7 +18,7 @@ class CartItemFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'quantity' => fake()->numberBetween(0, 100),
+            'quantity' => fake()->numberBetween(1, 5),
             'user_id' => \App\Models\User::factory(),
             'product_id' => \App\Models\Product::factory()
         ];

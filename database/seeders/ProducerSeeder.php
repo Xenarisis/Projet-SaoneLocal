@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Producer;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,5 +23,9 @@ class ProducerSeeder extends Seeder {
         ]);
 
         Producer::factory()->count(50)->create();
+
+        // Update all users who have a producer profile to 'producer' role
+        // This is necessary because model events are disabled during seeding
+        User::whereIn('id', Producer::pluck('user_id'))->update(['role' => 'producer']);
     }
 }

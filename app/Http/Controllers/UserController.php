@@ -15,13 +15,12 @@ use App\Http\Requests\DeleteUserRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller {
-    
     // Read
     public function index(GetUserRequest $request): AnonymousResourceCollection {
         $query = User::query();
 
         $currentUser = $request->user();
-        
+
         if ($currentUser && !$currentUser->isAdmin()) {
             $query->where('id', $currentUser->id);
         }
@@ -38,8 +37,8 @@ class UserController extends Controller {
             $query->where('username', $request->input('username'));
         }
 
-        if ($request->filled('GoogleToken')) {
-            $query->where('GoogleToken', $request->input('GoogleToken'));
+        if ($request->filled('google_token')) {
+            $query->where('google_token', $request->input('google_token'));
         }
 
         $users = $query->paginate(50);
@@ -62,11 +61,84 @@ class UserController extends Controller {
             unset($validatedData['password']);
         }
 
+        if ($request->boolean('delete_pdp')) {
+            $validatedData['pdp_path'] = null;
+        }
+
+        if ($request->hasFile('pdp')) {
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('pdp'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('local')->put('avatars/' . $filename, $encoded->toString());
+            $validatedData['pdp_path'] = $filename;
+        }
+
         $user->update($validatedData);
+
+        if ($user->role === 'producer' && $user->producer) {
+            $user->producer->update([
+                'name' => $request->input('producer_name', $user->producer->name),
+                'presentation' => $request->input('presentation', $user->producer->presentation),
+                'street_line_1' => $request->input('street_line_1', $user->producer->street_line_1),
+                'street_line_2' => $request->input('street_line_2', $user->producer->street_line_2),
+                'city' => $request->input('city', $user->producer->city),
+                'postal_code' => $request->input('postal_code', $user->producer->postal_code),
+            ]);
+        }
 
         return (new UserResource($user))->additional([
             'message' => 'Utilisateur mis à jour avec succès.'
         ]);
+    }
+
+    public function becomeProducer(Request $request, User $user): JsonResponse {
+        $currentUser = $request->user();
+
+        \Log::info('BecomeProducer: current user=' . $currentUser->id . ', target user=' . $user->id . ', isAdmin=' . ($currentUser->isAdmin() ? 'true' : 'false'));
+
+        if ($currentUser->id !== $user->id && !$currentUser->isAdmin()) {
+            return response()->json(['message' => 'Non autorisé'], 403);
+        }
+
+        if ($user->role === 'user') {
+            $user->update(['role' => 'producer']);
+            if (!$user->producer) {
+                \App\Models\Producer::create([
+                    'user_id' => $user->id,
+                    'name' => $user->username ?? ($user->firstname . ' ' . $user->lastname),
+                    'city' => '',
+                    'postal_code' => '71100',
+                    'street_line_1' => '',
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Vous êtes maintenant producteur !', 'user' => new UserResource($user->fresh(['producer']))], 200);
+    }
+
+    public function stopProducer(Request $request, User $user): JsonResponse {
+        $currentUser = $request->user();
+
+        if ($currentUser->id !== $user->id && !$currentUser->isAdmin()) {
+            return response()->json(['message' => 'Non autorisé'], 403);
+        }
+
+        if ($user->role === 'producer') {
+            $user->update(['role' => 'user']);
+            
+            if ($user->producer) {
+                \App\Models\Product::where('producer_id', $user->producer->id)->update(['is_active' => false]);
+                
+                \App\Models\OrderItem::whereHas('product', function($q) use ($user) {
+                    $q->where('producer_id', $user->producer->id);
+                })
+                ->whereNotIn('status', ['terminée', 'livrée', 'retirée', 'annulée'])
+                ->update(['status' => 'annulée']);
+            }
+        }
+
+        return response()->json(['message' => 'Votre espace producteur a été désactivé.', 'user' => new UserResource($user->fresh())], 200);
     }
 
     // Update : Patch
@@ -75,6 +147,19 @@ class UserController extends Controller {
 
         if ($request->filled('password')) {
             $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        if ($request->boolean('delete_pdp')) {
+            $validatedData['pdp_path'] = null;
+        }
+
+        if ($request->hasFile('pdp')) {
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('pdp'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('local')->put('avatars/' . $filename, $encoded->toString());
+            $validatedData['pdp_path'] = $filename;
         }
 
         $user->update($validatedData);
@@ -96,8 +181,8 @@ class UserController extends Controller {
         }
 
         if ($isOwner && !$isAdmin) {
-            if ($request->filled('GoogleToken')) {
-                if ($user->GoogleToken === null || $request->input('GoogleToken') !== $user->GoogleToken) {
+            if ($request->filled('google_token')) {
+                if ($user->google_token === null || $request->input('google_token') !== $user->google_token) {
                     return response()->json(['message' => 'Action non autorisée. Token Google invalide.'], 403);
                 }
             }
@@ -106,5 +191,15 @@ class UserController extends Controller {
         $user->delete();
 
         return response()->json(['message' => 'Utilisateur supprimé avec succès.'], 200);
+    }
+
+    public function showAvatar($filename) {
+        $path = storage_path('app/avatars/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
     }
 }

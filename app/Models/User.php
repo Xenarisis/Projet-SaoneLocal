@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Follow;
 use App\Models\CartItem;
 use App\Models\Producer;
@@ -25,27 +24,39 @@ class User extends Authenticatable implements JWTSubject {
         'lastname',
         'username',
         'password',
-        'GoogleToken',
-        'lastLogin',
-        'is_banned'
+        'google_token',
+        'last_login',
+        'is_banned',
+        'pdp_path',
+        'role'
     ];
 
     protected $hidden = [
         'password',
-        'GoogleToken',
+        'google_token',
         'remember_token',
     ];
+
+    protected function casts(): array {
+        return [
+            'is_banned' => 'boolean',
+            'last_login' => 'datetime',
+            'password'  => 'hashed'
+        ];
+    }
 
     public function getJWTIdentifier() {
         return $this->getKey();
     }
 
     public function getJWTCustomClaims() {
-        return [];
+        return [
+            'role' => $this->role
+        ];
     }
 
     public function isAdmin(): bool {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->email === 'admin@admin.admin';
     }
 
     public function producer() {

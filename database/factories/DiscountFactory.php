@@ -18,7 +18,7 @@ class DiscountFactory extends Factory {
         return [
             'discount_percent' => fake()->numberBetween(1, 100),
             'code_name' => fake()->numerify('#########'),
-            'availibility' => fake()->dateTimeBetween('now', '+1 month')
+            'available_until' => fake()->dateTimeBetween('now', '+1 month')
         ];
     }
 }

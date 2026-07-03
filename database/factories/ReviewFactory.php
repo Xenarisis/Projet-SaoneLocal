@@ -17,9 +17,23 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
+        $reviews = [
+            'Produit excellent, je recommande !',
+            'Très bonne qualité, mais un peu cher.',
+            'Je rachèterai sans hésiter.',
+            'Un délice, toute la famille a adoré.',
+            'Correct, mais j\'attendais mieux.',
+            'Parfait, très bon rapport qualité/prix.',
+            'Pas mal, à tester.',
+            'Le goût est vraiment authentique.',
+            'Superbe qualité, producteur au top.',
+            'Bof, je suis un peu déçu.',
+            'Excellent produit du terroir !'
+        ];
+
         return [
-            'rating' => fake()->randomFloat(1, 0, 5),
-            'comment' => fake()->sentence(),
+            'rating' => fake()->numberBetween(3, 5),
+            'comment' => fake()->randomElement($reviews),
             'user_id' => \App\Models\User::factory(),
             'product_id' => \App\Models\Product::factory()
         ];

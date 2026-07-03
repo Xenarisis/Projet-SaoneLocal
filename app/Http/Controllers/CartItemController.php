@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\CartItemResource;
 use App\Http\Requests\GetCartItemRequest;
@@ -45,26 +46,37 @@ class CartItemController extends Controller {
     
     // Create
     public function store(CreateCartItemRequest $request): JsonResponse {
-        //! Need to delete 'quantity' of product ++ check there is enought
         $validatedData = $request->validated();
         $user = $request->user();
         
         $productId = $validatedData['product_id'];
         $quantityToAdd = $validatedData['quantity'] ?? 1;
 
-        $cartItem = $user->cartItems()->where('product_id', $productId)->first();
+        $product = Product::findOrFail($productId);
 
-        if ($cartItem) {
-            $cartItem->quantity += $quantityToAdd;
-            $cartItem->save();
-            $message = 'Quantité mise à jour dans le panier.';
-        } else {
-            $cartItem = $user->cartItems()->create([
-                'product_id' => $productId,
-                'quantity' => $quantityToAdd
-            ]);
-            $message = 'Produit ajouté au panier.';
+        if ($product->quantity < $quantityToAdd) {
+            return response()->json([
+                'message' => 'quantity insuffisant pour ce produit.'
+            ], 422); 
         }
+
+        DB::transaction(function () use ($user, $product, $productId, $quantityToAdd, &$cartItem, &$message) {
+            $product->decrement('quantity', $quantityToAdd);
+
+            $cartItem = $user->cartItems()->where('product_id', $productId)->first();
+
+            if ($cartItem) {
+                $cartItem->quantity += $quantityToAdd;
+                $cartItem->save();
+                $message = 'Quantité mise à jour dans le panier.';
+            } else {
+                $cartItem = $user->cartItems()->create([
+                    'product_id' => $productId,
+                    'quantity' => $quantityToAdd
+                ]);
+                $message = 'Produit ajouté au panier.';
+            }
+        });
 
         return (new CartItemResource($cartItem))
             ->additional(['message' => $message])
@@ -73,22 +85,43 @@ class CartItemController extends Controller {
     }
 
     // Update: Put
-    public function updatePut(PutCartItemRequest $request, CartItem $cartItem): CartItemResource {
-        //! Need to check quantity
-        $validatedData = $request->validated();
-
-        $cartItem->update($validatedData);
-
-        return (new CartItemResource($cartItem))
-            ->additional(['message' => 'Élément du panier mis à jour.']);
+    public function updatePut(PutCartItemRequest $request, CartItem $cartItem) {
+        return $this->handleQuantityUpdate($request, $cartItem);
     }
 
     // Update: Patch
-    public function updatePatch(PatchCartItemRequest $request, CartItem $cartItem): CartItemResource {
-        //! Need to check quantity
+    public function updatePatch(PatchCartItemRequest $request, CartItem $cartItem) {
+        return $this->handleQuantityUpdate($request, $cartItem);
+    }
+
+    private function handleQuantityUpdate(Request $request, CartItem $cartItem) {
         $validatedData = $request->validated();
 
-        $cartItem->update($validatedData);
+        if (isset($validatedData['quantity'])) {
+            $newQuantity = $validatedData['quantity'];
+            $oldQuantity = $cartItem->quantity;
+            $difference = $newQuantity - $oldQuantity;
+
+            $product = $cartItem->product;
+
+            if ($difference > 0 && $product->quantity < $difference) {
+                return response()->json([
+                    'message' => 'quantity insuffisant pour cette mise à jour.'
+                ], 422);
+            }
+
+            DB::transaction(function () use ($product, $cartItem, $validatedData, $difference) {
+                if ($difference > 0) {
+                    $product->decrement('quantity', $difference);
+                } elseif ($difference < 0) {
+                    $product->increment('quantity', abs($difference));
+                }
+                
+                $cartItem->update($validatedData);
+            });
+        } else {
+            $cartItem->update($validatedData);
+        }
 
         return (new CartItemResource($cartItem))
             ->additional(['message' => 'Élément du panier mis à jour.']);
@@ -96,7 +129,10 @@ class CartItemController extends Controller {
 
     // Delete
     public function destroy(DeleteCartItemRequest $request, CartItem $cartItem): JsonResponse {
-        $cartItem->delete();
+        DB::transaction(function () use ($cartItem) {
+            $cartItem->product->increment('quantity', $cartItem->quantity);
+            $cartItem->delete();
+        });
 
         return response()->json([
             'message' => 'Produit retiré du panier avec succès.'
