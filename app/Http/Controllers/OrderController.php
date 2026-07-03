@@ -20,7 +20,7 @@ class OrderController extends Controller {
     
     // Read
     public function index(GetOrderRequest $request): AnonymousResourceCollection {
-        $query = Order::query();
+        $query = Order::with('items');
 
         $user = $request->user();
         if ($user && !$user->isAdmin()) {
@@ -45,6 +45,8 @@ class OrderController extends Controller {
             $query->where('total_excl_tax', '<=', $request->input('max_total'));
         }
 
+        $query->orderBy('created_at', 'desc');
+
         $orders = $query->paginate(50);
         $orders->appends($request->all());
 
@@ -67,7 +69,7 @@ class OrderController extends Controller {
             ], 400);
         }
 
-        $order = DB::transaction(function () use ($user, $cartItems) {
+        $order = DB::transaction(function () use ($user, $cartItems, $request) {
             $totalExclTax = 0;
 
             foreach ($cartItems as $cartItem) {
@@ -79,7 +81,7 @@ class OrderController extends Controller {
             $order->status = 'pending';
             $order->total_excl_tax = $totalExclTax;
             $order->percentage_tax = 20.00;
-            $order->payment_status = 'pending';
+            $order->payment_status = $request->input('payment_method') === 'counter' ? 'counter' : 'paid';
             $order->user_id = $user->id;
             
             $order->save();
@@ -98,6 +100,8 @@ class OrderController extends Controller {
 
             return $order;
         });
+
+        $order->load('items');
 
         return (new OrderResource($order))
             ->additional(['message' => 'Commande créée avec succès à partir du panier.'])

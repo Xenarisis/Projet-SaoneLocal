@@ -24,15 +24,7 @@
                 </a>
             </section>
 
-            <section class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-base-green">
-                <h2 class="font-bold text-lg mb-3">🌱 Devenir producteur</h2>
-                <p class="text-gray-600 mb-3">Vous êtes producteur local et souhaitez rejoindre notre réseau ? Nous serions ravis de vous accueillir sur la plateforme.</p>
-                <p class="text-gray-600">Contactez-nous directement à :</p>
-                <a href="mailto:producteurs@saonelocal.fr" class="font-bold text-base-green underline">
-                    producteurs@saonelocal.fr
-                </a>
-                <p class="text-sm text-gray-500 mt-3">Nous vous répondrons dans les meilleurs délais avec toutes les informations nécessaires pour rejoindre SaôneLocal.</p>
-            </section>
+
 
             <section class="bg-white rounded-2xl p-5 shadow-sm">
                 <h2 class="font-bold text-lg mb-3"> Horaires de disponibilité</h2>

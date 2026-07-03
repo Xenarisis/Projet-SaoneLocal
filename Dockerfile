@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libwebp-dev \
     libonig-dev \
     libxml2-dev \
     zip \
@@ -15,7 +18,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:2.9.7 /usr/bin/composer /usr/bin/composer
 

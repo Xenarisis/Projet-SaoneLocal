@@ -35,4 +35,12 @@ class Producer extends Model {
     public function events(): BelongsToMany {
         return $this->belongsToMany(Event::class);
     }
+
+    public function products(): HasMany {
+        return $this->hasMany(Product::class);
+    }
+
+    public function reviews() {
+        return $this->hasManyThrough(Review::class, Product::class);
+    }
 }

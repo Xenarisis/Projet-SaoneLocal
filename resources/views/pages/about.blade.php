@@ -1,4 +1,4 @@
-<x-layouts.app title="a propos">
+<x-layouts.app title="À propos - SaôneLocal" description="Découvrez l'histoire de SaôneLocal, l'association regroupant les producteurs locaux du bassin chalonnais.">
     <div class="w-full h-full place-content-center text-center">
         <h1 class="border rounded-full m-2 p-2 bg-base-green text-base-gray text-2xl">Notre histoire</h1>
         <p class="font-bold pb-3 text-lg">Votre territoire, vos producteurs, votre plateforme</p>

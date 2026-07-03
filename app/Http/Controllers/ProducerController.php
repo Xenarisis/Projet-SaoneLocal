@@ -47,7 +47,14 @@ class ProducerController extends Controller {
 
         $validatedData['user_id'] = $validatedData['user_id'] ?? $request->user()->id;
         
-        $producer = Producer::create($validatedData);
+        $producer = Producer::updateOrCreate(
+            ['user_id' => $validatedData['user_id']],
+            $validatedData
+        );
+
+        if ($producer->user && $producer->user->role !== 'producer') {
+            $producer->user->update(['role' => 'producer']);
+        }
 
         return (new ProducerResource($producer))
             ->additional(['message' => 'Producteur créé avec succès.'])

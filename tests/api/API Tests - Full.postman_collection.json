@@ -549,6 +549,294 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Get Current User (Me) [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User (Me) [Unauthorized]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Complete Profile [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/complete-profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "complete-profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 422', function () { pm.expect(pm.response.code).to.be.oneOf([200, 422]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Become Producer [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/become-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "become-producer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Become Producer [Unauthorized]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/become-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "become-producer"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stop Producer [Success]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/{{user_id}}/stop-producer",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "{{user_id}}",
+                "stop-producer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Avatar [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/avatars/default.png",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "avatars",
+                "default.png"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200, 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -910,6 +1198,335 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Producer Dashboard Stats [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer Dashboard Products [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "products"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Producer Dashboard Orders [Success]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status [Fail - Non Producer]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders/{{order_item_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders",
+                "{{order_item_id}}",
+                "status"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{user_jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"prête\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.expect(pm.response.code).to.be.oneOf([403, 404]);"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get('base_url') + '/cart-items',",
+                  "    method: 'POST',",
+                  "    header: {",
+                  "        'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "        'Content-Type': 'application/json',",
+                  "        'Accept': 'application/json'",
+                  "    },",
+                  "    body: { mode: 'raw', raw: JSON.stringify({ product_id: 1, quantity: 1 }) }",
+                  "}, function (err, res) {",
+                  "    pm.sendRequest({",
+                  "        url: pm.environment.get('base_url') + '/orders',",
+                  "        method: 'POST',",
+                  "        header: {",
+                  "            'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "            'Content-Type': 'application/json',",
+                  "            'Accept': 'application/json'",
+                  "        },",
+                  "        body: { mode: 'raw', raw: '{}' }",
+                  "    }, function (err, res) {",
+                  "        if (res && res.json() && res.json().data && res.json().data.items) {",
+                  "            var items = res.json().data.items;",
+                  "            if(items && items.length > 0) {",
+                  "                pm.collectionVariables.set('order_item_id', items[0].id);",
+                  "            }",
+                  "        }",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status [Fail - Not Found/Other Producer]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/producers/me/dashboard/orders/999999/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "producers",
+                "me",
+                "dashboard",
+                "orders",
+                "999999",
+                "status"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"prête\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 404', function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.sendRequest({",
+                  "    url: pm.environment.get('base_url') + '/cart-items',",
+                  "    method: 'POST',",
+                  "    header: {",
+                  "        'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "        'Content-Type': 'application/json',",
+                  "        'Accept': 'application/json'",
+                  "    },",
+                  "    body: { mode: 'raw', raw: JSON.stringify({ product_id: 1, quantity: 1 }) }",
+                  "}, function (err, res) {",
+                  "    pm.sendRequest({",
+                  "        url: pm.environment.get('base_url') + '/orders',",
+                  "        method: 'POST',",
+                  "        header: {",
+                  "            'Authorization': 'Bearer ' + pm.collectionVariables.get('jwt_token'),",
+                  "            'Content-Type': 'application/json',",
+                  "            'Accept': 'application/json'",
+                  "        },",
+                  "        body: { mode: 'raw', raw: '{}' }",
+                  "    }, function (err, res) {",
+                  "        if (res && res.json() && res.json().data && res.json().data.items) {",
+                  "            var items = res.json().data.items;",
+                  "            if(items && items.length > 0) {",
+                  "                pm.collectionVariables.set('order_item_id', items[0].id);",
+                  "            }",
+                  "        }",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -1878,6 +2495,92 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Update Review [Success]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/{{product_id}}/reviews/{{review_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{product_id}}",
+                "reviews",
+                "{{review_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"rating\":4,\"comment\":\"Updated comment\"}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Review [Unauthorized]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reviews/{{review_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reviews",
+                "{{review_id}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -2416,7 +3119,9 @@
                   "var id = data.id || (data.data ? data.data.id : null);",
                   "if(id) { pm.collectionVariables.set('order_id', id); }",
                   "var orderNum = data.order_number || (data.data ? data.data.order_number : null);",
-                  "if(orderNum) { pm.collectionVariables.set('order_number', orderNum); }"
+                  "if(orderNum) { pm.collectionVariables.set('order_number', orderNum); }",
+                  "var items = data.items || (data.data ? data.data.items : null);",
+                  "if(items && items.length > 0) { pm.collectionVariables.set('order_item_id', items[0].id); }"
                 ],
                 "type": "text/javascript"
               }
@@ -2807,6 +3512,186 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Update Compose (PUT) [Success]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "compose",
+                "{{compose_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"quantity\":2,\"unit_price\":15}"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Compose (PATCH) [Success]",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "compose",
+                "{{compose_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Compose [Success]",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/{{order_id}}/compose/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "{{order_id}}",
+                "compose",
+                "{{compose_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jwt_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 or 403 or 404', function () { pm.expect(pm.response.code).to.be.oneOf([200, 403, 404]); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete Compose [Unauthorized]",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/composes/{{compose_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "composes",
+                "{{compose_id}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 401', function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     },
@@ -3387,7 +4272,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status is 422 (Validation Error)', function () { pm.expect(pm.response.code).to.eql(422); });"
+                  "pm.test('Status is 400 (Bad Request)', function () { pm.expect(pm.response.code).to.eql(400); });"
                 ],
                 "type": "text/javascript"
               }

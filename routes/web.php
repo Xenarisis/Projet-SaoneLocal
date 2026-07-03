@@ -3,51 +3,41 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\Web\PageController;
+use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\ProducerController;
+use App\Models\Event;
 
 /*
 |--------------------------------------------------------------------------
 | Public Pages
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    $products = \App\Models\Product::latest()->take(8)->get();
-    $producers = \App\Models\Producer::latest()->take(8)->get();
-    return view('welcome', compact('products', 'producers'));
-})->name('home');
+Route::controller(PageController::class)->group(function () {
+    Route::get('/', 'home')->name('home');
+    Route::get('/search', 'search')->name('search');
+    Route::get('/about', 'about')->name('about');
+});
 
-Route::get('/products/{product}', function ($product) {
-    $product = \App\Models\Product::findOrFail($product);
-    return view('pages.product', compact('product'));
-})->name('products.show');
+Route::prefix('products')->group(function () {
+    Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
+});
 
-Route::get('/producers/{producer}', function ($producer) {
-    $producer = \App\Models\Producer::findOrFail($producer);
-    return view('pages.producer', compact('producer'));
-})->name('producers.show');
-
-Route::get('/search', function () {
-    $products = \App\Models\Product::all();
-    $producers = \App\Models\Producer::all();
-    return view('pages.search', compact('products', 'producers'));
-})->name('search');
+Route::prefix('producers')->group(function () {
+    Route::get('/{producer}', [ProducerController::class, 'show'])->name('producers.show');
+});
 
 Route::get('/calendar', function () {
-    $events = \App\Models\Event::all();
-    return view(('pages.calendar'), compact('events'));
+    $events = Event::all();
+    return view('pages.calendar', compact('events'));
 })->name('calendar');
 
-Route::get('/about', fn() => view('pages.about'))->name('about');
-
-Route::get('/settings', fn() => view('pages.settings'))->name('parametres');
-
-Route::get('/mention-legale', fn() => view('pages.mentionlegale'))->name('mentionlegale');
-
-Route::get('/contact', fn() => view('pages.contact'))->name('contact');
-
-Route::get('/CGV', fn() => view('pages.CGV'))->name('CGV');
-
-Route::get('/CGU', fn() => view('pages.CGU'))->name('CGU');
-
+// Static Pages
+Route::view('/settings', 'pages.settings')->name('parametres');
+Route::view('/mention-legale', 'pages.mentionlegale')->name('mentionlegale');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/CGV', 'pages.CGV')->name('CGV');
+Route::view('/CGU', 'pages.CGU')->name('CGU');
 
 /*
 |--------------------------------------------------------------------------
@@ -55,10 +45,10 @@ Route::get('/CGU', fn() => view('pages.CGU'))->name('CGU');
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
-    Route::view('/register', 'users.register')->name('users.register');
+    Route::view('/register', 'auth.register')->name('users.register');
     Route::post('/register', [AuthController::class, 'register']);
 
-    Route::view('/login', 'users.login')->name('users.login');
+    Route::view('/login', 'auth.login')->name('users.login');
     Route::post('/login', [AuthController::class, 'login']);
 
     // Google Authentication
@@ -71,25 +61,30 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Profile and Session Management
+| Profile, Cart and Orders (JS Authenticated)
 |--------------------------------------------------------------------------
 */
 Route::view('/profile', 'users.profile')->name('users.profile');
 Route::view('/complete-profile', 'users.complete-profile')->name('complete-profile');
-Route::view('/logout', 'users.logout')->name('logout.page');
+Route::view('/logout', 'auth.logout')->name('logout.page');
+Route::view('/cart', 'shop.cart')->name('cart');
+Route::view('/checkout', 'shop.checkout')->name('checkout');
+Route::view('/orders', 'users.orders')->name('users.orders');
+
+Route::prefix('producer')->name('producer.')->group(function () {
+    Route::view('/dashboard', 'producers.dashboard')->name('dashboard');
+    Route::view('/products/create', 'producers.products.form')->name('products.create');
+    Route::view('/products/{product}/edit', 'producers.products.form')->name('products.edit');
+});
 
 /*
 |--------------------------------------------------------------------------
-| User & Producer Area (Authenticated)
+| User & Producer Area (Authenticated via Laravel Session - if any)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         // profil, settings...
-    });
-
-    Route::prefix('producers')->name('producers.')->group(function () {
-        // pages producteurs...
     });
 });
 

@@ -27,7 +27,7 @@ class UserFactory extends Factory {
             'role'      => 'user',
             'is_banned' => false,
             'password'  => static::$password ??= Hash::make('password'),
-            'pdp_path'  => null
+            'pdp_path'  => fake()->boolean(70) ? fake()->randomElement(['images/agriculteur.jpg', 'images/agricultrice.jpg', 'images/boulanger.jpg', 'images/boulanger2.jpg', 'images/producter.jpg', 'images/vigneron.jpg']) : null
         ];
     }
 

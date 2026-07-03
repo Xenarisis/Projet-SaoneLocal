@@ -12,6 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectGuestsTo(fn () => route('users.login'));
+        
         $middleware->api(append: [
             \App\Http\Middleware\SecurityHeaders::class,
             \App\Http\Middleware\CheckIfBanned::class,

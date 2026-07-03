@@ -21,6 +21,7 @@ class ProductResource extends JsonResource {
             'category'      => $this->category,
             'subcategory'   => $this->subcategory,
             'producer_id'   => $this->producer_id,
+            'image_path'    => $this->image_path,
             // 'producer_id' => new ProducerResource($this->whenLoaded('id')),
         ];
     }

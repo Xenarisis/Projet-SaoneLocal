@@ -21,6 +21,6 @@ class PillButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.pill-button');
+        return view('components.form.pill-button');
     }
 }

@@ -22,8 +22,12 @@ class ProfilePicture extends Component {
             $this->altText = "Utilisateur banni";
         } 
         
-        elseif ($user->avatar_path) {
-            $this->avatarUrl = asset('storage/' . $user->avatar_path);
+        elseif ($user->pdp_path) {
+            if (str_starts_with($user->pdp_path, 'images/')) {
+                $this->avatarUrl = asset($user->pdp_path);
+            } else {
+                $this->avatarUrl = asset('storage/' . $user->pdp_path);
+            }
             $this->altText = "Photo de profil de " . $user->name;
         } 
         
@@ -41,7 +45,8 @@ class ProfilePicture extends Component {
     /**
      * Get the view / contents that represent the component.
      */
-    public function render() {
-        return view('components.profile-picture');
+    public function render()
+    {
+        return view('components.ui.profile-picture');
     }
 }

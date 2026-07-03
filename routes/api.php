@@ -67,6 +67,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::post('/complete-profile', [AuthController::class, 'completeProfile']);
 
+        Route::post('/{user}/become-producer', [UserController::class, 'becomeProducer']);
+        Route::post('/{user}/stop-producer', [UserController::class, 'stopProducer']);
+
         Route::put('/{user}', [UserController::class, 'updatePut']);
 
         Route::patch('/{user}', [UserController::class, 'updatePatch']);
@@ -110,6 +113,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     Route::prefix('producers')->group(function () {
+
+        Route::get('/me/dashboard/stats', [\App\Http\Controllers\ProducerDashboardController::class, 'stats']);
+        Route::get('/me/dashboard/products', [\App\Http\Controllers\ProducerDashboardController::class, 'products']);
+        Route::get('/me/dashboard/orders', [\App\Http\Controllers\ProducerDashboardController::class, 'orders']);
+        Route::put('/me/dashboard/orders/{orderItem}/status', [\App\Http\Controllers\ProducerDashboardController::class, 'updateOrderStatus']);
 
         Route::get('/', [ProducerController::class, 'index']);
         Route::get('/{producer}', [ProducerController::class, 'show']);
