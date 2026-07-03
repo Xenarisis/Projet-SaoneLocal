@@ -123,6 +123,15 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            if [ ! -f /swapfile ]; then
+              echo "Creating 1GB Swap file to prevent OOM crashes..."
+              sudo fallocate -l 1G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=1024
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+              echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+            fi
+            
             cd /home/${{ secrets.EC2_USERNAME }}/projet-saonelocal
             
             cat <<EOF > .env
