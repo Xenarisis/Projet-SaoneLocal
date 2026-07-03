@@ -18,11 +18,7 @@ class CreateOrderRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'order_number'      => 'required|string|max:255|unique:orders,order_number',
-            'status'            => 'required|string|max:50|in:pending,paid,shipped,delivered,cancelled',
-            'total_excl_tax'    => 'required|numeric|min:0',
-            'percentage_tax'    => 'required|numeric|min:0',
-            'payment_status'    => 'required|string|max:50' 
+            'payment_method' => 'sometimes|string|in:card,counter'
         ];
     }
 

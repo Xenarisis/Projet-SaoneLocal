@@ -19,6 +19,11 @@ return new class extends Migration {
             $table->string('product_name');
             $table->decimal('unit_price', 10, 2);
             $table->integer('quantity');
+            $table->string('status', 50)->default('nouvelle');
+            
+            $table->string('pickup_location')->nullable();
+            $table->date('pickup_date')->nullable();
+            $table->string('pickup_time')->nullable();
             
             $table->timestamps();
         });

@@ -37,7 +37,8 @@ class IconPillInput extends Component {
         return null;
     }
 
-    public function render() {
-        return view('components.icon-pill-input');
+    public function render()
+    {
+        return view('components.form.icon-pill-input');
     }
 }

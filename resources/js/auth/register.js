@@ -1,6 +1,21 @@
 const guestOnlyPages = ['/login', '/register'];
 
-if (localStorage.getItem('jwt_token') && guestOnlyPages.includes(window.location.pathname)) {
+const token = localStorage.getItem('jwt_token');
+let isTokenValid = false;
+if (token) {
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.exp && payload.exp * 1000 > Date.now()) {
+            isTokenValid = true;
+        } else {
+            localStorage.removeItem('jwt_token');
+        }
+    } catch (e) {
+        localStorage.removeItem('jwt_token');
+    }
+}
+
+if (isTokenValid && guestOnlyPages.includes(window.location.pathname)) {
     window.location.href = '/';
     sessionStorage.setItem('flash_notification', JSON.stringify({
         title: 'Information',

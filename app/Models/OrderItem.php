@@ -15,6 +15,10 @@ class OrderItem extends Model {
         'product_name',
         'unit_price',
         'quantity',
+        'status',
+        'pickup_location',
+        'pickup_date',
+        'pickup_time',
     ];
 
     public function order(): BelongsTo {

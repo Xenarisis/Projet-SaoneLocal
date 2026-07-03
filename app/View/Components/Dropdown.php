@@ -21,6 +21,6 @@ class Dropdown extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.dropdown');
+        return view('components.ui.dropdown');
     }
 }

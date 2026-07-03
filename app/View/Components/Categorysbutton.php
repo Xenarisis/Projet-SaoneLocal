@@ -21,6 +21,6 @@ class Productcategorybutton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.productcategorybutton');
+        return view('components.form.categorysbutton');
     }
 }

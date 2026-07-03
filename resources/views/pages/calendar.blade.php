@@ -106,7 +106,7 @@
                     // On demande les événements du mois en cours
                     const url = `/api/events?event_date=${this.year}-${monthStr}`; 
                     
-                    console.log('Chargement événements depuis :', url);
+
 
                     fetch(url)
                         .then(response => {
@@ -116,7 +116,7 @@
                         .then(data => {
                             // Votre EventResource::collection retourne { data: [...], links: {...}, meta: {...} }
                             this.events = data.data || [];
-                            console.log('Événements chargés :', this.events.length);
+
                         })
                         .catch(err => console.error("Erreur chargement:", err));
                 },

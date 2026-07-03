@@ -16,7 +16,7 @@ use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\DeleteOrderRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class OrderController extends Controller {
+class OrderItemController extends Controller {
     // Read
     public function index(GetOrderRequest $request): AnonymousResourceCollection {
         $query = Order::query();

@@ -21,6 +21,6 @@ class Tab extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.tab');
+        return view('components.ui.tab');
     }
 }

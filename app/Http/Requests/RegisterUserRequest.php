@@ -23,7 +23,14 @@ class RegisterUserRequest extends FormRequest {
             'username'      => 'required|string|unique:users|min:1|max:25',
             'GoogleToken'   => 'nullable|string|unique:users',
             'password'      => 'required|string|min:6|max:50|confirmed',
-            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+            'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'role'          => 'nullable|string|in:user,producer',
+            'producer_name' => 'required_if:role,producer|string|max:100',
+            'presentation'  => 'nullable|string|max:1000',
+            'street_line_1' => 'required_if:role,producer|string|max:255',
+            'street_line_2' => 'nullable|string|max:255',
+            'city'          => 'required_if:role,producer|string|max:100',
+            'postal_code'   => 'required_if:role,producer|string|max:20'
         ];
     }
 

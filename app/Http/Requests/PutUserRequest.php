@@ -46,7 +46,13 @@ class PutUserRequest extends FormRequest {
             ],
             'password'      => 'nullable|string|min:6|max:50|confirmed',
             'pdp'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'delete_pdp'    => 'nullable|boolean'
+            'delete_pdp'    => 'nullable|boolean',
+            'producer_name' => 'nullable|string|max:100',
+            'presentation'  => 'nullable|string|max:1000',
+            'street_line_1' => 'nullable|string|max:255',
+            'street_line_2' => 'nullable|string|max:255',
+            'city'          => 'nullable|string|max:100',
+            'postal_code'   => 'nullable|string|max:20'
         ];
     }
 

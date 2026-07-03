@@ -1,57 +1,15 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compte Suspendu</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .banned-card {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-        h1 {
-            color: #dc2626;
-            margin-bottom: 15px;
-        }
-        p {
-            color: #4b5563;
-            line-height: 1.5;
-            margin-bottom: 25px;
-        }
-        .logout-btn {
-            background-color: #1f2937;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .logout-btn:hover {
-            background-color: #111827;
-        }
-    </style>
-</head>
-<body>
-    <div class="banned-card">
-        <h1>Accès Restreint</h1>
-        <p>Votre compte a été suspendu par un administrateur et vous ne pouvez plus accéder à notre boutique.</p>
-        <p>Si vous pensez qu'il s'agit d'une erreur, veuillez contacter le support par mail.</p>
+<x-layouts.app title="Compte banni - SaôneLocal">
+    <div class="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+        <div class="bg-white p-10 rounded-lg shadow-md text-center max-w-md w-full">
+            <h1 class="text-red-600 text-2xl font-bold mb-4">Compte suspendu</h1>
+            <p class="text-gray-600 leading-relaxed mb-6">Votre compte a été banni par un administrateur. Vous ne pouvez plus accéder à SaôneLocal.</p>
+            
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="bg-gray-800 text-white border-none py-2 px-5 rounded hover:bg-gray-900 transition-colors cursor-pointer text-base">
+                    Se déconnecter
+                </button>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</x-layouts.app>

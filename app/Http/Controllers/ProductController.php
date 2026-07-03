@@ -17,7 +17,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class ProductController extends Controller {
     // Read
     public function index(GetProductRequest $request): AnonymousResourceCollection {
-        $query = Product::with('producer');
+        $query = Product::with('producer')->where('is_active', true);
 
         $exactFilters = ['id', 'quantity', 'category', 'subcategory', 'producer_id'];
 
@@ -84,8 +84,12 @@ class ProductController extends Controller {
         }
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $validatedData['image_path'] = basename($path);
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('image'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('public')->put('products/' . $filename, $encoded->toString());
+            $validatedData['image_path'] = $filename;
         }
 
         unset($validatedData['image']);
@@ -103,8 +107,12 @@ class ProductController extends Controller {
         $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $validatedData['image_path'] = basename($path);
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('image'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('public')->put('products/' . $filename, $encoded->toString());
+            $validatedData['image_path'] = $filename;
         }
 
         unset($validatedData['image']);
@@ -121,8 +129,12 @@ class ProductController extends Controller {
         $validatedData = $request->validated();
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $validatedData['image_path'] = basename($path);
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('image'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('public')->put('products/' . $filename, $encoded->toString());
+            $validatedData['image_path'] = $filename;
         }
 
         unset($validatedData['image']);

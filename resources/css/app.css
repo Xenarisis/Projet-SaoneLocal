@@ -1,3 +1,5 @@
+@import './pages/pages/cart.blade.css';
+
 @import "tailwindcss";
 
 [x-cloak] {
@@ -38,5 +40,7 @@
         @apply font-title;
     }
 }
+
+
 
 @variant dark (&:is(.dark, .dark *));

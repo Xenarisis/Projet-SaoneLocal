@@ -16,15 +16,31 @@ class AuthController extends Controller {
         $validatedData['password'] = Hash::make($validatedData['password']);
 
         if ($request->hasFile('pdp')) {
-            $path = $request->file('pdp')->store('avatars', 'local');
-            $validatedData['pdp_path'] = basename($path);
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('pdp'));
+            $encoded = $image->toWebp(80);
+            $filename = uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('local')->put('avatars/' . $filename, $encoded->toString());
+            $validatedData['pdp_path'] = $filename;
         }
 
         $user = User::create($validatedData);
 
         $user->last_login = now();
-        $user->role = 'user';
+        $user->role = $request->input('role', 'user');
         $user->save();
+
+        if ($user->role === 'producer') {
+            \App\Models\Producer::create([
+                'user_id' => $user->id,
+                'name' => $request->input('producer_name'),
+                'presentation' => $request->input('presentation'),
+                'street_line_1' => $request->input('street_line_1'),
+                'street_line_2' => $request->input('street_line_2'),
+                'city' => $request->input('city'),
+                'postal_code' => $request->input('postal_code'),
+            ]);
+        }
 
         $token = auth('api')->login($user);
 

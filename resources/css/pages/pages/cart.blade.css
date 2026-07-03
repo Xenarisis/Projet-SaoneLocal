@@ -1,0 +1,96 @@
+.branch-anim path {
+            stroke-dasharray: var(--path-length, 1500);
+            stroke-dashoffset: var(--path-length, 1500);
+        }
+        
+        /* On active les transitions uniquement une fois que JS a initialisé les variables */
+        .magic-underline-block.is-ready .branch-anim path {
+            transition: stroke-dashoffset 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .branch-anim path[stroke="#008156"] {
+            fill: transparent;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        .magic-underline-block.is-ready .branch-anim path[stroke="#008156"] {
+            transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s, fill 0.8s ease 1.5s;
+        }
+
+        .branch-anim circle {
+            opacity: 0;
+            transform: scale(0);
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+        .magic-underline-block.is-ready .branch-anim circle {
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .magic-underline-block.is-visible .branch-anim path {
+            stroke-dashoffset: 0 !important;
+        }
+        .magic-underline-block.is-visible .branch-anim path[stroke="#008156"] {
+            fill: #009A66 !important;
+            animation: leafFlutter 4s ease-in-out infinite alternate 1.5s;
+        }
+        
+        .magic-underline-block.is-visible .branch-anim circle {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .magic-underline-block.is-visible .branch-anim circle:nth-of-type(odd) { transition-delay: 1.2s; }
+        .magic-underline-block.is-visible .branch-anim circle:nth-of-type(even) { transition-delay: 1.5s; }
+
+        .firefly-wrapper {
+            opacity: 0;
+        }
+        .magic-underline-block.is-ready .firefly-wrapper {
+            transition: opacity 1.5s ease 2s;
+        }
+        .magic-underline-block.is-visible .firefly-wrapper {
+            opacity: 1;
+        }
+        
+        /* Lucioles mouvements */
+        .firefly-float:nth-child(3n+1) { animation: float1 7s ease-in-out infinite alternate; }
+        .firefly-float:nth-child(3n+2) { animation: float2 9s ease-in-out infinite alternate-reverse; }
+        .firefly-float:nth-child(3n+3) { animation: float3 8s ease-in-out infinite alternate; }
+        
+        .firefly-twinkle { animation: twinkle 2s ease-in-out infinite alternate; }
+
+        /* Animation des feuilles (vent léger) */
+        @keyframes leafFlutter {
+            0% { transform: rotate(-2deg) scale(0.98); }
+            50% { transform: rotate(3deg) scale(1.02); }
+            100% { transform: rotate(-1deg) scale(1); }
+        }
+
+        /* Trajectoires plus amples pour les lucioles */
+        @keyframes float1 { 
+            0% { transform: translate(0, 0); } 
+            50% { transform: translate(-15px, -25px); }
+            100% { transform: translate(10px, -10px); } 
+        }
+        @keyframes float2 { 
+            0% { transform: translate(0, 0); } 
+            50% { transform: translate(25px, -15px); }
+            100% { transform: translate(-10px, 20px); } 
+        }
+        @keyframes float3 { 
+            0% { transform: translate(0, 0); } 
+            50% { transform: translate(-20px, 20px); }
+            100% { transform: translate(15px, -30px); } 
+        }
+        
+        @keyframes twinkle { 
+            0% { transform: scale(0.5); opacity: 0.2; } 
+            100% { transform: scale(1.3); opacity: 1; filter: drop-shadow(0 0 12px currentColor); } 
+        }
+        
+        .branch-anim svg {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+        }
