@@ -21,6 +21,7 @@ services:
                 condition: service_healthy
     db:
         image: mysql:8.0
+        command: --innodb-buffer-pool-size=64M --max-connections=50 --key-buffer-size=16M
         env_file:
             - .env
         volumes:
