@@ -76,7 +76,6 @@ jobs:
           MYSQL_USER=laravel_user
           MYSQL_PASSWORD=test_password
           MYSQL_ROOT_PASSWORD=test_password
-          EOF
 
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
@@ -149,7 +148,9 @@ jobs:
             MYSQL_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}
             MYSQL_ROOT_PASSWORD=${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}
             JWT_SECRET=${{ secrets.ENV_PROD_JWT_SECRET }}
-            EOF
+            GOOGLE_CLIENT_ID=${{ secrets.ENV_PROD_GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.ENV_PROD_GOOGLE_CLIENT_SECRET }}
+            GOOGLE_REDIRECT_URI=${{ secrets.ENV_PROD_GOOGLE_REDIRECT_URI }}
             
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
