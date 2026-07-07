@@ -18,10 +18,18 @@
                 />
                 <button
                     type="submit"
-                    class="flex items-center rounded-r whitespace-nowrap px-3 py-[0.25rem] text-surface bg-white [&>svg]:h-4 [&>svg]:w-5"
-                    @click="if(!document.getElementById('searchInput').value) { $event.preventDefault(); document.getElementById('searchInput').focus(); }"
+                    class="flex items-center rounded-r-full whitespace-nowrap px-3 py-[0.25rem] text-surface bg-white hover:bg-base-gray/30 [&>svg]:h-4 [&>svg]:w-5"
+                    onclick="if (document.getElementById('searchInput').value === '' && document.activeElement === document.getElementById('searchInput')) {
+                        event.preventDefault();
+                        document.getElementById('SearchButton').click();
+                    } else {
+                        document.getElementById('searchInput').focus();
+                    }"
+                    id="SearchButton"
                 >
-                    <x-icon name="search" class="h-4 w-4 lg:h-5 lg:w-5 text-black transition-colors" />
+                    <span class="inline-block h-4 w-4 lg:h-5 lg:w-5 text-black transition-colors [&>svg]:w-full [&>svg]:h-full">
+                        {!! file_get_contents(public_path('images/search.svg')) !!}
+                    </span>
                 </button>
             </form>
         </div>
