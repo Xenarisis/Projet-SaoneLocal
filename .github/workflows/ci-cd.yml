@@ -76,6 +76,7 @@ jobs:
           MYSQL_USER=laravel_user
           MYSQL_PASSWORD=test_password
           MYSQL_ROOT_PASSWORD=test_password
+          EOF
 
       - name: Starting API
         run: docker compose -f docker-compose.yml up -d
@@ -106,7 +107,7 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Cp to EC2
+      - name: Copy to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -123,7 +124,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             if [ ! -f /swapfile ]; then
-              echo "Creating 1GB Swap file to prevent OOM crashes..."
+              echo "Creating 1GB Swap file to prevent OOM crashes"
               sudo fallocate -l 1G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=1024
               sudo chmod 600 /swapfile
               sudo mkswap /swapfile
@@ -136,21 +137,22 @@ jobs:
             cat <<EOF > .env
             APP_ENV=production
             APP_DEBUG=false
-            APP_KEY=${{ secrets.ENV_PROD_APP_KEY }}
+            APP_KEY="${{ secrets.ENV_PROD_APP_KEY }}"
             DB_CONNECTION=mysql
             DB_HOST=db
             DB_PORT=3306
             DB_DATABASE=saonelocal_app
             DB_USERNAME=laravel_user
-            DB_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}
+            DB_PASSWORD="${{ secrets.ENV_PROD_DB_PASSWORD }}"
             MYSQL_DATABASE=saonelocal_app
             MYSQL_USER=laravel_user
-            MYSQL_PASSWORD=${{ secrets.ENV_PROD_DB_PASSWORD }}
-            MYSQL_ROOT_PASSWORD=${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}
-            JWT_SECRET=${{ secrets.ENV_PROD_JWT_SECRET }}
-            GOOGLE_CLIENT_ID=${{ secrets.ENV_PROD_GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.ENV_PROD_GOOGLE_CLIENT_SECRET }}
-            GOOGLE_REDIRECT_URI=${{ secrets.ENV_PROD_GOOGLE_REDIRECT_URI }}
+            MYSQL_PASSWORD="${{ secrets.ENV_PROD_DB_PASSWORD }}"
+            MYSQL_ROOT_PASSWORD="${{ secrets.ENV_PROD_DB_ROOT_PASSWORD }}"
+            JWT_SECRET="${{ secrets.ENV_PROD_JWT_SECRET }}"
+            GOOGLE_CLIENT_ID="${{ secrets.ENV_PROD_GOOGLE_CLIENT_ID }}"
+            GOOGLE_CLIENT_SECRET="${{ secrets.ENV_PROD_GOOGLE_CLIENT_SECRET }}"
+            GOOGLE_REDIRECT_URI="${{ secrets.ENV_PROD_GOOGLE_REDIRECT_URI }}"
+            EOF
             
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
