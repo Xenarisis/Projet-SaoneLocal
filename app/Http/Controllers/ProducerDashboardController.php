@@ -186,13 +186,16 @@ class ProducerDashboardController extends Controller
         $allCancelled = $allItems->every(fn($item) => $item->status === 'annulée');
         $allCompletedOrCancelled = $allItems->every(fn($item) => in_array($item->status, ['retirée', 'annulée']));
         $anyProcessing = $allItems->contains(fn($item) => in_array($item->status, ['en préparation', 'prête']));
+        $anyNew = $allItems->contains(fn($item) => $item->status === 'nouvelle');
         
         if ($allCancelled) {
             $order->update(['status' => 'cancelled']);
         } elseif ($allCompletedOrCancelled) {
             $order->update(['status' => 'completed']);
-        } elseif ($anyProcessing && $order->status === 'pending') {
+        } elseif ($anyProcessing) {
             $order->update(['status' => 'processing']);
+        } elseif ($anyNew) {
+            $order->update(['status' => 'pending']);
         }
 
         return response()->json(['message' => 'Statut mis à jour avec succès.', 'item' => $orderItem]);

@@ -13,7 +13,15 @@ class CheckIfBanned {
      * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response {
-        if (auth()->check() && auth()->user()->is_banned) {
+        if ((auth()->check() && auth()->user()->is_banned) || (auth('api')->check() && auth('api')->user()->is_banned)) {
+            
+            if ($request->isMethod('delete') && $request->is('api/users/*')) {
+                return $next($request);
+            }
+            if ($request->isMethod('post') && $request->is('api/users/logout')) {
+                return $next($request);
+            }
+
             if ($request->expectsJson()) {
                 
                 return response()->json([

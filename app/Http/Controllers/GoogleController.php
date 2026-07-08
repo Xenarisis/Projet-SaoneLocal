@@ -69,6 +69,15 @@ class GoogleController extends Controller {
                 ]);
             }
         }
+        if ($user->is_banned) {
+            $user->last_login = now();
+            $user->save();
+            $token = auth('api')->login($user);
+            return redirect('/auth/google/success?token=' . $token . '&is_banned=1');
+        }
+        
+        $user->last_login = now();
+        $user->save();
 
         $token = auth('api')->login($user);
 

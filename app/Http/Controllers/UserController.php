@@ -107,14 +107,16 @@ class UserController extends Controller {
                 \App\Models\Producer::create([
                     'user_id' => $user->id,
                     'name' => $user->username ?? ($user->firstname . ' ' . $user->lastname),
-                    'city' => '',
+                    'city' => 'Chalon-sur-Saône',
                     'postal_code' => '71100',
                     'street_line_1' => '',
                 ]);
             }
         }
 
-        return response()->json(['message' => 'Vous êtes maintenant producteur !', 'user' => new UserResource($user->fresh(['producer']))], 200);
+        $newToken = auth('api')->login($user->fresh());
+
+        return response()->json(['message' => 'Vous êtes maintenant producteur !', 'user' => new UserResource($user->fresh(['producer'])), 'token' => $newToken], 200);
     }
 
     public function stopProducer(Request $request, User $user): JsonResponse {
@@ -138,7 +140,9 @@ class UserController extends Controller {
             }
         }
 
-        return response()->json(['message' => 'Votre espace producteur a été désactivé.', 'user' => new UserResource($user->fresh())], 200);
+        $newToken = auth('api')->login($user->fresh());
+
+        return response()->json(['message' => 'Votre espace producteur a été désactivé.', 'user' => new UserResource($user->fresh()), 'token' => $newToken], 200);
     }
 
     // Update : Patch

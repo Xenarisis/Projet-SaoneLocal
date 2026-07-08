@@ -106,6 +106,10 @@ class ProductController extends Controller {
     public function updatePut(PutProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
 
+        if ($request->boolean('delete_image')) {
+            $validatedData['image_path'] = null;
+        }
+
         if ($request->hasFile('image')) {
             $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
             $image = $manager->read($request->file('image'));
@@ -127,6 +131,10 @@ class ProductController extends Controller {
     // Update : Patch
     public function updatePatch(PatchProductRequest $request, Product $product): ProductResource {
         $validatedData = $request->validated();
+
+        if ($request->boolean('delete_image')) {
+            $validatedData['image_path'] = null;
+        }
 
         if ($request->hasFile('image')) {
             $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());

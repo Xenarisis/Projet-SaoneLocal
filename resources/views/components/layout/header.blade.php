@@ -57,6 +57,7 @@
                         <template x-if="isLoggedIn">
                             <div>
                                 <a href="{{ route('users.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-xl">Voir son profil</a>
+                                <a href="{{ route('users.favorites') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mes favoris</a>
                                 <a href="{{ route('users.orders') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mes commandes</a>
                                 <template x-if="isProducer">
                                     <a href="{{ route('producer.dashboard') }}" class="px-4 py-2 text-sm text-base-green font-semibold hover:bg-gray-100 flex justify-between items-center">

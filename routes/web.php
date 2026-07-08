@@ -65,6 +65,7 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::view('/profile', 'users.profile')->name('users.profile');
+Route::view('/favorites', 'users.favorites')->name('users.favorites');
 Route::view('/complete-profile', 'users.complete-profile')->name('complete-profile');
 Route::view('/logout', 'auth.logout')->name('logout.page');
 Route::view('/cart', 'shop.cart')->name('cart');

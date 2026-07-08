@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckIfBanned;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -51,7 +52,7 @@ Route::prefix('reviews')->group(function () {
     Route::get('/{review}', [ReviewController::class, 'show']);
 });
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => ['auth:api', CheckIfBanned::class]], function () {
     Route::prefix('admin')->group(function () {
 
         Route::post('/toggle-ban/{user}', [AdminController::class, 'toggleBan']);

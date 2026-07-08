@@ -29,6 +29,16 @@ window.profileData = function() {
         debouncedSave() {
             if (this.saveTimeout) clearTimeout(this.saveTimeout);
             this.saveTimeout = setTimeout(() => {
+                if (!this.editForm.firstname || !this.editForm.lastname || !this.editForm.username || !this.editForm.email) {
+                    return;
+                }
+                
+                if (this.user?.role === 'producer') {
+                    if (!this.editForm.producer_name || !this.editForm.street_line_1 || !this.editForm.postal_code || !this.editForm.city) {
+                        return;
+                    }
+                }
+                
                 this.saveProfile();
             }, 1000);
         },
@@ -152,6 +162,10 @@ window.profileData = function() {
                                 this.editForm.city = this.user.producer?.city || '';
                                 this.editForm.postal_code = this.user.producer?.postal_code || '';
                                 
+                                if (data.token) {
+                                    localStorage.setItem('jwt_token', data.token);
+                                }
+                                
                                 window.dispatchEvent(new CustomEvent('notify', {
                                     detail: {
                                         title: 'Félicitations !',
@@ -204,6 +218,10 @@ window.profileData = function() {
                             if (res.ok) {
                                 this.user = data.user;
                                 
+                                if (data.token) {
+                                    localStorage.setItem('jwt_token', data.token);
+                                }
+                                
                                 window.dispatchEvent(new CustomEvent('notify', {
                                     detail: {
                                         title: 'Désactivation réussie',
@@ -233,6 +251,51 @@ window.profileData = function() {
                     }
                 }
             }));
+        },
+        async saveAvatar() {
+            this.saving = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('_method', 'PATCH');
+                
+                const pdpInput = document.getElementById('pdp_path');
+                if (pdpInput && pdpInput.files.length > 0) {
+                    formData.append('pdp', pdpInput.files[0]);
+                }
+                const deleteInput = document.querySelector('input[name="delete_pdp_path"]');
+                if (deleteInput && deleteInput.value === '1') {
+                    formData.append('delete_pdp', 1);
+                }
+
+                const token = localStorage.getItem('jwt_token');
+                const res = await fetch(`/api/users/${this.user.id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    this.user = data.data;
+                    this.lastSaved = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: { title: 'Photo mise à jour', description: 'Votre photo a été enregistrée.', type: 'success' }
+                    }));
+                } else {
+                    window.dispatchEvent(new CustomEvent('notify', {
+                        detail: { title: 'Erreur', description: data.message || 'Erreur lors de l\'enregistrement.', type: 'error' }
+                    }));
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                this.saving = false;
+            }
         },
         async saveProfile() {
             this.saving = true;
@@ -278,7 +341,7 @@ window.profileData = function() {
                 const data = await res.json();
 
                 if (res.ok) {
-                    this.user = data.data || { ...this.user, ...this.editForm, pdp: this.pdpPreview || this.user.pdp };
+                    this.user = data.data || { ...this.user, ...this.editForm };
                     
                     this.lastSaved = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
