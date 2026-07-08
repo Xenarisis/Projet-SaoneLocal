@@ -23,6 +23,21 @@ window.fetch = async function () {
 
     const response = await originalFetch(resource, config);
 
+    if (response.status === 403) {
+        try {
+            const clone = response.clone();
+            const data = await clone.json();
+            if (data.message === 'Votre compte a été suspendu par un administrateur.') {
+                if (window.location.pathname !== '/ban') {
+                    window.location.href = '/ban';
+                }
+                return response;
+            }
+        } catch (e) {
+            // Ignore parse error
+        }
+    }
+
     if (response.status === 401 && !resource.toString().includes('/api/users/refresh') && !resource.toString().includes('/api/users/login')) {
         const token = localStorage.getItem('jwt_token');
         
@@ -34,7 +49,6 @@ window.fetch = async function () {
             return new Promise(function(resolve, reject) {
                 failedQueue.push({ resolve, reject });
             }).then(token => {
-                // Mettre à jour le header avec le nouveau token
                 if (config.headers instanceof Headers) {
                     config.headers.set('Authorization', 'Bearer ' + token);
                 } else if (config.headers) {

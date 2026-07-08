@@ -4,7 +4,31 @@
             <img src="{{ asset($producer->user->pdp_path ?? 'images/producter.jpg') }}" alt="{{ $producer->name }}" class="w-full max-w-4xl h-auto max-h-[400px] object-cover rounded-2xl border-[3px] border-[#1B1B18] shadow-sm">
         </div>
 
-    <h1 class="lg:text-2xl bg-base-green rounded-2xl text-base-gray text-center mb-8 p-4 font-bold shadow-sm">{{ $producer->name }}</h1>
+    <div class="flex items-center justify-center gap-4 mb-4">
+        <h1 class="lg:text-2xl bg-base-green rounded-2xl text-base-gray px-6 py-3 font-bold shadow-sm">{{ $producer->name }}</h1>
+        <div class="flex items-center gap-2">
+            <button @click="$store.favorites.toggleProducer({{ $producer->id }})" class="hover:opacity-75 transition-opacity" :title="$store.favorites.isProducerFollowed({{ $producer->id }}) ? 'Ne plus suivre' : 'Suivre'">
+                <template x-if="$store.favorites.isProducerFollowed({{ $producer->id }})">
+                    <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-8 h-8 text-[#F8B803]" alt="Suivi">
+                </template>
+                <template x-if="!$store.favorites.isProducerFollowed({{ $producer->id }})">
+                    <img src="{{ asset('images/bookmarks.svg') }}" class="w-8 h-8" alt="Suivre">
+                </template>
+            </button>
+        </div>
+    </div>
+    <div x-data="{ initialCount: {{ $producer->followers()->count() }}, initiallyBookmarked: $store.favorites.isProducerFollowed({{ $producer->id }}) }">
+        <p class="text-center text-sm font-semibold text-gray-500 mb-8">
+            <span x-text="(() => {
+                let current = $store.favorites.isProducerFollowed({{ $producer->id }});
+                let offset = 0;
+                if (initiallyBookmarked && !current) offset = -1;
+                else if (!initiallyBookmarked && current) offset = 1;
+                let total = initialCount + offset;
+                return total + (total > 1 ? ' personnes le suivent' : ' personne le suit');
+            })()"></span>
+        </p>
+    </div>
 
     <x-accordion title="Présentation">
         <p class="text-[#706f6c] leading-relaxed">
@@ -50,6 +74,7 @@
                             subtitle="{{ $producer->name }}"
                             href="{{ route('products.show', $prod->id) }}"
                             image="{{ asset($prod->image_path) }}"
+                            productId="{{ $prod->id }}"
                         >
                             <p>{{ $prod->price }} €</p>
                         </x-cards>

@@ -16,7 +16,8 @@ class FollowResource extends JsonResource {
             'id'            => $this->id,
             'user_id'       => $this->user_id,
             'producer_id'   => $this->producer_id,
-            'producer_name' => $this->producer->name
+            'producer_name' => $this->producer->name,
+            'producer'      => new ProducerResource($this->whenLoaded('producer'))
         ];
     }
 }

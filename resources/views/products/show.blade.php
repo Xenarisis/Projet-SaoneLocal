@@ -7,7 +7,19 @@
 
             <div class="w-full lg:w-[30%] flex flex-col justify-end">
                 <div x-data="addToCart({{ $product->id }})" class="p-6 lg:p-8 bg-white border border-black rounded-3xl text-center flex flex-col items-center">
-                    <h2 class="text-2xl lg:text-3xl font-bold mb-3 text-[#1B1B18]">{{ $product->name }}</h2>
+                    <div class="flex items-center justify-center gap-4 mb-3">
+                        <h2 class="text-2xl lg:text-3xl font-bold text-[#1B1B18]">{{ $product->name }}</h2>
+                        <div class="flex items-center gap-2">
+                            <button @click="$store.favorites.toggleProduct({{ $product->id }})" class="hover:opacity-75 transition-opacity" :title="$store.favorites.isProductBookmarked({{ $product->id }}) ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+                                <template x-if="$store.favorites.isProductBookmarked({{ $product->id }})">
+                                    <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-8 h-8 text-[#F8B803]" alt="Favori">
+                                </template>
+                                <template x-if="!$store.favorites.isProductBookmarked({{ $product->id }})">
+                                    <img src="{{ asset('images/bookmarks.svg') }}" class="w-8 h-8" alt="Favori">
+                                </template>
+                            </button>
+                        </div>
+                    </div>
                     @if($product->producer)
                         <p class="mb-3 text-sm text-[#706f6c]">
                             Vendu par <a href="{{ route('producers.show', $product->producer->id) }}" class="font-semibold underline hover:text-[#1B1B18] transition-colors">{{ $product->producer->name }}</a>
@@ -15,6 +27,18 @@
                     @endif
                     <p class="text-xl mb-6 text-[#706f6c] font-medium">{{ number_format($product->price, 2, ',', ' ') }} €</p>
                     
+                    <div x-data="{ initialCount: {{ $product->bookmarks()->count() }}, initiallyBookmarked: $store.favorites.isProductBookmarked({{ $product->id }}) }">
+                        <p class="text-sm font-semibold text-gray-500 mb-1">
+                            <span x-text="(() => {
+                                let current = $store.favorites.isProductBookmarked({{ $product->id }});
+                                let offset = 0;
+                                if (initiallyBookmarked && !current) offset = -1;
+                                else if (!initiallyBookmarked && current) offset = 1;
+                                let total = initialCount + offset;
+                                return total + (total > 1 ? ' personnes l\'ont en favori' : ' personne l\'a en favori');
+                            })()"></span>
+                        </p>
+                    </div>
                     <p class="text-sm font-semibold text-gray-500 mb-2">En stock : {{ $product->quantity }}</p>
                     <div class="flex justify-center items-center gap-4 mb-6">
                         <button @click="quantity > 1 ? quantity-- : null" class="bg-gray-200 hover:bg-gray-300 w-10 h-10 flex justify-center items-center rounded-lg font-bold text-xl transition-colors text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">-</button>
@@ -71,6 +95,7 @@
                             subtitle="{{ $prod->producer->name ?? '' }}"
                             href="{{ route('products.show', $prod->id) }}"
                             image="{{ asset($prod->image_path) }}"
+                            productId="{{ $prod->id }}"
                         >
                             <p>{{ $prod->price }} €</p>
                         </x-cards>
@@ -89,6 +114,7 @@
                             subtitle="{{ $prod->producer->name ?? '' }}"
                             href="{{ route('products.show', $prod->id) }}"
                             image="{{ asset($prod->image_path) }}"
+                            productId="{{ $prod->id }}"
                         >
                             <p>{{ $prod->price }} €</p>
                         </x-cards>

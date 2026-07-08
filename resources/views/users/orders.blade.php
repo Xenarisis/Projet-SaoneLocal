@@ -80,7 +80,7 @@
                                             <span class="text-[#1B1B18] font-bold text-base whitespace-nowrap shrink-0" x-text="formatPrice(item.unit_price * item.quantity) + ' €'"></span>
                                         </div>
                                         
-                                        <template x-if="item.pickup_date || item.pickup_location || item.pickup_time">
+                                        <template x-if="(item.status === 'prête' || item.status === 'retirée') && (item.pickup_date || item.pickup_location || item.pickup_time)">
                                             <div class="mt-2 text-xs text-cachou bg-orange-50 p-2 rounded-md border border-orange-100 flex flex-col gap-1">
                                                 <div class="font-bold flex items-center gap-1">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
