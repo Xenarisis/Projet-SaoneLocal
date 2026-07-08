@@ -9,6 +9,7 @@
                 subtitle="{{ $product->producer->name ?? '' }}"
                 href="{{ route('products.show', $product->id) }}"
                 image="{{ asset($product->image_path) }}"
+                productId="{{ $product->id }}"
                 >
                 <p class="text-lg text-emerald-700 font-bold">{{ number_format($product->price, 2, ',', ' ') }} €</p>
             </x-cards>
@@ -24,6 +25,7 @@
                 title="{{ $producer->name }}"
                 href="{{ route('producers.show', $producer->id) }}"
                 image="{{ asset($producer->user->pdp_path ?? 'images/producter.jpg') }}"
+                producerId="{{ $producer->id }}"
                 >
                 <p class="font-bold">{{ $producer->city }}</p>
             </x-cards>

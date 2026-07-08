@@ -15,6 +15,10 @@
                 
                 <p class="text-sm text-white text-center">Les champs marqués d'un astérisque sont obligatoires.</p>
             </div>
+            
+            <div class="mb-8 flex justify-center w-full">
+                <x-avatar-cropper alpineImage="form.image_url" inputId="product_image" inputName="image" @avatar-changed="form.image = $event.detail.file; form.image_url = $event.detail.preview" @avatar-deleted="form.image = null; form.image_url = null; form.delete_image = 1" />
+            </div>
 
             <div class="w-full flex flex-col gap-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">

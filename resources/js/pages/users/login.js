@@ -28,6 +28,11 @@ if (document.getElementById("loginForm")) {
             if (response.ok) {
                 localStorage.setItem('jwt_token', result.access_token);
 
+                if (result.is_banned) {
+                    window.location.href = '/ban';
+                    return;
+                }
+
                 sessionStorage.setItem('flash_notification', JSON.stringify({
                     title: 'Bon retour !',
                     description: result.message || 'Connexion réussie.',

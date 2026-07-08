@@ -14,11 +14,15 @@
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-t-2 border-base-green"></div>
         </div>
 
-        <form @submit.prevent="saveProfile" @input="debouncedSave" x-show="!loading && user" x-cloak 
-             class="bg-base-green w-full max-w-[700px] rounded-2xl sm:rounded-[32px] shadow-2xl p-6 sm:p-10 flex flex-col items-center relative mt-10">
+        <div x-show="!loading && user" x-cloak class="w-full max-w-[1000px] flex flex-col items-center">
+            
+            <!-- Tab navigation removed -->
+
+            <form @submit.prevent="saveProfile" @input="debouncedSave" 
+                 class="bg-base-green w-full max-w-[700px] rounded-2xl sm:rounded-[32px] shadow-2xl p-6 sm:p-10 flex flex-col items-center relative mt-10">
 
             <div class="absolute -top-12 flex items-center justify-center gap-4 w-full">
-                <x-avatar-cropper alpineImage="user?.pdp" @avatar-changed="debouncedSave" @avatar-deleted="debouncedSave" />
+                <x-avatar-cropper alpineImage="user?.pdp" @avatar-changed="saveAvatar" @avatar-deleted="saveAvatar" />
             </div>
 
             <div class="mb-8 mt-12 flex flex-col gap-2 w-full items-center">
@@ -48,7 +52,7 @@
                             required
                             placeholder="Prénom"
                             icon="images/user.svg"
-                            :asterisk="false"
+                            :asterisk="true"
                         />
                     </div>
                     <div class="flex flex-col gap-1.5 w-full">
@@ -60,7 +64,7 @@
                             required
                             placeholder="Nom"
                             icon="images/user.svg"
-                            :asterisk="false"
+                            :asterisk="true"
                         />
                     </div>
                 </div>
@@ -74,7 +78,7 @@
                         required
                         placeholder="Nom d'utilisateur"
                         icon="images/user.svg"
-                        :asterisk="false"
+                        :asterisk="true"
                     />
                 </div>
 
@@ -87,7 +91,7 @@
                         required
                         placeholder="Email"
                         icon="images/mail.svg"
-                        :asterisk="false"
+                        :asterisk="true"
                     />
                 </div>
 
@@ -134,7 +138,7 @@
                                 required
                                 placeholder="Nom de l'entreprise ou de l'exploitation"
                                 icon="images/user.svg"
-                                :asterisk="false"
+                                :asterisk="true"
                             />
                         </div>
 
@@ -160,7 +164,7 @@
                                     required
                                     placeholder="Numéro et nom de rue"
                                     icon="images/user.svg"
-                                    :asterisk="false"
+                                    :asterisk="true"
                                 />
                             </div>
                             <div class="flex flex-col gap-1.5 w-full">
@@ -186,7 +190,7 @@
                                     required
                                     placeholder="Ex: 71100"
                                     icon="images/user.svg"
-                                    :asterisk="false"
+                                    :asterisk="true"
                                 />
                             </div>
                             <div class="flex flex-col gap-1.5 w-full">
@@ -198,7 +202,7 @@
                                     required
                                     placeholder="Chalon-sur-Saône"
                                     icon="images/user.svg"
-                                    :asterisk="false"
+                                    :asterisk="true"
                                 />
                             </div>
                         </div>
@@ -222,12 +226,12 @@
                     </div>
 
                     <div class="flex flex-col sm:flex-row justify-between w-full mt-4 gap-4 flex-wrap">
-                        <button type="button" @click="deleteAccount" class="px-8 py-4 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap">
+                        <button type="button" @click="deleteAccount" class="px-8 py-4 bg-red-600 text-white rounded-full font-bold hover:bg-red-700 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                             Supprimer le compte
                         </button>
 
-                        <button type="button" @click="linkGoogle" x-show="user && !user.has_google_linked" class="px-8 py-4 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap" x-cloak>
+                        <button type="button" @click="linkGoogle" x-show="user && !user.has_google_linked" class="px-8 py-4 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap cursor-pointer" x-cloak>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
                                 <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
                                 <path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/>
@@ -237,7 +241,7 @@
                             Associer à Google
                         </button>
 
-                        <button type="button" @click="linkGoogle" x-show="user && user.has_google_linked" class="px-8 py-4 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap transition-colors duration-200" x-cloak>
+                        <button type="button" @click="linkGoogle" x-show="user && user.has_google_linked" class="px-8 py-4 bg-white text-gray-800 rounded-full font-bold hover:bg-gray-100 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap transition-colors duration-200 cursor-pointer" x-cloak>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
                                 <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
                                 <path fill="#FF3D00" d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"/>
@@ -247,17 +251,17 @@
                             Changer le compte Google
                         </button>
 
-                        <button type="button" @click="becomeProducer" x-show="user && user.role === 'user'" class="px-8 py-4 bg-yellow-500 text-white rounded-full font-bold hover:bg-yellow-600 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap" x-cloak>
+                        <button type="button" @click="becomeProducer" x-show="user && user.role === 'user'" class="px-8 py-4 bg-yellow-500 text-white rounded-full font-bold hover:bg-yellow-600 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap cursor-pointer" x-cloak>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                             Devenir producteur
                         </button>
 
-                        <button type="button" @click="stopProducer" x-show="user && user.role === 'producer'" class="px-8 py-4 bg-red-500 text-white rounded-full font-bold hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap" x-cloak>
+                        <button type="button" @click="stopProducer" x-show="user && user.role === 'producer'" class="px-8 py-4 bg-red-500 text-white rounded-full font-bold hover:bg-red-600 transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap cursor-pointer" x-cloak>
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
                             Ne plus être producteur
                         </button>
 
-                        <a href="{{ route('logout.page') }}" class="px-8 py-4 bg-cachou text-white rounded-full font-bold hover:bg-dark transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap">
+                        <a href="{{ route('logout.page') }}" class="px-8 py-4 bg-cachou text-white rounded-full font-bold hover:bg-dark transition-colors duration-200 shadow-md flex items-center justify-center gap-3 w-full sm:w-auto flex-1 whitespace-nowrap cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                             Déconnexion
                         </a>
@@ -266,6 +270,10 @@
 
             </div>
         </form>
+
+            <!-- Favorites section moved to favorites.blade.php -->
+
+        </div>
 
         <div x-show="!loading && !user && fetchError" class="bg-base-green w-full max-w-[700px] rounded-2xl sm:rounded-[32px] shadow-2xl p-6 sm:p-10 flex flex-col items-center relative mt-10 text-center" x-cloak>
             <div class="w-16 h-16 bg-cachou text-red-400 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-red-400">

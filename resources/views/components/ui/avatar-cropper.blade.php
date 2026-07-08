@@ -57,14 +57,37 @@
                 </button>
             </div>
             <div class="relative w-full flex-1 min-h-[40vh] sm:min-h-[500px] bg-gray-900 flex items-center justify-center overflow-hidden">
-                <img id="cropperImageComponent" :src="cropImageUrl" class="max-w-full max-h-full block">
+                <img x-ref="cropperImageComponent" :src="cropImageUrl" class="max-w-full max-h-full block">
             </div>
-            <div class="p-4 bg-gray-50 flex justify-end gap-3 border-t">
-                <button type="button" @click="closeCropModal" class="px-6 py-2 rounded-full font-semibold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors">Annuler</button>
-                <button type="button" @click="confirmCrop" class="px-6 py-2 rounded-full font-semibold text-white bg-base-green hover:bg-pine-green transition-colors shadow-md flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Valider
-                </button>
+            <div class="p-4 bg-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4 border-t">
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="zoomIn" class="p-2 rounded-full text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors" title="Zoomer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </button>
+                    <button type="button" @click="zoomOut" class="p-2 rounded-full text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors" title="Dézoomer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                    </button>
+                    <button type="button" @click="rotateLeft" class="p-2 rounded-full text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors" title="Pivoter à gauche">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                    </button>
+                    <button type="button" @click="rotateRight" class="p-2 rounded-full text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors" title="Pivoter à droite">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+                    </button>
+                    <button type="button" @click="flipHorizontal" class="p-2 rounded-full text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors" title="Effet miroir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                            <polyline points="9 8 5 12 9 16"></polyline>
+                            <polyline points="15 8 19 12 15 16"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button type="button" @click="closeCropModal" class="px-6 py-2 rounded-full font-semibold text-gray-600 bg-gray-200 hover:bg-gray-300 transition-colors">Annuler</button>
+                    <button type="button" @click="confirmCrop" class="px-6 py-2 rounded-full font-semibold text-white bg-base-green hover:bg-pine-green transition-colors shadow-md flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Valider
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -92,6 +115,7 @@
     </div>
 
     @once
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     @endonce
 </div>

@@ -67,6 +67,18 @@ class AuthController extends Controller {
         }
 
         $user = auth('api')->user();
+
+        if ($user->is_banned) {
+            $user->last_login = now();
+            $user->save();
+            return response()->json([
+                'message' => 'Votre compte a été suspendu par un administrateur.',
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'is_banned' => true,
+                'expires_in' => auth('api')->factory()->getTTL() * 60
+            ], 200);
+        }
         $user->last_login = now();
         $user->save();
 

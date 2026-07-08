@@ -84,13 +84,23 @@
         <h1 class="w-full font-bold rounded-2xl bg-[#057941] text-[#DEDEDE] text-center p-2 text-2xl mb-3">Nos produits</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             @forelse($products as $product)
-                <a href="{{ route('products.show', $product->id) }}" class="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="{{ asset('storage/products/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h2 class="font-bold text-lg">{{ $product->name }}</h2>
-                        <p class="text-[#820606] font-bold mt-1">{{ $product->price }} €</p>
-                    </div>
-                </a>
+                <div class="relative block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition group">
+                    <button @click.prevent="$store.favorites.toggleProduct({{ $product->id }})" class="absolute top-2 right-2 bg-white/80 p-1.5 rounded-full hover:bg-white transition-colors z-10" :title="$store.favorites.isProductBookmarked({{ $product->id }}) ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+                        <template x-if="$store.favorites.isProductBookmarked({{ $product->id }})">
+                            <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-5 h-5 text-[#F8B803]" alt="Favori">
+                        </template>
+                        <template x-if="!$store.favorites.isProductBookmarked({{ $product->id }})">
+                            <img src="{{ asset('images/bookmarks.svg') }}" class="w-5 h-5" alt="Favori">
+                        </template>
+                    </button>
+                    <a href="{{ route('products.show', $product->id) }}" class="block">
+                        <img src="{{ asset('storage/products/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-4">
+                            <h2 class="font-bold text-lg">{{ $product->name }}</h2>
+                            <p class="text-[#820606] font-bold mt-1">{{ $product->price }} €</p>
+                        </div>
+                    </a>
+                </div>
             @empty
                 <p class="col-span-3 text-center text-gray-500">Aucun produit trouvé.</p>
             @endforelse
@@ -101,13 +111,23 @@
         <h1 class="w-full font-bold rounded-2xl bg-[#057941] text-[#DEDEDE] text-center p-2 text-2xl mb-3">Nos producteurs</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @forelse($producers as $producer)
-                <a href="{{ route('producers.show', $producer->id) }}" class="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="{{ asset('storage/' . $producer->user?->pdp_path) }}" alt="{{ $producer->name }}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h2 class="font-bold text-lg">{{ $producer->name }}</h2>
-                        <p class="text-gray-500 text-sm mt-1">{{ $producer->city }}</p>
-                    </div>
-                </a>
+                <div class="relative block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition group">
+                    <button @click.prevent="$store.favorites.toggleProducer({{ $producer->id }})" class="absolute top-2 right-2 bg-white/80 p-1.5 rounded-full hover:bg-white transition-colors z-10" :title="$store.favorites.isProducerFollowed({{ $producer->id }}) ? 'Ne plus suivre' : 'Suivre'">
+                        <template x-if="$store.favorites.isProducerFollowed({{ $producer->id }})">
+                            <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-5 h-5 text-[#F8B803]" alt="Suivi">
+                        </template>
+                        <template x-if="!$store.favorites.isProducerFollowed({{ $producer->id }})">
+                            <img src="{{ asset('images/bookmarks.svg') }}" class="w-5 h-5" alt="Suivre">
+                        </template>
+                    </button>
+                    <a href="{{ route('producers.show', $producer->id) }}" class="block">
+                        <img src="{{ asset('storage/' . $producer->user?->pdp_path) }}" alt="{{ $producer->name }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-4">
+                            <h2 class="font-bold text-lg">{{ $producer->name }}</h2>
+                            <p class="text-gray-500 text-sm mt-1">{{ $producer->city }}</p>
+                        </div>
+                    </a>
+                </div>
             @empty
                 <p class="col-span-3 text-center text-gray-500">Aucun producteur trouvé.</p>
             @endforelse
@@ -117,13 +137,23 @@
     <h1 class="w-full font-bold rounded-2xl bg-[#057941] text-[#DEDEDE] text-center p-2 text-2xl mb-3">Nos produits</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             @forelse($products as $product)
-                <a href="{{ route('products.show', $product->id) }}" class="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="{{ asset('storage/products/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h2 class="font-bold text-lg">{{ $product->name }}</h2>
-                        <p class="text-[#820606] font-bold mt-1">{{ $product->price }} €</p>
-                    </div>
-                </a>
+                <div class="relative block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition group">
+                    <button @click.prevent="$store.favorites.toggleProduct({{ $product->id }})" class="absolute top-2 right-2 bg-white/80 p-1.5 rounded-full hover:bg-white transition-colors z-10" :title="$store.favorites.isProductBookmarked({{ $product->id }}) ? 'Retirer des favoris' : 'Ajouter aux favoris'">
+                        <template x-if="$store.favorites.isProductBookmarked({{ $product->id }})">
+                            <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-5 h-5 text-[#F8B803]" alt="Favori">
+                        </template>
+                        <template x-if="!$store.favorites.isProductBookmarked({{ $product->id }})">
+                            <img src="{{ asset('images/bookmarks.svg') }}" class="w-5 h-5" alt="Favori">
+                        </template>
+                    </button>
+                    <a href="{{ route('products.show', $product->id) }}" class="block">
+                        <img src="{{ asset('storage/products/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-4">
+                            <h2 class="font-bold text-lg">{{ $product->name }}</h2>
+                            <p class="text-[#820606] font-bold mt-1">{{ $product->price }} €</p>
+                        </div>
+                    </a>
+                </div>
             @empty
                 <p class="col-span-3 text-center text-gray-500">Aucun produit trouvé.</p>
             @endforelse
@@ -132,13 +162,23 @@
     <h1 class="w-full font-bold rounded-2xl bg-[#057941] text-[#DEDEDE] text-center p-2 text-2xl mb-3">Nos producteurs</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @forelse($producers as $producer)
-                <a href="{{ route('producers.show', $producer->id) }}" class="block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition">
-                    <img src="{{ asset('storage/' . $producer->user?->pdp_path) }}" alt="{{ $producer->name }}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h2 class="font-bold text-lg">{{ $producer->name }}</h2>
-                        <p class="text-gray-500 text-sm mt-1">{{ $producer->city }}</p>
-                    </div>
-                </a>
+                <div class="relative block bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition group">
+                    <button @click.prevent="$store.favorites.toggleProducer({{ $producer->id }})" class="absolute top-2 right-2 bg-white/80 p-1.5 rounded-full hover:bg-white transition-colors z-10" :title="$store.favorites.isProducerFollowed({{ $producer->id }}) ? 'Ne plus suivre' : 'Suivre'">
+                        <template x-if="$store.favorites.isProducerFollowed({{ $producer->id }})">
+                            <img src="{{ asset('images/bookmarks-fill.svg') }}" class="w-5 h-5 text-[#F8B803]" alt="Suivi">
+                        </template>
+                        <template x-if="!$store.favorites.isProducerFollowed({{ $producer->id }})">
+                            <img src="{{ asset('images/bookmarks.svg') }}" class="w-5 h-5" alt="Suivre">
+                        </template>
+                    </button>
+                    <a href="{{ route('producers.show', $producer->id) }}" class="block">
+                        <img src="{{ asset('storage/' . $producer->user?->pdp_path) }}" alt="{{ $producer->name }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                        <div class="p-4">
+                            <h2 class="font-bold text-lg">{{ $producer->name }}</h2>
+                            <p class="text-gray-500 text-sm mt-1">{{ $producer->city }}</p>
+                        </div>
+                    </a>
+                </div>
             @empty
                 <p class="col-span-3 text-center text-gray-500">Aucun producteur trouvé.</p>
             @endforelse
